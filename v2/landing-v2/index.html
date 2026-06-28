@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}} — {{TAGLINE}}</title>
+  <style>
+    :root {
+      --bg: #08090a; --bg-alt: #0f1011; --bg-card: #161718; --tekst: #f2f2f2;
+      --dim: #8a8f98; --accent: #5e6ad2; --accent-2: #26b5a0; --border: #1f2023;
+      --nav: 56px; --max: 1100px; --radius: 6px; --groot: clamp(2.6rem, 7vw, 5.5rem);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tekst); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    .navbar { position: sticky; top: 0; z-index: 100; height: var(--nav); background: rgba(8,9,10,0.8); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; }
+    .navbar__logo { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.01em; }
+    .navbar__links { display: flex; gap: 24px; list-style: none; }
+    .navbar__links a { font-size: 0.82rem; color: var(--dim); transition: color 0.15s; }
+    .navbar__links a:hover { color: var(--tekst); }
+    .navbar__cta { display: flex; gap: 10px; align-items: center; }
+    .btn-ghost { color: var(--dim); font-size: 0.82rem; padding: 6px 14px; border-radius: var(--radius); transition: all 0.15s; border: 1px solid var(--border); }
+    .btn-ghost:hover { color: var(--tekst); border-color: #333; }
+    .btn-primary { background: white; color: #08090a; padding: 7px 16px; border-radius: var(--radius); font-size: 0.82rem; font-weight: 600; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-primary:hover { opacity: 0.88; }
+    .navbar__hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+    .navbar__hamburger span { display: block; width: 18px; height: 1.5px; background: var(--dim); }
+    .hero { min-height: 94vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 32px; position: relative; overflow: hidden; }
+    .hero__grid { position: absolute; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 48px 48px; opacity: 0.4; }
+    .hero__glow { position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 700px; height: 500px; background: radial-gradient(ellipse, rgba(94,106,210,0.08) 0%, transparent 65%); pointer-events: none; }
+    .hero__kbd { display: inline-flex; align-items: center; gap: 6px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 5px 12px; font-size: 0.75rem; color: var(--dim); margin-bottom: 36px; position: relative; z-index: 1; font-family: monospace; }
+    .kbd { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-size: 0.7rem; }
+    .hero__headline { font-size: var(--groot); font-weight: 700; letter-spacing: -0.05em; line-height: 1.02; margin-bottom: 24px; position: relative; z-index: 1; }
+    .hero__headline span { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero__sub { font-size: 1.05rem; color: var(--dim); max-width: 480px; margin-bottom: 44px; position: relative; z-index: 1; line-height: 1.7; }
+    .hero__knoppen { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+    .btn-large { padding: 11px 26px; border-radius: var(--radius); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
+    .btn-large-white { background: white; color: #08090a; }
+    .btn-large-white:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-large-border { background: transparent; color: var(--tekst); border: 1px solid var(--border); }
+    .btn-large-border:hover { border-color: #444; }
+    .hero__meta { margin-top: 56px; display: flex; align-items: center; gap: 24px; font-size: 0.78rem; color: var(--dim); position: relative; z-index: 1; flex-wrap: wrap; justify-content: center; }
+    .hero__meta-divider { width: 1px; height: 14px; background: var(--border); }
+    .logo-strip { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 28px 32px; }
+    .logo-strip__inner { max-width: var(--max); margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 56px; flex-wrap: wrap; }
+    .logo-strip__label { font-size: 0.72rem; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; width: 100%; text-align: center; margin-bottom: 20px; }
+    .logo-item { font-size: 0.82rem; font-weight: 600; color: #333; letter-spacing: -0.01em; transition: color 0.2s; }
+    .logo-item:hover { color: var(--dim); }
+    .features { padding: 96px 32px; max-width: var(--max); margin: 0 auto; }
+    .features__intro { text-align: center; margin-bottom: 64px; }
+    .sectie-chip { display: inline-block; background: rgba(94,106,210,0.1); border: 1px solid rgba(94,106,210,0.2); color: var(--accent); font-size: 0.72rem; font-weight: 600; padding: 4px 12px; border-radius: 999px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 16px; }
+    .sectie-titel { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 14px; }
+    .sectie-sub { font-size: 0.95rem; color: var(--dim); max-width: 460px; margin: 0 auto; line-height: 1.7; }
+    .features__rijen { display: flex; flex-direction: column; gap: 2px; }
+    .feature-rij { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .feature-blok { background: var(--bg-alt); padding: 32px; transition: background 0.2s; }
+    .feature-blok:hover { background: var(--bg-card); }
+    .feature-blok--groot { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .feature-blok__icon { width: 32px; height: 32px; background: rgba(94,106,210,0.1); border: 1px solid rgba(94,106,210,0.15); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; margin-bottom: 14px; }
+    .feature-blok__titel { font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; }
+    .feature-blok__tekst { font-size: 0.82rem; color: var(--dim); line-height: 1.65; }
+    .feature-blok__demo { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--dim); }
+    .testimonials { padding: 80px 32px; background: var(--bg-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .testimonials__inner { max-width: var(--max); margin: 0 auto; }
+    .testimonials__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+    .testimonial { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+    .testimonial__quote { font-size: 0.88rem; color: var(--dim); line-height: 1.7; margin-bottom: 20px; }
+    .testimonial__auteur { display: flex; align-items: center; gap: 10px; }
+    .testimonial__avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; color: white; flex-shrink: 0; }
+    .testimonial__naam { font-size: 0.82rem; font-weight: 600; }
+    .testimonial__functie { font-size: 0.72rem; color: var(--dim); }
+    .cta { padding: 100px 32px; text-align: center; position: relative; overflow: hidden; }
+    .cta__glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(94,106,210,0.1) 0%, transparent 70%); }
+    .cta__headline { font-size: clamp(2rem, 5vw, 4rem); font-weight: 700; letter-spacing: -0.05em; line-height: 1.05; margin-bottom: 20px; position: relative; }
+    .cta__sub { font-size: 1rem; color: var(--dim); max-width: 420px; margin: 0 auto 40px; line-height: 1.7; position: relative; }
+    .footer { border-top: 1px solid var(--border); padding: 48px 32px 28px; }
+    .footer__top { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer__logo { font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; }
+    .footer__tekst { font-size: 0.8rem; color: var(--dim); line-height: 1.6; max-width: 180px; }
+    .footer__kolom-titel { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin-bottom: 12px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer__links a { font-size: 0.8rem; color: var(--dim); transition: color 0.15s; }
+    .footer__links a:hover { color: var(--tekst); }
+    .footer__bottom { max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--dim); }
+    .footer__socials { display: flex; gap: 14px; }
+    .footer__socials a { color: var(--dim); transition: color 0.15s; font-size: 0.75rem; }
+    .footer__socials a:hover { color: var(--tekst); }
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 200; flex-direction: column; padding: 72px 24px 40px; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu a { font-size: 1.3rem; font-weight: 600; color: var(--tekst); padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .mobiel-menu__sluiten { position: absolute; top: 16px; right: 20px; font-size: 1.3rem; cursor: pointer; color: var(--dim); }
+    @media (max-width: 1024px) {
+      .feature-blok--groot { grid-column: span 1; grid-template-columns: 1fr; }
+      .testimonials__grid { grid-template-columns: 1fr 1fr; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+      .navbar__links, .navbar__cta { display: none; }
+      .navbar__hamburger { display: flex; }
+      .hero { padding: 56px 20px; min-height: 80vh; }
+      .features { padding: 56px 20px; }
+      .feature-rij { grid-template-columns: 1fr; }
+      .feature-blok--groot { grid-column: span 1; }
+      .testimonials { padding: 56px 20px; }
+      .testimonials__grid { grid-template-columns: 1fr; }
+      .cta { padding: 64px 20px; }
+      .footer { padding: 40px 20px 24px; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+      .footer__bottom { flex-direction: column; gap: 10px; }
+    }
+    @media (max-width: 480px) {
+      .hero__knoppen { flex-direction: column; align-items: center; }
+      .footer__top { grid-template-columns: 1fr; }
+      .logo-strip__inner { gap: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#testimonials">Klanten</a></li>
+      <li><a href="#cta">Prijzen</a></li>
+      <li><a href="#">Docs</a></li>
+    </ul>
+    <div class="navbar__cta">
+      <a href="#" class="btn-ghost">Inloggen</a>
+      <button class="btn-primary">Gratis starten</button>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#features" onclick="menuToggle()">Features</a>
+    <a href="#testimonials" onclick="menuToggle()">Klanten</a>
+    <a href="#cta" onclick="menuToggle()">Prijzen</a>
+    <a href="#" onclick="menuToggle()">Inloggen</a>
+  </div>
+  <section class="hero">
+    <div class="hero__grid"></div>
+    <div class="hero__glow"></div>
+    <div class="hero__kbd"><span class="kbd">⌘</span><span class="kbd">K</span> {{HERO_KBD_TEKST}}</div>
+    <h1 class="hero__headline">{{HERO_HEADLINE_1}}<br><span>{{HERO_HEADLINE_2}}</span></h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__knoppen">
+      <button class="btn-large btn-large-white">{{CTA_PRIMAIR}}</button>
+      <button class="btn-large btn-large-border">{{CTA_SECUNDAIR}} →</button>
+    </div>
+    <div class="hero__meta">
+      <span>{{META_1}}</span>
+      <div class="hero__meta-divider"></div>
+      <span>{{META_2}}</span>
+      <div class="hero__meta-divider"></div>
+      <span>{{META_3}}</span>
+    </div>
+  </section>
+  <div class="logo-strip">
+    <div class="logo-strip__inner">
+      <div class="logo-strip__label">{{LOGO_STRIP_LABEL}}</div>
+      <span class="logo-item">{{KLANT_1}}</span>
+      <span class="logo-item">{{KLANT_2}}</span>
+      <span class="logo-item">{{KLANT_3}}</span>
+      <span class="logo-item">{{KLANT_4}}</span>
+      <span class="logo-item">{{KLANT_5}}</span>
+    </div>
+  </div>
+  <section class="features" id="features">
+    <div class="features__intro">
+      <div class="sectie-chip">Features</div>
+      <h2 class="sectie-titel">{{FEATURES_TITEL}}</h2>
+      <p class="sectie-sub">{{FEATURES_SUB}}</p>
+    </div>
+    <div class="features__rijen">
+      <div class="feature-rij">
+        <div class="feature-blok"><div class="feature-blok__icon">⚡</div><div class="feature-blok__titel">{{F1_TITEL}}</div><p class="feature-blok__tekst">{{F1_TEKST}}</p></div>
+        <div class="feature-blok"><div class="feature-blok__icon">🔒</div><div class="feature-blok__titel">{{F2_TITEL}}</div><p class="feature-blok__tekst">{{F2_TEKST}}</p></div>
+      </div>
+      <div class="feature-rij">
+        <div class="feature-blok feature-blok--groot">
+          <div><div class="feature-blok__icon">🤖</div><div class="feature-blok__titel">{{F3_TITEL}}</div><p class="feature-blok__tekst">{{F3_TEKST}}</p></div>
+          <div class="feature-blok__demo">[ product demo ]</div>
+        </div>
+      </div>
+      <div class="feature-rij">
+        <div class="feature-blok"><div class="feature-blok__icon">📊</div><div class="feature-blok__titel">{{F4_TITEL}}</div><p class="feature-blok__tekst">{{F4_TEKST}}</p></div>
+        <div class="feature-blok"><div class="feature-blok__icon">🌐</div><div class="feature-blok__titel">{{F5_TITEL}}</div><p class="feature-blok__tekst">{{F5_TEKST}}</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="testimonials" id="testimonials">
+    <div class="testimonials__inner">
+      <div style="text-align:center;">
+        <div class="sectie-chip">Klanten</div>
+        <h2 class="sectie-titel">{{TESTIMONIALS_TITEL}}</h2>
+      </div>
+      <div class="testimonials__grid">
+        <div class="testimonial"><p class="testimonial__quote">"{{T1_QUOTE}}"</p><div class="testimonial__auteur"><div class="testimonial__avatar">{{T1_INT}}</div><div><div class="testimonial__naam">{{T1_NAAM}}</div><div class="testimonial__functie">{{T1_FUNCTIE}}</div></div></div></div>
+        <div class="testimonial"><p class="testimonial__quote">"{{T2_QUOTE}}"</p><div class="testimonial__auteur"><div class="testimonial__avatar">{{T2_INT}}</div><div><div class="testimonial__naam">{{T2_NAAM}}</div><div class="testimonial__functie">{{T2_FUNCTIE}}</div></div></div></div>
+        <div class="testimonial"><p class="testimonial__quote">"{{T3_QUOTE}}"</p><div class="testimonial__auteur"><div class="testimonial__avatar">{{T3_INT}}</div><div><div class="testimonial__naam">{{T3_NAAM}}</div><div class="testimonial__functie">{{T3_FUNCTIE}}</div></div></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="cta" id="cta">
+    <div class="cta__glow"></div>
+    <h2 class="cta__headline">{{CTA_HEADLINE}}</h2>
+    <p class="cta__sub">{{CTA_SUB}}</p>
+    <button class="btn-large btn-large-white">{{CTA_KNOP}}</button>
+    <p style="margin-top:16px;font-size:0.78rem;color:var(--dim);">{{CTA_NOTE}}</p>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_BESCHRIJVING}}</p></div>
+      <div><div class="footer__kolom-titel">Product</div><ul class="footer__links"><li><a href="#">Features</a></li><li><a href="#">Prijzen</a></li><li><a href="#">Changelog</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Blog</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Juridisch</div><ul class="footer__links"><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li><li><a href="#">Cookies</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <div class="footer__socials"><a href="#">Twitter</a><a href="#">GitHub</a><a href="#">LinkedIn</a></div>
+    </div>
+  </footer>
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click', menuToggle);
+    document.getElementById('jaar').textContent = new Date().getFullYear();
+    const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}),{threshold:0.08});
+    document.querySelectorAll('.feature-blok,.testimonial').forEach(el => { el.style.opacity='0';el.style.transform='translateY(14px)';el.style.transition='opacity 0.45s ease,transform 0.45s ease';obs.observe(el); });
+  </script>
+</body>
+</html>
