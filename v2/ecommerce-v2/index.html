@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root {
+      --bg: #ffffff; --bg-alt: #f6f6f7; --tekst: #1a1a1a; --dim: #6d7175;
+      --accent: #008060; --accent-dark: #006b52; --accent-light: #e3f1ec;
+      --border: #e1e3e5; --rood: #d72c0d; --nav: 56px; --max: 1280px; --radius: 8px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tekst); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; object-fit: cover; }
+    .aankondiging { background: var(--tekst); color: white; text-align: center; padding: 10px 24px; font-size: 0.82rem; font-weight: 500; }
+    .aankondiging a { color: #a3e6c8; text-decoration: underline; margin-left: 8px; }
+    .navbar { position: sticky; top: 0; z-index: 100; height: var(--nav); background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; padding: 0 32px; }
+    .navbar__logo { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; flex-shrink: 0; }
+    .navbar__links { display: flex; gap: 24px; list-style: none; flex: 1; justify-content: center; }
+    .navbar__links a { font-size: 0.85rem; color: var(--dim); font-weight: 500; transition: color 0.15s; }
+    .navbar__links a:hover { color: var(--tekst); }
+    .navbar__acties { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
+    .navbar__acties a { font-size: 0.85rem; color: var(--dim); }
+    .btn-primair { background: var(--accent); color: white; padding: 8px 18px; border-radius: var(--radius); font-size: 0.85rem; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-primair:hover { background: var(--accent-dark); }
+    .navbar__hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; margin-left: auto; }
+    .navbar__hamburger span { display: block; width: 20px; height: 2px; background: var(--tekst); }
+    .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 580px; }
+    .hero__content { display: flex; flex-direction: column; justify-content: center; padding: 64px 56px 64px 40px; }
+    .hero__overtitel { font-size: 0.78rem; font-weight: 600; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
+    .hero__headline { font-size: clamp(2rem, 4vw, 3.4rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.08; margin-bottom: 18px; }
+    .hero__sub { font-size: 1rem; color: var(--dim); max-width: 420px; margin-bottom: 32px; line-height: 1.7; }
+    .hero__knoppen { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-groot { padding: 13px 28px; border-radius: var(--radius); font-size: 0.95rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-groot-groen { background: var(--accent); color: white; }
+    .btn-groot-groen:hover { background: var(--accent-dark); }
+    .btn-groot-outline { border: 2px solid var(--tekst); color: var(--tekst); background: transparent; }
+    .btn-groot-outline:hover { background: var(--tekst); color: white; }
+    .hero__trust { display: flex; gap: 20px; margin-top: 24px; flex-wrap: wrap; }
+    .trust-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--dim); }
+    .trust-item__icon { font-size: 0.9rem; }
+    .hero__beeld { background: var(--bg-alt); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #bbb; }
+    .usp-balk { background: var(--accent); padding: 14px 32px; }
+    .usp-balk__inner { max-width: var(--max); margin: 0 auto; display: flex; justify-content: center; gap: 56px; flex-wrap: wrap; }
+    .usp-item { display: flex; align-items: center; gap: 8px; color: white; font-size: 0.82rem; font-weight: 500; }
+    .categorieen { max-width: var(--max); margin: 56px auto; padding: 0 32px; }
+    .sectie-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .sectie-titel { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em; }
+    .sectie-link { font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+    .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .cat-card { border-radius: var(--radius); overflow: hidden; cursor: pointer; position: relative; aspect-ratio: 3/4; background: var(--bg-alt); display: flex; align-items: flex-end; transition: transform 0.2s; }
+    .cat-card:hover { transform: translateY(-3px); }
+    .cat-card__beeld { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #bbb; }
+    .cat-card__overlay { position: relative; z-index: 1; background: linear-gradient(transparent, rgba(0,0,0,0.6)); padding: 20px 16px; width: 100%; }
+    .cat-card__naam { font-size: 0.95rem; font-weight: 700; color: white; }
+    .cat-card__count { font-size: 0.75rem; color: rgba(255,255,255,0.75); }
+    .producten { max-width: var(--max); margin: 0 auto 56px; padding: 0 32px; }
+    .filter-balk { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .filter-chip { padding: 7px 16px; border: 1px solid var(--border); border-radius: 999px; font-size: 0.82rem; cursor: pointer; background: white; transition: all 0.15s; }
+    .filter-chip:hover, .filter-chip.actief { background: var(--tekst); color: white; border-color: var(--tekst); }
+    .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .product-card { cursor: pointer; }
+    .product-card__beeld { aspect-ratio: 1/1; background: var(--bg-alt); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #bbb; margin-bottom: 12px; position: relative; overflow: hidden; transition: transform 0.3s; }
+    .product-card:hover .product-card__beeld { transform: scale(1.03); }
+    .product-card__badge { position: absolute; top: 8px; left: 8px; font-size: 0.65rem; font-weight: 700; padding: 3px 8px; border-radius: 3px; }
+    .badge-sale { background: var(--rood); color: white; }
+    .badge-nieuw { background: var(--accent); color: white; }
+    .product-card__fav { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; opacity: 0; transition: opacity 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+    .product-card:hover .product-card__fav { opacity: 1; }
+    .product-card__merk { font-size: 0.72rem; color: var(--dim); margin-bottom: 3px; }
+    .product-card__naam { font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; line-height: 1.3; }
+    .product-card__sterren { color: #f5a623; font-size: 0.75rem; margin-bottom: 6px; }
+    .product-card__prijs { font-size: 0.95rem; font-weight: 700; }
+    .product-card__prijs-oud { font-size: 0.82rem; color: var(--dim); text-decoration: line-through; margin-left: 6px; }
+    .product-card__knop { width: 100%; margin-top: 10px; padding: 8px; background: white; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .product-card__knop:hover { background: var(--accent); color: white; border-color: var(--accent); }
+    .banner-sectie { max-width: var(--max); margin: 0 auto 56px; padding: 0 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .banner-card { border-radius: 10px; overflow: hidden; position: relative; min-height: 280px; display: flex; align-items: flex-end; cursor: pointer; }
+    .banner-card__bg { position: absolute; inset: 0; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #bbb; }
+    .banner-card__content { position: relative; z-index: 1; padding: 28px; background: linear-gradient(transparent, rgba(0,0,0,0.6)); width: 100%; }
+    .banner-card__label { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+    .banner-card__titel { font-size: 1.2rem; font-weight: 800; color: white; margin-bottom: 12px; }
+    .banner-card__knop { display: inline-block; background: white; color: var(--tekst); padding: 8px 18px; border-radius: var(--radius); font-size: 0.82rem; font-weight: 700; }
+    .reviews { background: var(--bg-alt); padding: 56px 32px; }
+    .reviews__inner { max-width: var(--max); margin: 0 auto; }
+    .reviews__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px; }
+    .review-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .review-card__sterren { color: #f5a623; font-size: 0.9rem; margin-bottom: 10px; }
+    .review-card__tekst { font-size: 0.85rem; color: var(--dim); line-height: 1.65; margin-bottom: 14px; }
+    .review-card__auteur { font-size: 0.78rem; font-weight: 600; }
+    .review-card__product { font-size: 0.72rem; color: var(--dim); }
+    .cta-sectie { background: var(--accent); color: white; padding: 72px 32px; text-align: center; }
+    .cta-sectie h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 14px; }
+    .cta-sectie p { font-size: 1rem; opacity: 0.85; max-width: 440px; margin: 0 auto 32px; line-height: 1.7; }
+    .btn-wit { background: white; color: var(--accent); padding: 13px 32px; border-radius: var(--radius); font-size: 0.95rem; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-wit:hover { opacity: 0.9; }
+    .footer { background: var(--tekst); color: white; padding: 56px 32px 28px; }
+    .footer__top { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer__logo { font-size: 1rem; font-weight: 800; margin-bottom: 10px; }
+    .footer__tekst { font-size: 0.82rem; color: #888; line-height: 1.6; max-width: 200px; }
+    .footer__kolom-titel { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #666; margin-bottom: 14px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer__links a { font-size: 0.82rem; color: #aaa; transition: color 0.15s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom { max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; padding-top: 20px; border-top: 1px solid #333; font-size: 0.75rem; color: #666; flex-wrap: wrap; gap: 10px; }
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: white; z-index: 200; flex-direction: column; padding: 72px 24px 40px; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu a { font-size: 1.3rem; font-weight: 600; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .mobiel-menu__sluiten { position: absolute; top: 16px; right: 20px; font-size: 1.4rem; cursor: pointer; color: var(--dim); }
+    @media (max-width: 1024px) {
+      .product-grid { grid-template-columns: repeat(3, 1fr); }
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 16px; }
+      .navbar__links { display: none; }
+      .navbar__hamburger { display: flex; }
+      .hero { grid-template-columns: 1fr; }
+      .hero__beeld { min-height: 280px; }
+      .hero__content { padding: 40px 20px; }
+      .usp-balk__inner { gap: 20px; }
+      .categorieen, .producten, .banner-sectie { padding: 0 16px; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .banner-sectie { grid-template-columns: 1fr; }
+      .reviews { padding: 40px 16px; }
+      .reviews__grid { grid-template-columns: 1fr; }
+      .footer { padding: 40px 16px 24px; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+      .footer__bottom { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .footer__top { grid-template-columns: 1fr; }
+      .usp-balk__inner { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="aankondiging">{{AANKONDIGING_TEKST}} <a href="#">{{AANKONDIGING_LINK}}</a></div>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links">
+      <li><a href="#categorieen">Collecties</a></li>
+      <li><a href="#producten">Producten</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#">Over ons</a></li>
+    </ul>
+    <div class="navbar__acties">
+      <a href="#">🔍</a>
+      <a href="#">♡</a>
+      <a href="#">🛒 {{WINKELWAGEN_COUNT}}</a>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#categorieen" onclick="menuToggle()">Collecties</a>
+    <a href="#producten" onclick="menuToggle()">Producten</a>
+    <a href="#reviews" onclick="menuToggle()">Reviews</a>
+    <a href="#" onclick="menuToggle()">Over ons</a>
+  </div>
+  <section class="hero">
+    <div class="hero__content">
+      <div class="hero__overtitel">{{HERO_OVERTITEL}}</div>
+      <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+      <p class="hero__sub">{{HERO_SUB}}</p>
+      <div class="hero__knoppen">
+        <button class="btn-groot btn-groot-groen">{{CTA_PRIMAIR}}</button>
+        <button class="btn-groot btn-groot-outline">{{CTA_SECUNDAIR}}</button>
+      </div>
+      <div class="hero__trust">
+        <div class="trust-item"><span class="trust-item__icon">⭐</span>{{TRUST_1}}</div>
+        <div class="trust-item"><span class="trust-item__icon">🔒</span>{{TRUST_2}}</div>
+        <div class="trust-item"><span class="trust-item__icon">🚚</span>{{TRUST_3}}</div>
+      </div>
+    </div>
+    <div class="hero__beeld">[ {{HERO_AFBEELDING}} ]</div>
+  </section>
+  <div class="usp-balk">
+    <div class="usp-balk__inner">
+      <div class="usp-item">🚚 {{USP_1}}</div>
+      <div class="usp-item">↩️ {{USP_2}}</div>
+      <div class="usp-item">💳 {{USP_3}}</div>
+      <div class="usp-item">🏆 {{USP_4}}</div>
+    </div>
+  </div>
+  <section class="categorieen" id="categorieen">
+    <div class="sectie-header"><h2 class="sectie-titel">{{CAT_TITEL}}</h2><a href="#" class="sectie-link">Alles bekijken →</a></div>
+    <div class="cat-grid">
+      <div class="cat-card"><div class="cat-card__beeld">[ afb ]</div><div class="cat-card__overlay"><div class="cat-card__naam">{{CAT_1_NAAM}}</div><div class="cat-card__count">{{CAT_1_COUNT}} producten</div></div></div>
+      <div class="cat-card"><div class="cat-card__beeld">[ afb ]</div><div class="cat-card__overlay"><div class="cat-card__naam">{{CAT_2_NAAM}}</div><div class="cat-card__count">{{CAT_2_COUNT}} producten</div></div></div>
+      <div class="cat-card"><div class="cat-card__beeld">[ afb ]</div><div class="cat-card__overlay"><div class="cat-card__naam">{{CAT_3_NAAM}}</div><div class="cat-card__count">{{CAT_3_COUNT}} producten</div></div></div>
+      <div class="cat-card"><div class="cat-card__beeld">[ afb ]</div><div class="cat-card__overlay"><div class="cat-card__naam">{{CAT_4_NAAM}}</div><div class="cat-card__count">{{CAT_4_COUNT}} producten</div></div></div>
+    </div>
+  </section>
+  <section class="producten" id="producten">
+    <div class="sectie-header"><h2 class="sectie-titel">{{PROD_TITEL}}</h2><a href="#" class="sectie-link">Alles bekijken →</a></div>
+    <div class="filter-balk">
+      <span class="filter-chip actief">Alles</span>
+      <span class="filter-chip">{{CAT_1_NAAM}}</span>
+      <span class="filter-chip">{{CAT_2_NAAM}}</span>
+      <span class="filter-chip">{{CAT_3_NAAM}}</span>
+      <span class="filter-chip">Sale</span>
+    </div>
+    <div class="product-grid">
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge badge-nieuw">Nieuw</span><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__merk">{{P1_MERK}}</div><div class="product-card__naam">{{P1_NAAM}}</div><div class="product-card__sterren">★★★★★</div><div><span class="product-card__prijs">{{P1_PRIJS}}</span></div><button class="product-card__knop">In winkelwagen</button></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge badge-sale">-20%</span><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__merk">{{P2_MERK}}</div><div class="product-card__naam">{{P2_NAAM}}</div><div class="product-card__sterren">★★★★☆</div><div><span class="product-card__prijs">{{P2_PRIJS}}</span><span class="product-card__prijs-oud">{{P2_PRIJS_OUD}}</span></div><button class="product-card__knop">In winkelwagen</button></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__merk">{{P3_MERK}}</div><div class="product-card__naam">{{P3_NAAM}}</div><div class="product-card__sterren">★★★★★</div><div><span class="product-card__prijs">{{P3_PRIJS}}</span></div><button class="product-card__knop">In winkelwagen</button></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge badge-nieuw">Bestseller</span><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__merk">{{P4_MERK}}</div><div class="product-card__naam">{{P4_NAAM}}</div><div class="product-card__sterren">★★★★★</div><div><span class="product-card__prijs">{{P4_PRIJS}}</span></div><button class="product-card__knop">In winkelwagen</button></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__merk">{{P5_MERK}}</div><div class="product-card__naam">{{P5_NAAM}}</div><div class="product-card__sterren">★★★★☆</div><div><span class="product-card__prijs">{{P5_PRIJS}}</span></div><button class="product-card__knop">In winkelwagen</button></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge badge-sale">Sale</span><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__merk">{{P6_MERK}}</div><div class="product-card__naam">{{P6_NAAM}}</div><div class="product-card__sterren">★★★★★</div><div><span class="product-card__prijs">{{P6_PRIJS}}</span><span class="product-card__prijs-oud">{{P6_PRIJS_OUD}}</span></div><button class="product-card__knop">In winkelwagen</button></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__merk">{{P7_MERK}}</div><div class="product-card__naam">{{P7_NAAM}}</div><div class="product-card__sterren">★★★★★</div><div><span class="product-card__prijs">{{P7_PRIJS}}</span></div><button class="product-card__knop">In winkelwagen</button></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge badge-nieuw">Nieuw</span><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__merk">{{P8_MERK}}</div><div class="product-card__naam">{{P8_NAAM}}</div><div class="product-card__sterren">★★★★☆</div><div><span class="product-card__prijs">{{P8_PRIJS}}</span></div><button class="product-card__knop">In winkelwagen</button></div>
+    </div>
+  </section>
+  <section class="banner-sectie">
+    <div class="banner-card"><div class="banner-card__bg">[ afb ]</div><div class="banner-card__content"><div class="banner-card__label">{{BANNER_1_LABEL}}</div><div class="banner-card__titel">{{BANNER_1_TITEL}}</div><span class="banner-card__knop">{{BANNER_1_CTA}} →</span></div></div>
+    <div class="banner-card"><div class="banner-card__bg">[ afb ]</div><div class="banner-card__content"><div class="banner-card__label">{{BANNER_2_LABEL}}</div><div class="banner-card__titel">{{BANNER_2_TITEL}}</div><span class="banner-card__knop">{{BANNER_2_CTA}} →</span></div></div>
+  </section>
+  <section class="reviews" id="reviews">
+    <div class="reviews__inner">
+      <div class="sectie-header"><h2 class="sectie-titel">{{REVIEWS_TITEL}}</h2><span style="font-size:0.85rem;color:var(--dim);">{{REVIEWS_GEMIDDELD}} ★ · {{REVIEWS_COUNT}} reviews</span></div>
+      <div class="reviews__grid">
+        <div class="review-card"><div class="review-card__sterren">★★★★★</div><p class="review-card__tekst">"{{R1_TEKST}}"</p><div class="review-card__auteur">{{R1_NAAM}}</div><div class="review-card__product">{{R1_PRODUCT}}</div></div>
+        <div class="review-card"><div class="review-card__sterren">★★★★★</div><p class="review-card__tekst">"{{R2_TEKST}}"</p><div class="review-card__auteur">{{R2_NAAM}}</div><div class="review-card__product">{{R2_PRODUCT}}</div></div>
+        <div class="review-card"><div class="review-card__sterren">★★★★☆</div><p class="review-card__tekst">"{{R3_TEKST}}"</p><div class="review-card__auteur">{{R3_NAAM}}</div><div class="review-card__product">{{R3_PRODUCT}}</div></div>
+      </div>
+    </div>
+  </section>
+  <section class="cta-sectie">
+    <h2>{{CTA_HEADLINE}}</h2>
+    <p>{{CTA_SUB}}</p>
+    <button class="btn-wit">{{CTA_KNOP}}</button>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_BESCHRIJVING}}</p></div>
+      <div><div class="footer__kolom-titel">Shop</div><ul class="footer__links"><li><a href="#">{{CAT_1_NAAM}}</a></li><li><a href="#">{{CAT_2_NAAM}}</a></li><li><a href="#">Sale</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Duurzaamheid</a></li><li><a href="#">Pers</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Service</div><ul class="footer__links"><li><a href="#">Klantenservice</a></li><li><a href="#">Retourneren</a></li><li><a href="#">Maatgids</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <span>{{FOOTER_TAGLINE}}</span>
+    </div>
+  </footer>
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click', menuToggle);
+    document.getElementById('jaar').textContent = new Date().getFullYear();
+    document.querySelectorAll('.filter-chip').forEach(t => t.addEventListener('click', () => { document.querySelectorAll('.filter-chip').forEach(x => x.classList.remove('actief')); t.classList.add('actief'); }));
+    const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}),{threshold:0.08});
+    document.querySelectorAll('.product-card,.review-card,.cat-card').forEach(el => { el.style.opacity='0';el.style.transform='translateY(12px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el); });
+  </script>
+</body>
+</html>
