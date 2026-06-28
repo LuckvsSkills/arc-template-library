@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#fff;--bg-alt:#ffe01b;--bg-donker:#241c15;--tekst:#241c15;--dim:#6b6259;--accent:#ffe01b;--accent-2:#007c89;--border:#e8e0d0;--nav:64px;--max:1200px;--radius:4px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:var(--bg-donker);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+    .navbar__logo{font-size:1.3rem;font-weight:900;color:var(--accent);letter-spacing:-0.02em}
+    .navbar__links{display:flex;gap:24px;list-style:none}
+    .navbar__links a{font-size:0.85rem;color:rgba(255,255,255,0.7);font-weight:500;transition:color 0.15s}
+    .navbar__links a:hover{color:#fff}
+    .navbar__cta{display:flex;gap:10px}
+    .btn-geel{background:var(--accent);color:var(--bg-donker);padding:9px 20px;border-radius:var(--radius);font-size:0.85rem;font-weight:800;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-geel:hover{opacity:0.88}
+    .btn-wit-outline{border:1px solid rgba(255,255,255,0.3);color:#fff;padding:8px 16px;border-radius:var(--radius);font-size:0.85rem;font-weight:500;background:transparent;cursor:pointer;transition:all 0.15s}
+    .btn-wit-outline:hover{border-color:rgba(255,255,255,0.7)}
+    .navbar__hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+    .navbar__hamburger span{display:block;width:22px;height:2px;background:#fff}
+    .hero{background:var(--bg-alt);padding:72px 32px 80px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:100%}
+    .hero__content{}
+    .hero__chip{display:inline-block;background:var(--bg-donker);color:var(--accent);font-size:0.72rem;font-weight:800;padding:5px 14px;border-radius:var(--radius);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:20px}
+    .hero__headline{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:900;letter-spacing:-0.04em;line-height:1.05;margin-bottom:18px;color:var(--bg-donker)}
+    .hero__sub{font-size:1rem;color:var(--dim);max-width:420px;margin-bottom:32px;line-height:1.75}
+    .hero__knoppen{display:flex;gap:12px;flex-wrap:wrap}
+    .btn-donker{background:var(--bg-donker);color:#fff;padding:12px 24px;border-radius:var(--radius);font-size:0.92rem;font-weight:800;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-donker:hover{opacity:0.85}
+    .btn-geel-groot{background:var(--accent);color:var(--bg-donker);padding:12px 24px;border-radius:var(--radius);font-size:0.92rem;font-weight:800;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-geel-groot:hover{opacity:0.88}
+    .hero__note{font-size:0.78rem;color:var(--dim);margin-top:12px}
+    .hero__beeld{background:var(--bg-donker);border-radius:8px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:rgba(255,255,255,0.3);position:relative;overflow:hidden}
+    .hero__beeld-sticker{position:absolute;background:var(--accent);border-radius:50%;width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;top:20px;right:20px;transform:rotate(12deg)}
+    .logo-balk{background:var(--bg-donker);padding:20px 32px}
+    .logo-balk__inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:center;gap:48px;flex-wrap:wrap;align-items:center}
+    .logo-balk__label{font-size:0.72rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;width:100%;text-align:center;margin-bottom:14px}
+    .logo-i{font-size:0.85rem;font-weight:700;color:rgba(255,255,255,0.3)}
+    .features{max-width:var(--max);margin:80px auto;padding:0 32px}
+    .features__header{text-align:center;margin-bottom:56px}
+    .features__chip{display:inline-block;background:var(--accent);color:var(--bg-donker);font-size:0.72rem;font-weight:800;padding:4px 12px;border-radius:var(--radius);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:14px}
+    .features__titel{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;letter-spacing:-0.04em;margin-bottom:12px}
+    .features__sub{font-size:0.95rem;color:var(--dim);max-width:460px;margin:0 auto;line-height:1.7}
+    .features__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+    .feature-card{background:var(--bg-alt);padding:32px;transition:background 0.2s}
+    .feature-card:hover{background:#ffd800}
+    .feature-card__icon{font-size:2.2rem;margin-bottom:16px}
+    .feature-card__titel{font-size:1rem;font-weight:800;margin-bottom:8px}
+    .feature-card__tekst{font-size:0.88rem;color:var(--dim);line-height:1.7}
+    .pitch{background:var(--accent-2);color:#fff;padding:80px 32px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+    .pitch__inner{}
+    .pitch__label{font-size:0.72rem;font-weight:800;color:rgba(255,255,255,0.6);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px}
+    .pitch__titel{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:900;letter-spacing:-0.04em;line-height:1.1;margin-bottom:20px}
+    .pitch__tekst{font-size:0.95rem;opacity:0.85;line-height:1.8;margin-bottom:24px}
+    .pitch__beeld{background:rgba(255,255,255,0.1);border-radius:8px;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:rgba(255,255,255,0.4)}
+    .social-proof{max-width:var(--max);margin:80px auto;padding:0 32px}
+    .social-proof__label{text-align:center;font-size:0.72rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:32px}
+    .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .quote-card{border:2px solid var(--border);border-radius:6px;padding:24px;transition:border-color 0.2s}
+    .quote-card:hover{border-color:var(--accent)}
+    .quote-card__tekst{font-size:0.9rem;color:var(--dim);line-height:1.7;margin-bottom:18px;font-style:italic}
+    .quote-card__auteur{display:flex;align-items:center;gap:10px}
+    .quote-card__avatar{width:32px;height:32px;border-radius:50%;background:var(--bg-alt);border:2px solid var(--bg-donker);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:800;flex-shrink:0}
+    .quote-card__naam{font-size:0.82rem;font-weight:700}
+    .quote-card__bedrijf{font-size:0.72rem;color:var(--dim)}
+    .cta{background:var(--bg-donker);color:#fff;padding:80px 32px;text-align:center}
+    .cta__titel{font-size:clamp(2.4rem,5vw,4rem);font-weight:900;letter-spacing:-0.05em;line-height:1.05;margin-bottom:16px}
+    .cta__titel span{color:var(--accent)}
+    .cta__sub{font-size:1rem;color:rgba(255,255,255,0.6);max-width:440px;margin:0 auto 36px;line-height:1.7}
+    .footer{background:var(--bg-donker);border-top:1px solid rgba(255,255,255,0.08);padding:48px 32px 24px}
+    .footer__top{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+    .footer__logo{font-size:1.1rem;font-weight:900;color:var(--accent);margin-bottom:10px}
+    .footer__tekst{font-size:0.8rem;color:rgba(255,255,255,0.4);line-height:1.6;max-width:200px}
+    .footer__kolom-titel{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:12px}
+    .footer__links{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .footer__links a{font-size:0.8rem;color:rgba(255,255,255,0.5);transition:color 0.15s}
+    .footer__links a:hover{color:#fff}
+    .footer__bottom{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;padding-top:18px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.73rem;color:rgba(255,255,255,0.3)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:var(--bg-donker);z-index:200;flex-direction:column;padding:72px 24px 40px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.4rem;font-weight:800;color:#fff;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.1)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:rgba(255,255,255,0.5)}
+    @media(max-width:1024px){.hero{grid-template-columns:1fr}.features__grid{grid-template-columns:repeat(2,1fr)}.pitch{grid-template-columns:1fr;gap:32px}.quotes{grid-template-columns:1fr 1fr}.footer__top{grid-template-columns:1fr 1fr}}
+    @media(max-width:768px){.navbar{padding:0 20px}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hero{padding:48px 20px 56px}.features{padding:0 20px;margin:56px auto}.social-proof{padding:0 20px}.cta{padding:56px 20px}.footer{padding:40px 20px 24px}.footer__top{grid-template-columns:1fr 1fr}.footer__bottom{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.features__grid{grid-template-columns:1fr}.quotes{grid-template-columns:1fr}.footer__top{grid-template-columns:1fr}.hero__knoppen{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links"><li><a href="#features">Features</a></li><li><a href="#social-proof">Klanten</a></li><li><a href="#">Prijzen</a></li><li><a href="#">Blog</a></li></ul>
+    <div class="navbar__cta"><button class="btn-wit-outline">Inloggen</button><button class="btn-geel">Gratis starten</button></div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#features" onclick="menuToggle()">Features</a>
+    <a href="#social-proof" onclick="menuToggle()">Klanten</a>
+    <a href="#" onclick="menuToggle()">Prijzen</a>
+    <a href="#" onclick="menuToggle()">Inloggen</a>
+  </div>
+  <section class="hero">
+    <div class="hero__content">
+      <div class="hero__chip">{{HERO_CHIP}}</div>
+      <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+      <p class="hero__sub">{{HERO_SUB}}</p>
+      <div class="hero__knoppen">
+        <button class="btn-donker">{{CTA_PRIMAIR}}</button>
+        <button class="btn-geel-groot">{{CTA_SECUNDAIR}}</button>
+      </div>
+      <p class="hero__note">{{HERO_NOTE}}</p>
+    </div>
+    <div class="hero__beeld"><div class="hero__beeld-sticker">{{STICKER_ICON}}</div>[ product afbeelding ]</div>
+  </section>
+  <div class="logo-balk">
+    <div class="logo-balk__inner">
+      <div class="logo-balk__label">{{LOGO_LABEL}}</div>
+      <span class="logo-i">{{K1}}</span><span class="logo-i">{{K2}}</span><span class="logo-i">{{K3}}</span><span class="logo-i">{{K4}}</span><span class="logo-i">{{K5}}</span>
+    </div>
+  </div>
+  <section class="features" id="features">
+    <div class="features__header">
+      <div class="features__chip">Features</div>
+      <h2 class="features__titel">{{FEATURES_TITEL}}</h2>
+      <p class="features__sub">{{FEATURES_SUB}}</p>
+    </div>
+    <div class="features__grid">
+      <div class="feature-card"><div class="feature-card__icon">{{F1_ICON}}</div><div class="feature-card__titel">{{F1_TITEL}}</div><p class="feature-card__tekst">{{F1_TEKST}}</p></div>
+      <div class="feature-card"><div class="feature-card__icon">{{F2_ICON}}</div><div class="feature-card__titel">{{F2_TITEL}}</div><p class="feature-card__tekst">{{F2_TEKST}}</p></div>
+      <div class="feature-card"><div class="feature-card__icon">{{F3_ICON}}</div><div class="feature-card__titel">{{F3_TITEL}}</div><p class="feature-card__tekst">{{F3_TEKST}}</p></div>
+      <div class="feature-card"><div class="feature-card__icon">{{F4_ICON}}</div><div class="feature-card__titel">{{F4_TITEL}}</div><p class="feature-card__tekst">{{F4_TEKST}}</p></div>
+      <div class="feature-card"><div class="feature-card__icon">{{F5_ICON}}</div><div class="feature-card__titel">{{F5_TITEL}}</div><p class="feature-card__tekst">{{F5_TEKST}}</p></div>
+      <div class="feature-card"><div class="feature-card__icon">{{F6_ICON}}</div><div class="feature-card__titel">{{F6_TITEL}}</div><p class="feature-card__tekst">{{F6_TEKST}}</p></div>
+    </div>
+  </section>
+  <section class="pitch">
+    <div class="pitch__inner">
+      <div class="pitch__label">{{PITCH_LABEL}}</div>
+      <h2 class="pitch__titel">{{PITCH_TITEL}}</h2>
+      <p class="pitch__tekst">{{PITCH_TEKST}}</p>
+      <button class="btn-geel-groot">{{PITCH_CTA}}</button>
+    </div>
+    <div class="pitch__beeld">[ product demo ]</div>
+  </section>
+  <section class="social-proof" id="social-proof">
+    <div class="social-proof__label">{{QUOTES_LABEL}}</div>
+    <div class="quotes">
+      <div class="quote-card"><p class="quote-card__tekst">"{{Q1_TEKST}}"</p><div class="quote-card__auteur"><div class="quote-card__avatar">{{Q1_INT}}</div><div><div class="quote-card__naam">{{Q1_NAAM}}</div><div class="quote-card__bedrijf">{{Q1_BEDRIJF}}</div></div></div></div>
+      <div class="quote-card"><p class="quote-card__tekst">"{{Q2_TEKST}}"</p><div class="quote-card__auteur"><div class="quote-card__avatar">{{Q2_INT}}</div><div><div class="quote-card__naam">{{Q2_NAAM}}</div><div class="quote-card__bedrijf">{{Q2_BEDRIJF}}</div></div></div></div>
+      <div class="quote-card"><p class="quote-card__tekst">"{{Q3_TEKST}}"</p><div class="quote-card__auteur"><div class="quote-card__avatar">{{Q3_INT}}</div><div><div class="quote-card__naam">{{Q3_NAAM}}</div><div class="quote-card__bedrijf">{{Q3_BEDRIJF}}</div></div></div></div>
+    </div>
+  </section>
+  <section class="cta">
+    <h2 class="cta__titel">{{CTA_H1}}<br><span>{{CTA_H2}}</span></h2>
+    <p class="cta__sub">{{CTA_SUB}}</p>
+    <button class="btn-geel-groot" style="font-size:1rem;padding:14px 32px">{{CTA_BTN}}</button>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_TEKST}}</p></div>
+      <div><div class="footer__kolom-titel">Product</div><ul class="footer__links"><li><a href="#">Features</a></li><li><a href="#">Prijzen</a></li><li><a href="#">Integraties</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Blog</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Juridisch</div><ul class="footer__links"><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span><span>{{FOOTER_TAGLINE}}</span></div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.08});
+    document.querySelectorAll('.feature-card,.quote-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(12px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
