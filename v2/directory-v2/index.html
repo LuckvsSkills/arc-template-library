@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{
+      --bg:#fff;--bg-alt:#f4f5f7;--tekst:#1a1a2e;--dim:#6b7280;
+      --accent:#ff492c;--accent-light:#fff0ee;--border:#e5e7eb;
+      --ster:#fbbf24;--groen:#16a34a;--nav:60px;--max:1280px;--radius:8px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg-alt);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .topbalk{background:var(--tekst);color:rgba(255,255,255,0.7);text-align:center;padding:8px;font-size:0.78rem}
+    .topbalk a{color:#fff;text-decoration:underline}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:0 24px}
+    .navbar__logo{font-size:1.1rem;font-weight:900;color:var(--tekst);flex-shrink:0;display:flex;align-items:center;gap:6px}
+    .navbar__logo-dot{width:10px;height:10px;background:var(--accent);border-radius:50%}
+    .navbar__zoek{flex:1;max-width:500px;display:flex;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;align-items:center;padding:0 12px;gap:8px}
+    .navbar__zoek input{flex:1;padding:9px 0;border:none;outline:none;font-size:0.88rem;background:transparent}
+    .navbar__links{display:flex;gap:20px;list-style:none;margin-left:auto}
+    .navbar__links a{font-size:0.85rem;color:var(--dim);font-weight:500;transition:color 0.15s}
+    .navbar__links a:hover{color:var(--tekst)}
+    .navbar__cta{display:flex;gap:8px}
+    .btn-accent{background:var(--accent);color:#fff;padding:8px 18px;border-radius:var(--radius);font-size:0.85rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-accent:hover{opacity:0.88}
+    .btn-ghost{color:var(--tekst);font-size:0.85rem;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius);background:#fff;cursor:pointer;transition:all 0.15s}
+    .btn-ghost:hover{border-color:var(--tekst)}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;margin-left:auto}
+    .navbar__hamburger span{display:block;width:20px;height:2px;background:var(--tekst)}
+    .hero{background:linear-gradient(135deg,#1a1a2e 0%,#2d1b4e 100%);padding:64px 24px;text-align:center;color:#fff}
+    .hero__badge{display:inline-block;background:rgba(255,73,44,0.15);border:1px solid rgba(255,73,44,0.3);color:var(--accent);font-size:0.72rem;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:18px}
+    .hero__headline{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:10px}
+    .hero__sub{font-size:0.95rem;color:rgba(255,255,255,0.7);max-width:480px;margin:0 auto 28px;line-height:1.7}
+    .hero__zoek{display:flex;max-width:600px;margin:0 auto;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+    .hero__zoek input{flex:1;padding:14px 18px;border:none;outline:none;font-size:0.92rem;color:var(--tekst)}
+    .hero__zoek button{background:var(--accent);color:#fff;border:none;padding:0 24px;font-size:0.9rem;font-weight:700;cursor:pointer}
+    .hero__stats{display:flex;justify-content:center;gap:40px;margin-top:36px;flex-wrap:wrap}
+    .hero-stat__getal{font-size:1.6rem;font-weight:800;display:block}
+    .hero-stat__label{font-size:0.75rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.06em}
+    .cat-grid-sectie{max-width:var(--max);margin:40px auto;padding:0 24px}
+    .sectie-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+    .sectie-titel{font-size:1.1rem;font-weight:700}
+    .sectie-link{font-size:0.85rem;color:var(--accent);font-weight:600}
+    .cat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+    .cat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px 14px;text-align:center;cursor:pointer;transition:all 0.2s}
+    .cat-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+    .cat-card__icon{font-size:1.6rem;margin-bottom:8px}
+    .cat-card__naam{font-size:0.78rem;font-weight:600;color:var(--tekst)}
+    .cat-card__count{font-size:0.68rem;color:var(--dim);margin-top:3px}
+    .hoofd{max-width:var(--max);margin:0 auto;padding:0 24px 48px;display:grid;grid-template-columns:260px 1fr;gap:24px}
+    .filter-panel{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;height:fit-content}
+    .filter-sectie{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+    .filter-sectie:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+    .filter-titel{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}
+    .filter-optie{display:flex;align-items:center;justify-content:space-between;padding:6px 0;cursor:pointer}
+    .filter-optie__left{display:flex;align-items:center;gap:8px;font-size:0.85rem}
+    .filter-optie input{accent-color:var(--accent);cursor:pointer}
+    .filter-optie__count{font-size:0.72rem;color:var(--dim)}
+    .ster-optie{display:flex;align-items:center;gap:8px;padding:6px 0;cursor:pointer;font-size:0.85rem}
+    .sterren-klein{color:var(--ster);font-size:0.82rem}
+    .results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .results-count{font-size:0.88rem;color:var(--dim)}
+    .sort-tabs{display:flex;gap:0;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+    .sort-tab{padding:7px 14px;font-size:0.78rem;font-weight:600;color:var(--dim);cursor:pointer;transition:all 0.15s;border:none;background:transparent}
+    .sort-tab.actief{background:#fff;color:var(--tekst)}
+    .software-lijst{display:flex;flex-direction:column;gap:12px}
+    .software-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:grid;grid-template-columns:64px 1fr auto;gap:18px;align-items:start;transition:box-shadow 0.2s}
+    .software-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+    .software-card__logo{width:64px;height:64px;border-radius:10px;background:var(--bg-alt);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+    .software-card__body{}
+    .software-card__header{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+    .software-card__naam{font-size:1rem;font-weight:700}
+    .software-card__badge{font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:3px}
+    .badge-leader{background:#fef3c7;color:#92400e}
+    .badge-nieuw{background:var(--accent-light);color:var(--accent)}
+    .rating-rij{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .sterren{color:var(--ster);font-size:0.88rem}
+    .rating-getal{font-weight:700;font-size:0.88rem}
+    .rating-count{font-size:0.78rem;color:var(--dim)}
+    .software-card__desc{font-size:0.85rem;color:var(--dim);line-height:1.6;margin-bottom:10px}
+    .software-tags{display:flex;gap:6px;flex-wrap:wrap}
+    .software-tag{padding:3px 10px;background:var(--bg-alt);border-radius:4px;font-size:0.72rem;color:var(--dim)}
+    .software-card__acties{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+    .software-card__prijs{font-size:0.85rem;font-weight:700;text-align:right}
+    .software-card__prijs-sub{font-size:0.72rem;color:var(--dim);text-align:right}
+    .btn-probeer{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:0.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity 0.2s}
+    .btn-probeer:hover{opacity:0.88}
+    .btn-meer{background:#fff;color:var(--tekst);border:1px solid var(--border);border-radius:6px;padding:7px 14px;font-size:0.82rem;font-weight:500;cursor:pointer;white-space:nowrap}
+    .btn-meer:hover{border-color:var(--tekst)}
+    .vergelijk-balk{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;z-index:80;transform:translateY(100%);transition:transform 0.3s;box-shadow:0 -4px 12px rgba(0,0,0,0.08)}
+    .vergelijk-balk.open{transform:translateY(0)}
+    .vergelijk-balk__info{font-size:0.88rem;font-weight:600}
+    .footer{background:var(--tekst);color:#fff;padding:48px 24px 24px}
+    .footer__top{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+    .footer__logo{font-size:1rem;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+    .footer__tekst{font-size:0.8rem;color:#888;line-height:1.6;max-width:200px}
+    .footer__kolom-titel{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#666;margin-bottom:12px}
+    .footer__links{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .footer__links a{font-size:0.8rem;color:#aaa;transition:color 0.15s}
+    .footer__links a:hover{color:#fff}
+    .footer__bottom{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;padding-top:18px;border-top:1px solid #333;font-size:0.73rem;color:#666}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:#fff;z-index:200;flex-direction:column;padding:72px 20px 40px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.2rem;font-weight:600;padding:14px 0;border-bottom:1px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1100px){.cat-grid{grid-template-columns:repeat(4,1fr)}.hoofd{grid-template-columns:1fr}.filter-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.filter-sectie{border-bottom:none;padding-bottom:0;margin-bottom:0}.footer__top{grid-template-columns:1fr 1fr}}
+    @media(max-width:768px){.navbar{padding:0 16px}.navbar__zoek{display:none}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hero{padding:48px 16px}.hero__zoek{flex-direction:column}.hero__zoek button{padding:12px}.cat-grid{grid-template-columns:repeat(3,1fr)}.hoofd{padding:0 16px 48px}.filter-panel{grid-template-columns:1fr}.software-card{grid-template-columns:48px 1fr}.software-card__acties{display:none}.footer{padding:40px 16px 24px}.footer__bottom{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.cat-grid{grid-template-columns:repeat(2,1fr)}.hero__stats{gap:20px}.footer__top{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="topbalk">{{TOPBALK_TEKST}} <a href="#">{{TOPBALK_LINK}}</a></div>
+  <nav class="navbar">
+    <div class="navbar__logo"><div class="navbar__logo-dot"></div>{{BEDRIJFSNAAM}}</div>
+    <div class="navbar__zoek">🔍 <input type="text" placeholder="Zoek software, categorieën..." /></div>
+    <ul class="navbar__links">
+      <li><a href="#">Categorieën</a></li>
+      <li><a href="#">Vergelijken</a></li>
+      <li><a href="#">Reviews</a></li>
+    </ul>
+    <div class="navbar__cta">
+      <button class="btn-ghost">Inloggen</button>
+      <button class="btn-accent">Review schrijven</button>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">Categorieën</a>
+    <a href="#" onclick="menuToggle()">Vergelijken</a>
+    <a href="#" onclick="menuToggle()">Inloggen</a>
+  </div>
+  <section class="hero">
+    <div class="hero__badge">{{HERO_BADGE}}</div>
+    <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__zoek">
+      <input type="text" placeholder="Zoek software of categorie..." />
+      <button>Zoeken</button>
+    </div>
+    <div class="hero__stats">
+      <div><span class="hero-stat__getal">{{STAT_1_GETAL}}</span><span class="hero-stat__label">{{STAT_1_LABEL}}</span></div>
+      <div><span class="hero-stat__getal">{{STAT_2_GETAL}}</span><span class="hero-stat__label">{{STAT_2_LABEL}}</span></div>
+      <div><span class="hero-stat__getal">{{STAT_3_GETAL}}</span><span class="hero-stat__label">{{STAT_3_LABEL}}</span></div>
+    </div>
+  </section>
+  <section class="cat-grid-sectie">
+    <div class="sectie-header"><span class="sectie-titel">{{CAT_SECTIE_TITEL}}</span><a href="#" class="sectie-link">Alle categorieën →</a></div>
+    <div class="cat-grid">
+      <div class="cat-card"><div class="cat-card__icon">{{C1_ICON}}</div><div class="cat-card__naam">{{C1_NAAM}}</div><div class="cat-card__count">{{C1_COUNT}} tools</div></div>
+      <div class="cat-card"><div class="cat-card__icon">{{C2_ICON}}</div><div class="cat-card__naam">{{C2_NAAM}}</div><div class="cat-card__count">{{C2_COUNT}} tools</div></div>
+      <div class="cat-card"><div class="cat-card__icon">{{C3_ICON}}</div><div class="cat-card__naam">{{C3_NAAM}}</div><div class="cat-card__count">{{C3_COUNT}} tools</div></div>
+      <div class="cat-card"><div class="cat-card__icon">{{C4_ICON}}</div><div class="cat-card__naam">{{C4_NAAM}}</div><div class="cat-card__count">{{C4_COUNT}} tools</div></div>
+      <div class="cat-card"><div class="cat-card__icon">{{C5_ICON}}</div><div class="cat-card__naam">{{C5_NAAM}}</div><div class="cat-card__count">{{C5_COUNT}} tools</div></div>
+      <div class="cat-card"><div class="cat-card__icon">{{C6_ICON}}</div><div class="cat-card__naam">{{C6_NAAM}}</div><div class="cat-card__count">{{C6_COUNT}} tools</div></div>
+    </div>
+  </section>
+  <div class="hoofd">
+    <aside class="filter-panel">
+      <div class="filter-sectie">
+        <div class="filter-titel">Beoordeling</div>
+        <div class="ster-optie"><input type="radio" name="rating" checked /> <span class="sterren-klein">★★★★★</span> 4.5+</div>
+        <div class="ster-optie"><input type="radio" name="rating" /> <span class="sterren-klein">★★★★☆</span> 4.0+</div>
+        <div class="ster-optie"><input type="radio" name="rating" /> <span class="sterren-klein">★★★☆☆</span> 3.0+</div>
+      </div>
+      <div class="filter-sectie">
+        <div class="filter-titel">Prijsmodel</div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" checked />Gratis</div><span class="filter-optie__count">{{F_GRATIS}}</span></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />Freemium</div><span class="filter-optie__count">{{F_FREEMIUM}}</span></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />Betaald</div><span class="filter-optie__count">{{F_BETAALD}}</span></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />Enterprise</div><span class="filter-optie__count">{{F_ENTERPRISE}}</span></div>
+      </div>
+      <div class="filter-sectie">
+        <div class="filter-titel">Bedrijfsgrootte</div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />Startup</div><span class="filter-optie__count">{{F_STARTUP}}</span></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" checked />MKB</div><span class="filter-optie__count">{{F_MKB}}</span></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />Enterprise</div><span class="filter-optie__count">{{F_ENT2}}</span></div>
+      </div>
+    </aside>
+    <main>
+      <div class="results-header">
+        <span class="results-count">{{RESULTS_COUNT}} producten gevonden</span>
+        <div class="sort-tabs">
+          <button class="sort-tab actief">Beste match</button>
+          <button class="sort-tab">Hoogste rating</button>
+          <button class="sort-tab">Meeste reviews</button>
+          <button class="sort-tab">Nieuwste</button>
+        </div>
+      </div>
+      <div class="software-lijst">
+        <div class="software-card">
+          <div class="software-card__logo">{{S1_LOGO}}</div>
+          <div class="software-card__body">
+            <div class="software-card__header"><div class="software-card__naam">{{S1_NAAM}}</div><span class="software-card__badge badge-leader">Leader</span></div>
+            <div class="rating-rij"><span class="sterren">★★★★★</span><span class="rating-getal">{{S1_RATING}}</span><span class="rating-count">({{S1_REVIEWS}} reviews)</span></div>
+            <p class="software-card__desc">{{S1_DESC}}</p>
+            <div class="software-tags"><span class="software-tag">{{S1_T1}}</span><span class="software-tag">{{S1_T2}}</span><span class="software-tag">{{S1_T3}}</span></div>
+          </div>
+          <div class="software-card__acties">
+            <div class="software-card__prijs">{{S1_PRIJS}}</div>
+            <div class="software-card__prijs-sub">{{S1_PRIJS_SUB}}</div>
+            <button class="btn-probeer">Gratis proberen</button>
+            <button class="btn-meer">Meer info</button>
+          </div>
+        </div>
+        <div class="software-card">
+          <div class="software-card__logo">{{S2_LOGO}}</div>
+          <div class="software-card__body">
+            <div class="software-card__header"><div class="software-card__naam">{{S2_NAAM}}</div><span class="software-card__badge badge-nieuw">Nieuw</span></div>
+            <div class="rating-rij"><span class="sterren">★★★★☆</span><span class="rating-getal">{{S2_RATING}}</span><span class="rating-count">({{S2_REVIEWS}} reviews)</span></div>
+            <p class="software-card__desc">{{S2_DESC}}</p>
+            <div class="software-tags"><span class="software-tag">{{S2_T1}}</span><span class="software-tag">{{S2_T2}}</span></div>
+          </div>
+          <div class="software-card__acties">
+            <div class="software-card__prijs">{{S2_PRIJS}}</div>
+            <div class="software-card__prijs-sub">{{S2_PRIJS_SUB}}</div>
+            <button class="btn-probeer">Gratis proberen</button>
+            <button class="btn-meer">Meer info</button>
+          </div>
+        </div>
+        <div class="software-card">
+          <div class="software-card__logo">{{S3_LOGO}}</div>
+          <div class="software-card__body">
+            <div class="software-card__header"><div class="software-card__naam">{{S3_NAAM}}</div><span class="software-card__badge badge-leader">Leader</span></div>
+            <div class="rating-rij"><span class="sterren">★★★★★</span><span class="rating-getal">{{S3_RATING}}</span><span class="rating-count">({{S3_REVIEWS}} reviews)</span></div>
+            <p class="software-card__desc">{{S3_DESC}}</p>
+            <div class="software-tags"><span class="software-tag">{{S3_T1}}</span><span class="software-tag">{{S3_T2}}</span><span class="software-tag">{{S3_T3}}</span></div>
+          </div>
+          <div class="software-card__acties">
+            <div class="software-card__prijs">{{S3_PRIJS}}</div>
+            <div class="software-card__prijs-sub">{{S3_PRIJS_SUB}}</div>
+            <button class="btn-probeer">Demo aanvragen</button>
+            <button class="btn-meer">Meer info</button>
+          </div>
+        </div>
+        <div class="software-card">
+          <div class="software-card__logo">{{S4_LOGO}}</div>
+          <div class="software-card__body">
+            <div class="software-card__header"><div class="software-card__naam">{{S4_NAAM}}</div></div>
+            <div class="rating-rij"><span class="sterren">★★★★☆</span><span class="rating-getal">{{S4_RATING}}</span><span class="rating-count">({{S4_REVIEWS}} reviews)</span></div>
+            <p class="software-card__desc">{{S4_DESC}}</p>
+            <div class="software-tags"><span class="software-tag">{{S4_T1}}</span><span class="software-tag">{{S4_T2}}</span></div>
+          </div>
+          <div class="software-card__acties">
+            <div class="software-card__prijs">{{S4_PRIJS}}</div>
+            <div class="software-card__prijs-sub">{{S4_PRIJS_SUB}}</div>
+            <button class="btn-probeer">Gratis proberen</button>
+            <button class="btn-meer">Meer info</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo"><div class="navbar__logo-dot"></div>{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_TEKST}}</p></div>
+      <div><div class="footer__kolom-titel">Ontdekken</div><ul class="footer__links"><li><a href="#">{{C1_NAAM}}</a></li><li><a href="#">{{C2_NAAM}}</a></li><li><a href="#">Nieuw</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Adverteren</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Help</div><ul class="footer__links"><li><a href="#">FAQ</a></li><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <span>{{FOOTER_TAGLINE}}</span>
+    </div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    document.querySelectorAll('.sort-tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.sort-tab').forEach(x=>x.classList.remove('actief'));t.classList.add('actief')}));
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.06});
+    document.querySelectorAll('.software-card,.cat-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(10px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
