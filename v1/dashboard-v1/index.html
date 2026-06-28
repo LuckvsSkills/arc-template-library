@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}} Dashboard</title>
+  <style>
+    :root {
+      --bg: #0a0a0a; --bg-alt: #111111; --bg-card: #1a1a1a; --tekst: #ededed;
+      --dim: #888; --accent: #ffffff; --accent-blauw: #0070f3; --border: #2a2a2a;
+      --groen: #00c853; --rood: #ff4444; --oranje: #f5a623; --nav-breedte: 240px;
+      --top-hoogte: 56px; --radius: 8px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tekst); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; display: flex; min-height: 100vh; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+
+    /* SIDEBAR */
+    .sidebar { width: var(--nav-breedte); background: var(--bg-alt); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 50; transition: transform 0.3s; }
+    .sidebar__logo { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .sidebar__logo-icon { width: 28px; height: 28px; background: var(--accent-blauw); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: white; }
+    .sidebar__logo-naam { font-size: 0.9rem; font-weight: 700; }
+    .sidebar__nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+    .nav-sectie-label { padding: 12px 20px 6px; font-size: 0.68rem; font-weight: 700; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 0.85rem; color: var(--dim); cursor: pointer; transition: all 0.15s; border-radius: 0; }
+    .nav-item:hover { color: var(--tekst); background: var(--bg-card); }
+    .nav-item.actief { color: var(--tekst); background: var(--bg-card); border-right: 2px solid var(--accent-blauw); }
+    .nav-item__icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+    .nav-item__badge { margin-left: auto; background: var(--accent-blauw); color: white; font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 999px; }
+    .sidebar__footer { padding: 16px 20px; border-top: 1px solid var(--border); }
+    .sidebar__user { display: flex; align-items: center; gap: 10px; }
+    .sidebar__user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-blauw); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: white; flex-shrink: 0; }
+    .sidebar__user-info { min-width: 0; }
+    .sidebar__user-naam { font-size: 0.82rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sidebar__user-rol { font-size: 0.72rem; color: var(--dim); }
+
+    /* MAIN */
+    .main { margin-left: var(--nav-breedte); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .topbar { height: var(--top-hoogte); background: var(--bg-alt); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; position: sticky; top: 0; z-index: 40; }
+    .topbar__titel { font-size: 0.9rem; font-weight: 600; }
+    .topbar__acties { display: flex; gap: 10px; align-items: center; }
+    .topbar__zoek { display: flex; align-items: center; gap: 8px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 12px; font-size: 0.82rem; color: var(--dim); cursor: text; }
+    .btn-sm { padding: 6px 14px; border-radius: var(--radius); font-size: 0.82rem; font-weight: 600; cursor: pointer; border: none; transition: opacity 0.2s; }
+    .btn-sm-primary { background: var(--accent-blauw); color: white; }
+    .btn-sm-primary:hover { opacity: 0.88; }
+    .btn-sm-ghost { background: var(--bg-card); color: var(--tekst); border: 1px solid var(--border); }
+    .btn-sm-ghost:hover { border-color: var(--dim); }
+    .hamburger-btn { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: 4px; }
+    .hamburger-btn span { display: block; width: 18px; height: 1.5px; background: var(--dim); }
+
+    /* INHOUD */
+    .inhoud { padding: 28px; flex: 1; }
+    .pagina-header { margin-bottom: 28px; }
+    .pagina-titel { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .pagina-sub { font-size: 0.85rem; color: var(--dim); }
+    .periode-kiezer { display: flex; gap: 4px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 3px; }
+    .periode-btn { padding: 5px 12px; border-radius: 5px; font-size: 0.78rem; font-weight: 500; cursor: pointer; color: var(--dim); transition: all 0.15s; border: none; background: transparent; }
+    .periode-btn.actief { background: var(--bg-alt); color: var(--tekst); border: 1px solid var(--border); }
+
+    /* METRICS GRID */
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .metric-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .metric-card__label { font-size: 0.75rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+    .metric-card__waarde { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px; }
+    .metric-card__trend { font-size: 0.78rem; display: flex; align-items: center; gap: 4px; }
+    .trend-up { color: var(--groen); }
+    .trend-down { color: var(--rood); }
+
+    /* CHART SECTIE */
+    .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .chart-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .chart-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .chart-card__titel { font-size: 0.9rem; font-weight: 600; }
+    .chart-placeholder { height: 200px; background: var(--bg-alt); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--dim); position: relative; overflow: hidden; }
+    .chart-bars { position: absolute; bottom: 0; left: 0; right: 0; height: 80%; display: flex; align-items: flex-end; gap: 6px; padding: 0 20px; }
+    .chart-bar { flex: 1; background: var(--accent-blauw); border-radius: 3px 3px 0 0; opacity: 0.7; transition: opacity 0.2s; }
+    .chart-bar:hover { opacity: 1; }
+    .donut-placeholder { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--accent-blauw) 0% 35%, var(--groen) 35% 60%, var(--oranje) 60% 80%, var(--border) 80% 100%); margin: 0 auto 16px; }
+    .donut-legende { display: flex; flex-direction: column; gap: 8px; }
+    .donut-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--dim); }
+    .donut-kleur { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* TABEL */
+    .tabel-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; }
+    .tabel-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .tabel-titel { font-size: 0.9rem; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 10px 20px; text-align: left; font-size: 0.72rem; font-weight: 700; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); background: var(--bg-alt); }
+    td { padding: 12px 20px; font-size: 0.85rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+    .status-actief { background: rgba(0,200,83,0.12); color: var(--groen); }
+    .status-wacht { background: rgba(245,166,35,0.12); color: var(--oranje); }
+    .status-inactief { background: rgba(255,68,68,0.12); color: var(--rood); }
+    .avatar-xs { width: 24px; height: 24px; border-radius: 50%; background: var(--accent-blauw); display: inline-flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: white; margin-right: 8px; vertical-align: middle; }
+
+    /* MOBIEL */
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 49; }
+    .sidebar-overlay.open { display: block; }
+    @media (max-width: 1024px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .hamburger-btn { display: flex; }
+      .topbar { padding: 0 16px; }
+      .topbar__zoek { display: none; }
+      .inhoud { padding: 16px; }
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      table { font-size: 0.78rem; }
+      th, td { padding: 10px 12px; }
+    }
+    @media (max-width: 480px) {
+      .metrics-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar-overlay" id="overlay" onclick="sidebarToggle()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icon">{{LOGO_LETTER}}</div>
+      <span class="sidebar__logo-naam">{{BEDRIJFSNAAM}}</span>
+    </div>
+    <nav class="sidebar__nav">
+      <div class="nav-sectie-label">Overzicht</div>
+      <div class="nav-item actief"><span class="nav-item__icon">📊</span> Dashboard</div>
+      <div class="nav-item"><span class="nav-item__icon">📈</span> Analyses</div>
+      <div class="nav-item"><span class="nav-item__icon">👥</span> Gebruikers<span class="nav-item__badge">{{NOTIF_GEBRUIKERS}}</span></div>
+      <div class="nav-sectie-label">Beheer</div>
+      <div class="nav-item"><span class="nav-item__icon">📦</span> {{NAV_1}}</div>
+      <div class="nav-item"><span class="nav-item__icon">💳</span> {{NAV_2}}</div>
+      <div class="nav-item"><span class="nav-item__icon">🔔</span> {{NAV_3}}<span class="nav-item__badge">{{NOTIF_3}}</span></div>
+      <div class="nav-sectie-label">Systeem</div>
+      <div class="nav-item"><span class="nav-item__icon">⚙️</span> Instellingen</div>
+      <div class="nav-item"><span class="nav-item__icon">🔒</span> Beveiliging</div>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__user-avatar">{{USER_INITIALEN}}</div>
+        <div class="sidebar__user-info">
+          <div class="sidebar__user-naam">{{USER_NAAM}}</div>
+          <div class="sidebar__user-rol">{{USER_ROL}}</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="hamburger-btn" id="hamburgerBtn" onclick="sidebarToggle()"><span></span><span></span><span></span></div>
+        <span class="topbar__titel">{{PAGINA_TITEL}}</span>
+      </div>
+      <div class="topbar__acties">
+        <div class="topbar__zoek">🔍 <span>Zoeken...</span></div>
+        <div class="periode-kiezer">
+          <button class="periode-btn">7d</button>
+          <button class="periode-btn actief">30d</button>
+          <button class="periode-btn">90d</button>
+        </div>
+        <button class="btn-sm btn-sm-primary">+ {{ACTIE_KNOP}}</button>
+      </div>
+    </div>
+    <div class="inhoud">
+      <div class="pagina-header">
+        <h1 class="pagina-titel">{{PAGINA_TITEL}}</h1>
+        <p class="pagina-sub">{{PAGINA_SUB}}</p>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-card__label">{{METRIC_1_LABEL}}</div>
+          <div class="metric-card__waarde">{{METRIC_1_WAARDE}}</div>
+          <div class="metric-card__trend trend-up">↑ {{METRIC_1_TREND}} vs vorige periode</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card__label">{{METRIC_2_LABEL}}</div>
+          <div class="metric-card__waarde">{{METRIC_2_WAARDE}}</div>
+          <div class="metric-card__trend trend-up">↑ {{METRIC_2_TREND}} vs vorige periode</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card__label">{{METRIC_3_LABEL}}</div>
+          <div class="metric-card__waarde">{{METRIC_3_WAARDE}}</div>
+          <div class="metric-card__trend trend-down">↓ {{METRIC_3_TREND}} vs vorige periode</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card__label">{{METRIC_4_LABEL}}</div>
+          <div class="metric-card__waarde">{{METRIC_4_WAARDE}}</div>
+          <div class="metric-card__trend trend-up">↑ {{METRIC_4_TREND}} vs vorige periode</div>
+        </div>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-card__header">
+            <span class="chart-card__titel">{{CHART_1_TITEL}}</span>
+            <button class="btn-sm btn-sm-ghost">Exporteren</button>
+          </div>
+          <div class="chart-placeholder">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height:40%"></div>
+              <div class="chart-bar" style="height:65%"></div>
+              <div class="chart-bar" style="height:45%"></div>
+              <div class="chart-bar" style="height:80%"></div>
+              <div class="chart-bar" style="height:55%"></div>
+              <div class="chart-bar" style="height:90%"></div>
+              <div class="chart-bar" style="height:70%"></div>
+              <div class="chart-bar" style="height:85%"></div>
+              <div class="chart-bar" style="height:60%"></div>
+              <div class="chart-bar" style="height:95%"></div>
+              <div class="chart-bar" style="height:75%"></div>
+              <div class="chart-bar" style="height:88%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card__header">
+            <span class="chart-card__titel">{{CHART_2_TITEL}}</span>
+          </div>
+          <div class="donut-placeholder"></div>
+          <div class="donut-legende">
+            <div class="donut-item"><span class="donut-kleur" style="background:var(--accent-blauw)"></span>{{DONUT_1_LABEL}} — {{DONUT_1_PCT}}%</div>
+            <div class="donut-item"><span class="donut-kleur" style="background:var(--groen)"></span>{{DONUT_2_LABEL}} — {{DONUT_2_PCT}}%</div>
+            <div class="donut-item"><span class="donut-kleur" style="background:var(--oranje)"></span>{{DONUT_3_LABEL}} — {{DONUT_3_PCT}}%</div>
+          </div>
+        </div>
+      </div>
+      <div class="tabel-card">
+        <div class="tabel-header">
+          <span class="tabel-titel">{{TABEL_TITEL}}</span>
+          <button class="btn-sm btn-sm-ghost">Alles bekijken</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>{{TABEL_KOP_1}}</th>
+              <th>{{TABEL_KOP_2}}</th>
+              <th>{{TABEL_KOP_3}}</th>
+              <th>{{TABEL_KOP_4}}</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="avatar-xs">{{RIJ_1_INT}}</span>{{RIJ_1_K1}}</td><td>{{RIJ_1_K2}}</td><td>{{RIJ_1_K3}}</td><td>{{RIJ_1_K4}}</td><td><span class="status-badge status-actief">● Actief</span></td></tr>
+            <tr><td><span class="avatar-xs">{{RIJ_2_INT}}</span>{{RIJ_2_K1}}</td><td>{{RIJ_2_K2}}</td><td>{{RIJ_2_K3}}</td><td>{{RIJ_2_K4}}</td><td><span class="status-badge status-wacht">● Wachtend</span></td></tr>
+            <tr><td><span class="avatar-xs">{{RIJ_3_INT}}</span>{{RIJ_3_K1}}</td><td>{{RIJ_3_K2}}</td><td>{{RIJ_3_K3}}</td><td>{{RIJ_3_K4}}</td><td><span class="status-badge status-actief">● Actief</span></td></tr>
+            <tr><td><span class="avatar-xs">{{RIJ_4_INT}}</span>{{RIJ_4_K1}}</td><td>{{RIJ_4_K2}}</td><td>{{RIJ_4_K3}}</td><td>{{RIJ_4_K4}}</td><td><span class="status-badge status-inactief">● Inactief</span></td></tr>
+            <tr><td><span class="avatar-xs">{{RIJ_5_INT}}</span>{{RIJ_5_K1}}</td><td>{{RIJ_5_K2}}</td><td>{{RIJ_5_K3}}</td><td>{{RIJ_5_K4}}</td><td><span class="status-badge status-actief">● Actief</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script>
+    function sidebarToggle() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('open');
+    }
+    document.querySelectorAll('.periode-btn').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('.periode-btn').forEach(x => x.classList.remove('actief')); b.classList.add('actief'); }));
+  </script>
+</body>
+</html>
