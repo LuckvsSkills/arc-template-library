@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#f5f5f0;--tekst:#0a0a0a;--dim:#666;--accent:#0a0a0a;--border:#e0e0d8;--nav:56px;--max:1400px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav);background:transparent;display:flex;align-items:center;justify-content:space-between;padding:0 40px;mix-blend-mode:normal;transition:background 0.3s}
+    .navbar.scrolled{background:rgba(245,245,240,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+    .navbar__logo{font-size:1.1rem;font-weight:800;letter-spacing:-0.03em}
+    .navbar__links{display:flex;gap:28px;list-style:none}
+    .navbar__links a{font-size:0.82rem;color:var(--dim);font-weight:500;transition:color 0.15s}
+    .navbar__links a:hover{color:var(--tekst)}
+    .navbar__cta{font-size:0.82rem;font-weight:700;border-bottom:1px solid var(--tekst);padding-bottom:1px;cursor:pointer}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer}
+    .navbar__hamburger span{display:block;width:20px;height:1.5px;background:var(--tekst)}
+    .hero{padding:160px 40px 80px;min-height:90vh;display:flex;flex-direction:column;justify-content:flex-end}
+    .hero__label{font-size:0.72rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:20px}
+    .hero__headline{font-size:clamp(3rem,8vw,9rem);font-weight:800;letter-spacing:-0.05em;line-height:0.92;margin-bottom:32px}
+    .hero__meta{display:flex;gap:48px;align-items:flex-end;flex-wrap:wrap}
+    .hero__sub{font-size:1rem;color:var(--dim);max-width:380px;line-height:1.75}
+    .hero__scroll{font-size:0.75rem;color:var(--dim);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-left:auto}
+    .scroll-lijn{width:40px;height:1px;background:var(--dim)}
+    .projecten{padding:0}
+    .project-item{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border);cursor:pointer;transition:background 0.2s;position:relative;overflow:hidden}
+    .project-item:last-child{border-bottom:1px solid var(--border)}
+    .project-item:hover{background:var(--tekst)}
+    .project-item:hover .project-item__info *{color:#fff}
+    .project-item:hover .project-item__beeld{filter:brightness(0.7)}
+    .project-item__info{padding:40px}
+    .project-item__nummer{font-size:0.72rem;color:var(--dim);margin-bottom:12px;transition:color 0.2s}
+    .project-item__naam{font-size:clamp(1.4rem,3vw,2.4rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:10px;transition:color 0.2s}
+    .project-item__tags{display:flex;gap:8px;flex-wrap:wrap}
+    .project-tag{font-size:0.72rem;font-weight:600;color:var(--dim);border:1px solid var(--border);padding:3px 10px;border-radius:999px;transition:color 0.2s,border-color 0.2s}
+    .project-item__beeld{background:var(--border);display:flex;align-items:center;justify-content:center;font-size:0.82rem;color:#aaa;min-height:280px;transition:filter 0.2s}
+    .over{padding:80px 40px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;border-top:1px solid var(--border)}
+    .over__label{font-size:0.72rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px}
+    .over__titel{font-size:clamp(2rem,4vw,3.4rem);font-weight:800;letter-spacing:-0.04em;line-height:1.1;margin-bottom:24px}
+    .over__tekst{font-size:0.92rem;color:var(--dim);line-height:1.85;margin-bottom:16px}
+    .over__diensten{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:28px}
+    .dienst-chip{font-size:0.78rem;font-weight:600;padding:8px 14px;border:1px solid var(--border);border-radius:999px;color:var(--dim)}
+    .contact{padding:80px 40px;background:var(--tekst);color:#fff;text-align:center}
+    .contact__titel{font-size:clamp(3rem,7vw,7rem);font-weight:800;letter-spacing:-0.06em;line-height:0.95;margin-bottom:32px}
+    .contact__sub{font-size:1rem;color:rgba(255,255,255,0.6);max-width:440px;margin:0 auto 40px;line-height:1.7}
+    .btn-mail{display:inline-block;border:1px solid rgba(255,255,255,0.3);color:#fff;padding:14px 32px;font-size:0.92rem;font-weight:700;border-radius:999px;transition:all 0.2s}
+    .btn-mail:hover{background:rgba(255,255,255,0.1)}
+    .footer{background:var(--tekst);color:#fff;padding:24px 40px;border-top:1px solid #222;display:flex;justify-content:space-between;font-size:0.75rem;color:rgba(255,255,255,0.4)}
+    .footer__socials{display:flex;gap:20px}
+    .footer__socials a{color:rgba(255,255,255,0.4);transition:color 0.15s}
+    .footer__socials a:hover{color:#fff}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;flex-direction:column;padding:72px 24px 40px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.6rem;font-weight:800;padding:16px 0;border-bottom:1px solid var(--border);letter-spacing:-0.03em}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1024px){.project-item{grid-template-columns:1fr}.project-item__beeld{min-height:200px}.over{grid-template-columns:1fr;gap:40px}}
+    @media(max-width:768px){.navbar{padding:0 20px}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hero{padding:120px 20px 60px;min-height:80vh}.projecten .project-item__info{padding:24px 20px}.over{padding:56px 20px}.contact{padding:56px 20px}.footer{padding:20px}.footer__socials{display:none}}
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links"><li><a href="#projecten">Werk</a></li><li><a href="#over">Studio</a></li><li><a href="#contact">Contact</a></li></ul>
+    <div class="navbar__cta">Stuur een bericht</div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#projecten" onclick="menuToggle()">Werk</a>
+    <a href="#over" onclick="menuToggle()">Studio</a>
+    <a href="#contact" onclick="menuToggle()">Contact</a>
+  </div>
+  <section class="hero">
+    <div class="hero__label">{{HERO_LABEL}}</div>
+    <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+    <div class="hero__meta">
+      <p class="hero__sub">{{HERO_SUB}}</p>
+      <div class="hero__scroll"><div class="scroll-lijn"></div>Scroll</div>
+    </div>
+  </section>
+  <section class="projecten" id="projecten">
+    <div class="project-item"><div class="project-item__info"><div class="project-item__nummer">01</div><div class="project-item__naam">{{P1_NAAM}}</div><div class="project-item__tags"><span class="project-tag">{{P1_T1}}</span><span class="project-tag">{{P1_T2}}</span></div></div><div class="project-item__beeld">[ {{P1_NAAM}} ]</div></div>
+    <div class="project-item"><div class="project-item__info"><div class="project-item__nummer">02</div><div class="project-item__naam">{{P2_NAAM}}</div><div class="project-item__tags"><span class="project-tag">{{P2_T1}}</span><span class="project-tag">{{P2_T2}}</span></div></div><div class="project-item__beeld">[ {{P2_NAAM}} ]</div></div>
+    <div class="project-item"><div class="project-item__info"><div class="project-item__nummer">03</div><div class="project-item__naam">{{P3_NAAM}}</div><div class="project-item__tags"><span class="project-tag">{{P3_T1}}</span></div></div><div class="project-item__beeld">[ {{P3_NAAM}} ]</div></div>
+    <div class="project-item"><div class="project-item__info"><div class="project-item__nummer">04</div><div class="project-item__naam">{{P4_NAAM}}</div><div class="project-item__tags"><span class="project-tag">{{P4_T1}}</span><span class="project-tag">{{P4_T2}}</span></div></div><div class="project-item__beeld">[ {{P4_NAAM}} ]</div></div>
+  </section>
+  <section class="over" id="over">
+    <div><div class="over__label">Studio</div><h2 class="over__titel">{{OVER_TITEL}}</h2><p class="over__tekst">{{OVER_TEKST_1}}</p><p class="over__tekst">{{OVER_TEKST_2}}</p><div class="over__diensten"><span class="dienst-chip">{{D1}}</span><span class="dienst-chip">{{D2}}</span><span class="dienst-chip">{{D3}}</span><span class="dienst-chip">{{D4}}</span></div></div>
+    <div style="background:var(--border);aspect-ratio:4/3;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.82rem;color:#aaa">[ studio foto ]</div>
+  </section>
+  <section class="contact" id="contact">
+    <h2 class="contact__titel">{{CONTACT_TITEL}}</h2>
+    <p class="contact__sub">{{CONTACT_SUB}}</p>
+    <a href="mailto:{{EMAIL}}" class="btn-mail">{{EMAIL}}</a>
+  </section>
+  <footer class="footer">
+    <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+    <div class="footer__socials"><a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">Twitter</a></div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50)});
+  </script>
+</body>
+</html>
