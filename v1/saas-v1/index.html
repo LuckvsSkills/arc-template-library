@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root {
+      --bg: #0f1117; --bg-alt: #16181f; --bg-card: #1c1f2a; --tekst: #e2e4f0;
+      --dim: #7b7f9e; --accent: #5e6ad2; --accent-light: #7c84e0; --border: #2a2d3e;
+      --groen: #26b5a0; --nav: 60px; --max: 1180px; --radius: 8px;
+      --groot: clamp(2.4rem, 6vw, 5rem);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tekst); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    .navbar { position: sticky; top: 0; z-index: 100; height: var(--nav); background: rgba(15,17,23,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+    .navbar__logo { font-size: 1rem; font-weight: 700; color: var(--tekst); letter-spacing: -0.01em; }
+    .navbar__links { display: flex; gap: 28px; list-style: none; }
+    .navbar__links a { font-size: 0.85rem; color: var(--dim); transition: color 0.15s; }
+    .navbar__links a:hover { color: var(--tekst); }
+    .navbar__cta { display: flex; gap: 10px; align-items: center; }
+    .btn-ghost { color: var(--dim); font-size: 0.85rem; padding: 7px 14px; border-radius: var(--radius); transition: all 0.15s; }
+    .btn-ghost:hover { color: var(--tekst); background: var(--bg-card); }
+    .btn-primary { background: var(--accent); color: white; padding: 8px 18px; border-radius: var(--radius); font-size: 0.85rem; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-primary:hover { background: var(--accent-light); }
+    .navbar__hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .navbar__hamburger span { display: block; width: 20px; height: 1.5px; background: var(--dim); }
+    .hero { padding: 100px 40px 80px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(94,106,210,0.12) 0%, transparent 70%); pointer-events: none; }
+    .hero__badge { display: inline-flex; align-items: center; gap: 8px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 999px; padding: 5px 14px; font-size: 0.78rem; color: var(--dim); margin-bottom: 32px; }
+    .hero__badge-dot { width: 6px; height: 6px; background: var(--groen); border-radius: 50%; }
+    .hero__headline { font-size: var(--groot); font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 24px; background: linear-gradient(135deg, #e2e4f0 0%, #7b7f9e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero__sub { font-size: 1.1rem; color: var(--dim); max-width: 520px; margin: 0 auto 40px; line-height: 1.7; }
+    .hero__knoppen { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-large { padding: 12px 28px; font-size: 0.95rem; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
+    .btn-large-primary { background: var(--accent); color: white; }
+    .btn-large-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
+    .btn-large-outline { background: transparent; color: var(--tekst); border: 1px solid var(--border); }
+    .btn-large-outline:hover { border-color: var(--dim); }
+    .hero__social-proof { margin-top: 48px; display: flex; align-items: center; justify-content: center; gap: 16px; font-size: 0.82rem; color: var(--dim); }
+    .avatars { display: flex; }
+    .avatars span { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-card); border: 2px solid var(--bg); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; margin-left: -8px; }
+    .avatars span:first-child { margin-left: 0; }
+    .logo-balk { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 32px 40px; }
+    .logo-balk__inner { max-width: var(--max); margin: 0 auto; }
+    .logo-balk__label { text-align: center; font-size: 0.75rem; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px; }
+    .logo-balk__logos { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+    .logo-item { font-size: 0.9rem; font-weight: 600; color: var(--border); letter-spacing: -0.01em; transition: color 0.2s; }
+    .logo-item:hover { color: var(--dim); }
+    .features { padding: 100px 40px; max-width: var(--max); margin: 0 auto; }
+    .features__header { text-align: center; margin-bottom: 64px; }
+    .sectie-label { font-size: 0.75rem; color: var(--accent-light); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; }
+    .sectie-titel { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 14px; }
+    .sectie-sub { font-size: 1rem; color: var(--dim); max-width: 480px; margin: 0 auto; line-height: 1.7; }
+    .features__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .feature-card { background: var(--bg-alt); padding: 32px; transition: background 0.2s; }
+    .feature-card:hover { background: var(--bg-card); }
+    .feature-card__icon { width: 36px; height: 36px; background: rgba(94,106,210,0.12); border: 1px solid rgba(94,106,210,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; margin-bottom: 16px; }
+    .feature-card__titel { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; }
+    .feature-card__tekst { font-size: 0.85rem; color: var(--dim); line-height: 1.65; }
+    .showcase { padding: 80px 40px; background: var(--bg-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .showcase__inner { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .showcase__demo { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; color: var(--dim); position: relative; overflow: hidden; }
+    .showcase__demo::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 32px; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; }
+    .showcase__demo-dots { position: absolute; top: 10px; left: 14px; display: flex; gap: 6px; }
+    .showcase__demo-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
+    .showcase__content .sectie-label { text-align: left; }
+    .showcase__content .sectie-titel { text-align: left; }
+    .check-lijst { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+    .check-lijst li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.9rem; color: var(--dim); }
+    .check-icon { width: 18px; height: 18px; background: rgba(38,181,160,0.12); border: 1px solid rgba(38,181,160,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: var(--groen); flex-shrink: 0; margin-top: 2px; }
+    .pricing { padding: 100px 40px; max-width: var(--max); margin: 0 auto; }
+    .pricing__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 56px; }
+    .prijs-card { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 12px; padding: 32px; transition: border-color 0.2s; }
+    .prijs-card:hover { border-color: var(--accent); }
+    .prijs-card--featured { background: var(--bg-card); border-color: var(--accent); position: relative; }
+    .prijs-card__badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; font-size: 0.72rem; font-weight: 700; padding: 3px 12px; border-radius: 999px; white-space: nowrap; }
+    .prijs-card__naam { font-size: 0.85rem; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .prijs-card__bedrag { font-size: 2.8rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 4px; }
+    .prijs-card__periode { font-size: 0.82rem; color: var(--dim); margin-bottom: 24px; }
+    .prijs-card__features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .prijs-card__features li { font-size: 0.85rem; color: var(--dim); display: flex; align-items: center; gap: 8px; }
+    .prijs-card__features li::before { content: '✓'; color: var(--groen); font-weight: 700; font-size: 0.75rem; }
+    .cta-sectie { background: var(--bg-alt); border-top: 1px solid var(--border); padding: 100px 40px; text-align: center; }
+    .cta-sectie__headline { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; letter-spacing: -0.04em; margin-bottom: 16px; }
+    .cta-sectie__sub { font-size: 1rem; color: var(--dim); max-width: 440px; margin: 0 auto 36px; line-height: 1.7; }
+    .footer { border-top: 1px solid var(--border); padding: 56px 40px 32px; }
+    .footer__top { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer__logo { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; }
+    .footer__tekst { font-size: 0.82rem; color: var(--dim); line-height: 1.6; max-width: 200px; }
+    .footer__kolom-titel { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin-bottom: 14px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.82rem; color: var(--dim); transition: color 0.15s; }
+    .footer__links a:hover { color: var(--tekst); }
+    .footer__bottom { max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--dim); }
+    .footer__socials { display: flex; gap: 16px; }
+    .footer__socials a { color: var(--dim); transition: color 0.15s; font-size: 0.78rem; }
+    .footer__socials a:hover { color: var(--tekst); }
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 200; flex-direction: column; padding: 80px 32px 40px; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu a { font-size: 1.4rem; font-weight: 600; color: var(--tekst); padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .mobiel-menu__sluiten { position: absolute; top: 20px; right: 28px; font-size: 1.4rem; cursor: pointer; color: var(--dim); }
+    @media (max-width: 1024px) {
+      .features__grid { grid-template-columns: repeat(2, 1fr); }
+      .showcase__inner { grid-template-columns: 1fr; gap: 40px; }
+      .pricing__grid { grid-template-columns: 1fr; max-width: 440px; margin-left: auto; margin-right: auto; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+      .navbar__links, .navbar__cta { display: none; }
+      .navbar__hamburger { display: flex; }
+      .hero { padding: 60px 20px 56px; }
+      .logo-balk { padding: 24px 20px; }
+      .logo-balk__logos { gap: 24px; }
+      .features { padding: 60px 20px; }
+      .features__grid { grid-template-columns: 1fr; }
+      .showcase { padding: 56px 20px; }
+      .pricing { padding: 60px 20px; }
+      .cta-sectie { padding: 60px 20px; }
+      .footer { padding: 40px 20px 24px; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+      .footer__bottom { flex-direction: column; gap: 12px; }
+    }
+    @media (max-width: 480px) {
+      .hero__knoppen { flex-direction: column; align-items: center; }
+      .footer__top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#showcase">Product</a></li>
+      <li><a href="#pricing">Prijzen</a></li>
+      <li><a href="#">Docs</a></li>
+    </ul>
+    <div class="navbar__cta">
+      <a href="#" class="btn-ghost">Inloggen</a>
+      <a href="#" class="btn-primary">Gratis starten</a>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#features" onclick="menuToggle()">Features</a>
+    <a href="#pricing" onclick="menuToggle()">Prijzen</a>
+    <a href="#" onclick="menuToggle()">Inloggen</a>
+    <a href="#" onclick="menuToggle()">Gratis starten</a>
+  </div>
+  <section class="hero">
+    <div class="hero__badge"><span class="hero__badge-dot"></span>{{HERO_BADGE}}</div>
+    <h1 class="hero__headline">{{HERO_HEADLINE_1}}<br>{{HERO_HEADLINE_2}}</h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__knoppen">
+      <a href="#pricing" class="btn-large btn-large-primary">{{CTA_PRIMAIR}}</a>
+      <a href="#showcase" class="btn-large btn-large-outline">{{CTA_SECUNDAIR}}</a>
+    </div>
+    <div class="hero__social-proof">
+      <div class="avatars">
+        <span>{{A1}}</span><span>{{A2}}</span><span>{{A3}}</span><span>{{A4}}</span>
+      </div>
+      <span>{{SOCIAL_PROOF_TEKST}}</span>
+    </div>
+  </section>
+  <div class="logo-balk">
+    <div class="logo-balk__inner">
+      <p class="logo-balk__label">{{LOGO_BALK_LABEL}}</p>
+      <div class="logo-balk__logos">
+        <span class="logo-item">{{KLANT_1}}</span>
+        <span class="logo-item">{{KLANT_2}}</span>
+        <span class="logo-item">{{KLANT_3}}</span>
+        <span class="logo-item">{{KLANT_4}}</span>
+        <span class="logo-item">{{KLANT_5}}</span>
+      </div>
+    </div>
+  </div>
+  <section class="features" id="features">
+    <div class="features__header">
+      <p class="sectie-label">Features</p>
+      <h2 class="sectie-titel">{{FEATURES_TITEL}}</h2>
+      <p class="sectie-sub">{{FEATURES_SUB}}</p>
+    </div>
+    <div class="features__grid">
+      <div class="feature-card"><div class="feature-card__icon">⚡</div><div class="feature-card__titel">{{FEATURE_1_TITEL}}</div><p class="feature-card__tekst">{{FEATURE_1_TEKST}}</p></div>
+      <div class="feature-card"><div class="feature-card__icon">🔒</div><div class="feature-card__titel">{{FEATURE_2_TITEL}}</div><p class="feature-card__tekst">{{FEATURE_2_TEKST}}</p></div>
+      <div class="feature-card"><div class="feature-card__icon">📊</div><div class="feature-card__titel">{{FEATURE_3_TITEL}}</div><p class="feature-card__tekst">{{FEATURE_3_TEKST}}</p></div>
+      <div class="feature-card"><div class="feature-card__icon">🔗</div><div class="feature-card__titel">{{FEATURE_4_TITEL}}</div><p class="feature-card__tekst">{{FEATURE_4_TEKST}}</p></div>
+      <div class="feature-card"><div class="feature-card__icon">🤖</div><div class="feature-card__titel">{{FEATURE_5_TITEL}}</div><p class="feature-card__tekst">{{FEATURE_5_TEKST}}</p></div>
+      <div class="feature-card"><div class="feature-card__icon">🌐</div><div class="feature-card__titel">{{FEATURE_6_TITEL}}</div><p class="feature-card__tekst">{{FEATURE_6_TEKST}}</p></div>
+    </div>
+  </section>
+  <section class="showcase" id="showcase">
+    <div class="showcase__inner">
+      <div class="showcase__demo">
+        <div class="showcase__demo-dots"><span></span><span></span><span></span></div>
+        [ product demo ]
+      </div>
+      <div class="showcase__content">
+        <p class="sectie-label">{{SHOWCASE_LABEL}}</p>
+        <h2 class="sectie-titel">{{SHOWCASE_TITEL}}</h2>
+        <ul class="check-lijst">
+          <li><span class="check-icon">✓</span><span>{{SHOWCASE_PUNT_1}}</span></li>
+          <li><span class="check-icon">✓</span><span>{{SHOWCASE_PUNT_2}}</span></li>
+          <li><span class="check-icon">✓</span><span>{{SHOWCASE_PUNT_3}}</span></li>
+          <li><span class="check-icon">✓</span><span>{{SHOWCASE_PUNT_4}}</span></li>
+        </ul>
+        <div style="margin-top:32px;">
+          <a href="#pricing" class="btn-primary">{{CTA_PRIMAIR}}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="pricing" id="pricing">
+    <div class="features__header">
+      <p class="sectie-label">Prijzen</p>
+      <h2 class="sectie-titel">{{PRICING_TITEL}}</h2>
+      <p class="sectie-sub">{{PRICING_SUB}}</p>
+    </div>
+    <div class="pricing__grid">
+      <div class="prijs-card">
+        <div class="prijs-card__naam">{{PLAN_1_NAAM}}</div>
+        <div class="prijs-card__bedrag">{{PLAN_1_PRIJS}}</div>
+        <div class="prijs-card__periode">{{PLAN_1_PERIODE}}</div>
+        <ul class="prijs-card__features">
+          <li>{{PLAN_1_F1}}</li><li>{{PLAN_1_F2}}</li><li>{{PLAN_1_F3}}</li>
+        </ul>
+        <a href="#" class="btn-large btn-large-outline" style="display:block;text-align:center;">{{PLAN_1_CTA}}</a>
+      </div>
+      <div class="prijs-card prijs-card--featured">
+        <span class="prijs-card__badge">{{PLAN_2_BADGE}}</span>
+        <div class="prijs-card__naam">{{PLAN_2_NAAM}}</div>
+        <div class="prijs-card__bedrag">{{PLAN_2_PRIJS}}</div>
+        <div class="prijs-card__periode">{{PLAN_2_PERIODE}}</div>
+        <ul class="prijs-card__features">
+          <li>{{PLAN_2_F1}}</li><li>{{PLAN_2_F2}}</li><li>{{PLAN_2_F3}}</li><li>{{PLAN_2_F4}}</li>
+        </ul>
+        <a href="#" class="btn-large btn-large-primary" style="display:block;text-align:center;">{{PLAN_2_CTA}}</a>
+      </div>
+      <div class="prijs-card">
+        <div class="prijs-card__naam">{{PLAN_3_NAAM}}</div>
+        <div class="prijs-card__bedrag">{{PLAN_3_PRIJS}}</div>
+        <div class="prijs-card__periode">{{PLAN_3_PERIODE}}</div>
+        <ul class="prijs-card__features">
+          <li>{{PLAN_3_F1}}</li><li>{{PLAN_3_F2}}</li><li>{{PLAN_3_F3}}</li><li>{{PLAN_3_F4}}</li>
+        </ul>
+        <a href="#" class="btn-large btn-large-outline" style="display:block;text-align:center;">{{PLAN_3_CTA}}</a>
+      </div>
+    </div>
+  </section>
+  <section class="cta-sectie">
+    <h2 class="cta-sectie__headline">{{CTA_HEADLINE}}</h2>
+    <p class="cta-sectie__sub">{{CTA_SUB}}</p>
+    <a href="#" class="btn-large btn-large-primary">{{CTA_KNOP}}</a>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_BESCHRIJVING}}</p></div>
+      <div><div class="footer__kolom-titel">Product</div><ul class="footer__links"><li><a href="#">Features</a></li><li><a href="#">Prijzen</a></li><li><a href="#">Changelog</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Developers</div><ul class="footer__links"><li><a href="#">Documentatie</a></li><li><a href="#">API</a></li><li><a href="#">GitHub</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Blog</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <div class="footer__socials"><a href="#">Twitter</a><a href="#">GitHub</a><a href="#">LinkedIn</a></div>
+    </div>
+  </footer>
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click', menuToggle);
+    document.getElementById('jaar').textContent = new Date().getFullYear();
+    const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}),{threshold:0.08});
+    document.querySelectorAll('.feature-card,.prijs-card').forEach(el => { el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el); });
+  </script>
+</body>
+</html>
