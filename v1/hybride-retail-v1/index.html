@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root {
+      --bg: #faf8f5; --bg-alt: #f2ede6; --bg-wit: #ffffff; --tekst: #1e1a16;
+      --dim: #6b6560; --accent: #c84b00; --accent-light: #fff0e8; --border: #e0d8cc;
+      --groen: #2d7a3a; --groen-light: #e8f5ea; --nav: 64px; --max: 1280px; --radius: 8px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tekst); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; object-fit: cover; }
+
+    /* NAVBAR */
+    .navbar { position: sticky; top: 0; z-index: 100; height: var(--nav); background: var(--bg-wit); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+    .navbar__logo { display: flex; align-items: center; gap: 10px; }
+    .navbar__logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .navbar__logo-naam { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .navbar__links { display: flex; gap: 28px; list-style: none; }
+    .navbar__links a { font-size: 0.88rem; color: var(--dim); font-weight: 500; transition: color 0.15s; }
+    .navbar__links a:hover { color: var(--tekst); }
+    .navbar__cta { display: flex; gap: 10px; align-items: center; }
+    .btn-accent { background: var(--accent); color: white; padding: 9px 20px; border-radius: var(--radius); font-size: 0.88rem; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-accent:hover { opacity: 0.88; }
+    .btn-outline { border: 1px solid var(--border); color: var(--tekst); padding: 8px 18px; border-radius: var(--radius); font-size: 0.88rem; font-weight: 500; background: transparent; cursor: pointer; transition: all 0.15s; }
+    .btn-outline:hover { border-color: var(--tekst); }
+    .navbar__hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .navbar__hamburger span { display: block; width: 22px; height: 2px; background: var(--tekst); }
+
+    /* HERO */
+    .hero { background: var(--bg-alt); padding: 72px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: var(--max); margin: 0 auto; }
+    .hero__badge { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-light); border: 1px solid rgba(200,75,0,0.2); border-radius: 999px; padding: 5px 14px; font-size: 0.78rem; font-weight: 600; color: var(--accent); margin-bottom: 20px; }
+    .hero__headline { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 18px; }
+    .hero__sub { font-size: 1rem; color: var(--dim); max-width: 440px; margin-bottom: 32px; line-height: 1.7; }
+    .hero__knoppen { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero__beeld { aspect-ratio: 4/3; background: var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #aaa; }
+
+    /* USP BALK */
+    .usp-balk { background: var(--accent); padding: 16px 40px; }
+    .usp-balk__inner { max-width: var(--max); margin: 0 auto; display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; }
+    .usp-item { display: flex; align-items: center; gap: 10px; color: white; font-size: 0.85rem; font-weight: 500; }
+    .usp-item__icon { font-size: 1.1rem; }
+
+    /* BESTEL + KALENDER SECTIE */
+    .hoofd-sectie { max-width: var(--max); margin: 0 auto; padding: 56px 40px; display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
+
+    /* PRODUCTEN */
+    .producten__filter { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+    .filter-chip { padding: 7px 16px; border: 1px solid var(--border); border-radius: 999px; font-size: 0.82rem; font-weight: 500; cursor: pointer; background: var(--bg-wit); transition: all 0.15s; }
+    .filter-chip:hover, .filter-chip.actief { background: var(--tekst); color: white; border-color: var(--tekst); }
+    .producten__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .product-card { background: var(--bg-wit); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: box-shadow 0.2s, transform 0.2s; }
+    .product-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .product-card__beeld { aspect-ratio: 1/1; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #bbb; position: relative; }
+    .product-card__badge { position: absolute; top: 8px; left: 8px; background: var(--accent); color: white; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 3px; }
+    .product-card__body { padding: 14px; }
+    .product-card__naam { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+    .product-card__desc { font-size: 0.78rem; color: var(--dim); margin-bottom: 10px; line-height: 1.5; }
+    .product-card__footer { display: flex; justify-content: space-between; align-items: center; }
+    .product-card__prijs { font-size: 1rem; font-weight: 800; color: var(--tekst); }
+    .product-card__bestellen { background: var(--accent-light); color: var(--accent); border: 1px solid rgba(200,75,0,0.2); border-radius: 5px; padding: 5px 12px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+    .product-card__bestellen:hover { background: var(--accent); color: white; }
+    .product-card__uitverkocht { background: var(--bg-alt); color: var(--dim); border: 1px solid var(--border); border-radius: 5px; padding: 5px 12px; font-size: 0.78rem; font-weight: 600; }
+
+    /* KALENDER WIDGET */
+    .kalender-widget { background: var(--bg-wit); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; position: sticky; top: calc(var(--nav) + 20px); }
+    .kalender-widget__header { background: var(--accent); color: white; padding: 20px; }
+    .kalender-widget__titel { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .kalender-widget__sub { font-size: 0.82rem; opacity: 0.85; }
+    .kalender-nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .kalender-nav__maand { font-size: 0.9rem; font-weight: 700; }
+    .kalender-nav__btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: transparent; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    .kalender-nav__btn:hover { background: var(--bg-alt); }
+    .kalender-grid { padding: 12px 16px 8px; }
+    .kalender-dagen-header { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 8px; }
+    .dag-naam { text-align: center; font-size: 0.68rem; font-weight: 700; color: var(--dim); text-transform: uppercase; padding: 4px 0; }
+    .kalender-dagen { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .dag { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; border-radius: 6px; cursor: pointer; transition: all 0.15s; position: relative; }
+    .dag:hover { background: var(--bg-alt); }
+    .dag.leeg { cursor: default; }
+    .dag.actief { background: var(--accent); color: white; font-weight: 700; }
+    .dag.beschikbaar::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background: var(--groen); border-radius: 50%; }
+    .dag.vol::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background: var(--accent); border-radius: 50%; }
+    .dag.verleden { color: var(--border); cursor: default; }
+    .kalender-legenda { display: flex; gap: 16px; padding: 10px 16px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+    .legenda-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--dim); }
+    .legenda-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .tijdsloten { padding: 16px 20px; border-top: 1px solid var(--border); }
+    .tijdsloten__label { font-size: 0.82rem; font-weight: 700; margin-bottom: 10px; }
+    .tijdsloten__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .tijdslot { padding: 7px; text-align: center; border: 1px solid var(--border); border-radius: 5px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.15s; background: var(--bg-alt); }
+    .tijdslot:hover, .tijdslot.actief { background: var(--accent); color: white; border-color: var(--accent); }
+    .tijdslot.vol { background: var(--bg-alt); color: var(--border); cursor: not-allowed; text-decoration: line-through; }
+    .bestel-knop { margin: 16px 20px 20px; }
+    .bestel-knop button { width: 100%; background: var(--accent); color: white; border: none; border-radius: var(--radius); padding: 14px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
+    .bestel-knop button:hover { opacity: 0.88; }
+
+    /* WINKELWAGEN BALK */
+    .winkelwagen-balk { position: fixed; bottom: 0; left: 0; right: 0; background: var(--tekst); color: white; padding: 14px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 80; transform: translateY(100%); transition: transform 0.3s; }
+    .winkelwagen-balk.open { transform: translateY(0); }
+    .winkelwagen-balk__info { font-size: 0.9rem; }
+    .winkelwagen-balk__info strong { font-size: 1.1rem; }
+    .winkelwagen-balk__cta { display: flex; gap: 12px; align-items: center; }
+    .winkelwagen-balk__prijs { font-size: 1.1rem; font-weight: 700; }
+
+    /* OVER / VERHAAL */
+    .verhaal { background: var(--bg-alt); border-top: 1px solid var(--border); padding: 72px 40px; }
+    .verhaal__inner { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .verhaal__label { font-size: 0.75rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+    .verhaal__titel { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 20px; }
+    .verhaal__tekst { font-size: 0.95rem; color: var(--dim); line-height: 1.8; margin-bottom: 16px; }
+    .verhaal__beeld { aspect-ratio: 4/3; background: var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #aaa; }
+
+    /* FOOTER */
+    .footer { background: var(--tekst); color: white; padding: 48px 40px 28px; }
+    .footer__top { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer__logo { font-size: 1rem; font-weight: 800; margin-bottom: 10px; }
+    .footer__tekst { font-size: 0.82rem; color: #999; line-height: 1.6; max-width: 200px; }
+    .footer__kolom-titel { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #777; margin-bottom: 14px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer__links a { font-size: 0.82rem; color: #bbb; transition: color 0.15s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom { max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid #333; font-size: 0.78rem; color: #666; }
+
+    /* MOBIEL MENU */
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: white; z-index: 200; flex-direction: column; padding: 80px 32px 40px; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu a { font-size: 1.4rem; font-weight: 600; padding: 16px 0; border-bottom: 1px solid var(--border); color: var(--tekst); }
+    .mobiel-menu__sluiten { position: absolute; top: 20px; right: 28px; font-size: 1.4rem; cursor: pointer; color: var(--dim); }
+
+    @media (max-width: 1100px) {
+      .hoofd-sectie { grid-template-columns: 1fr; }
+      .kalender-widget { position: static; }
+      .producten__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+      .navbar__links, .navbar__cta { display: none; }
+      .navbar__hamburger { display: flex; }
+      .hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 20px; }
+      .usp-balk { padding: 12px 20px; }
+      .usp-balk__inner { gap: 20px; }
+      .hoofd-sectie { padding: 36px 20px; }
+      .producten__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .verhaal { padding: 48px 20px; }
+      .verhaal__inner { grid-template-columns: 1fr; gap: 32px; }
+      .footer { padding: 40px 20px 24px; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+      .footer__bottom { flex-direction: column; gap: 10px; }
+      .winkelwagen-balk { padding: 12px 20px; }
+    }
+    @media (max-width: 480px) {
+      .producten__grid { grid-template-columns: 1fr; }
+      .footer__top { grid-template-columns: 1fr; }
+      .tijdsloten__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">
+      <div class="navbar__logo-icon">{{LOGO_EMOJI}}</div>
+      <span class="navbar__logo-naam">{{BEDRIJFSNAAM}}</span>
+    </div>
+    <ul class="navbar__links">
+      <li><a href="#producten">Assortiment</a></li>
+      <li><a href="#kalender">Bestellen</a></li>
+      <li><a href="#verhaal">Ons verhaal</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="navbar__cta">
+      <button class="btn-outline" onclick="winkelwagenToggle()">🛒 {{WINKELWAGEN_COUNT}}</button>
+      <button class="btn-accent">Bestellen</button>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#producten" onclick="menuToggle()">Assortiment</a>
+    <a href="#kalender" onclick="menuToggle()">Bestellen</a>
+    <a href="#verhaal" onclick="menuToggle()">Ons verhaal</a>
+    <a href="#contact" onclick="menuToggle()">Contact</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="hero__badge">{{HERO_BADGE}}</div>
+      <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+      <p class="hero__sub">{{HERO_SUB}}</p>
+      <div class="hero__knoppen">
+        <button class="btn-accent" onclick="document.getElementById('kalender').scrollIntoView({behavior:'smooth'})">{{CTA_PRIMAIR}}</button>
+        <button class="btn-outline" onclick="document.getElementById('producten').scrollIntoView({behavior:'smooth'})">{{CTA_SECUNDAIR}}</button>
+      </div>
+    </div>
+    <div class="hero__beeld">[ {{HERO_AFBEELDING}} ]</div>
+  </section>
+
+  <!-- USP -->
+  <div class="usp-balk">
+    <div class="usp-balk__inner">
+      <div class="usp-item"><span class="usp-item__icon">🕐</span><span>{{USP_1}}</span></div>
+      <div class="usp-item"><span class="usp-item__icon">🌿</span><span>{{USP_2}}</span></div>
+      <div class="usp-item"><span class="usp-item__icon">📦</span><span>{{USP_3}}</span></div>
+      <div class="usp-item"><span class="usp-item__icon">⭐</span><span>{{USP_4}}</span></div>
+    </div>
+  </div>
+
+  <!-- PRODUCTEN + KALENDER -->
+  <div class="hoofd-sectie" id="producten">
+    <div>
+      <h2 style="font-size:1.4rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:20px;">{{PRODUCTEN_TITEL}}</h2>
+      <div class="producten__filter">
+        <span class="filter-chip actief">Alles</span>
+        <span class="filter-chip">{{CAT_1}}</span>
+        <span class="filter-chip">{{CAT_2}}</span>
+        <span class="filter-chip">{{CAT_3}}</span>
+        <span class="filter-chip">{{CAT_4}}</span>
+      </div>
+      <div class="producten__grid">
+        <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge">{{P1_BADGE}}</span>[ afbeelding ]</div><div class="product-card__body"><div class="product-card__naam">{{P1_NAAM}}</div><div class="product-card__desc">{{P1_DESC}}</div><div class="product-card__footer"><span class="product-card__prijs">{{P1_PRIJS}}</span><button class="product-card__bestellen">+ Toevoegen</button></div></div></div>
+        <div class="product-card"><div class="product-card__beeld">[ afbeelding ]</div><div class="product-card__body"><div class="product-card__naam">{{P2_NAAM}}</div><div class="product-card__desc">{{P2_DESC}}</div><div class="product-card__footer"><span class="product-card__prijs">{{P2_PRIJS}}</span><button class="product-card__bestellen">+ Toevoegen</button></div></div></div>
+        <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge">{{P3_BADGE}}</span>[ afbeelding ]</div><div class="product-card__body"><div class="product-card__naam">{{P3_NAAM}}</div><div class="product-card__desc">{{P3_DESC}}</div><div class="product-card__footer"><span class="product-card__prijs">{{P3_PRIJS}}</span><button class="product-card__bestellen">+ Toevoegen</button></div></div></div>
+        <div class="product-card"><div class="product-card__beeld">[ afbeelding ]</div><div class="product-card__body"><div class="product-card__naam">{{P4_NAAM}}</div><div class="product-card__desc">{{P4_DESC}}</div><div class="product-card__footer"><span class="product-card__prijs">{{P4_PRIJS}}</span><span class="product-card__uitverkocht">Uitverkocht</span></div></div></div>
+        <div class="product-card"><div class="product-card__beeld">[ afbeelding ]</div><div class="product-card__body"><div class="product-card__naam">{{P5_NAAM}}</div><div class="product-card__desc">{{P5_DESC}}</div><div class="product-card__footer"><span class="product-card__prijs">{{P5_PRIJS}}</span><button class="product-card__bestellen">+ Toevoegen</button></div></div></div>
+        <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge">{{P6_BADGE}}</span>[ afbeelding ]</div><div class="product-card__body"><div class="product-card__naam">{{P6_NAAM}}</div><div class="product-card__desc">{{P6_DESC}}</div><div class="product-card__footer"><span class="product-card__prijs">{{P6_PRIJS}}</span><button class="product-card__bestellen">+ Toevoegen</button></div></div></div>
+      </div>
+    </div>
+
+    <!-- KALENDER WIDGET -->
+    <div class="kalender-widget" id="kalender">
+      <div class="kalender-widget__header">
+        <div class="kalender-widget__titel">{{KALENDER_TITEL}}</div>
+        <div class="kalender-widget__sub">{{KALENDER_SUB}}</div>
+      </div>
+      <div class="kalender-nav">
+        <button class="kalender-nav__btn">‹</button>
+        <span class="kalender-nav__maand" id="kalenderMaand">{{KALENDER_MAAND}}</span>
+        <button class="kalender-nav__btn">›</button>
+      </div>
+      <div class="kalender-grid">
+        <div class="kalender-dagen-header">
+          <div class="dag-naam">Ma</div><div class="dag-naam">Di</div><div class="dag-naam">Wo</div>
+          <div class="dag-naam">Do</div><div class="dag-naam">Vr</div><div class="dag-naam">Za</div><div class="dag-naam">Zo</div>
+        </div>
+        <div class="kalender-dagen" id="kalenderDagen">
+          <!-- BACKEND: genereer dynamisch vanuit beschikbaarheids-API -->
+          <div class="dag leeg"></div><div class="dag leeg"></div>
+          <div class="dag verleden">1</div><div class="dag verleden">2</div><div class="dag verleden">3</div>
+          <div class="dag verleden">4</div><div class="dag verleden">5</div>
+          <div class="dag verleden">6</div><div class="dag verleden">7</div><div class="dag verleden">8</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">9</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">10</div>
+          <div class="dag vol" onclick="dagSelecteer(this)">11</div><div class="dag beschikbaar" onclick="dagSelecteer(this)">12</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">13</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">14</div>
+          <div class="dag beschikbaar actief" onclick="dagSelecteer(this)">15</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">16</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">17</div>
+          <div class="dag vol">18</div><div class="dag beschikbaar" onclick="dagSelecteer(this)">19</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">20</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">21</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">22</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">23</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">24</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">25</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">26</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">27</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">28</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">29</div>
+          <div class="dag beschikbaar" onclick="dagSelecteer(this)">30</div>
+        </div>
+      </div>
+      <div class="kalender-legenda">
+        <div class="legenda-item"><div class="legenda-dot" style="background:var(--groen)"></div> Beschikbaar</div>
+        <div class="legenda-item"><div class="legenda-dot" style="background:var(--accent)"></div> Vol</div>
+        <div class="legenda-item"><div class="legenda-dot" style="background:var(--border)"></div> Verleden</div>
+      </div>
+      <div class="tijdsloten">
+        <div class="tijdsloten__label">Kies afhaaltijd:</div>
+        <div class="tijdsloten__grid">
+          <div class="tijdslot" onclick="tijdSelecteer(this)">08:00</div>
+          <div class="tijdslot" onclick="tijdSelecteer(this)">09:00</div>
+          <div class="tijdslot vol">10:00</div>
+          <div class="tijdslot actief" onclick="tijdSelecteer(this)">11:00</div>
+          <div class="tijdslot" onclick="tijdSelecteer(this)">12:00</div>
+          <div class="tijdslot" onclick="tijdSelecteer(this)">13:00</div>
+          <div class="tijdslot vol">14:00</div>
+          <div class="tijdslot" onclick="tijdSelecteer(this)">15:00</div>
+          <div class="tijdslot" onclick="tijdSelecteer(this)">16:00</div>
+        </div>
+      </div>
+      <div class="bestel-knop">
+        <button onclick="winkelwagenToggle()">{{BESTEL_KNOP}} →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERHAAL -->
+  <section class="verhaal" id="verhaal">
+    <div class="verhaal__inner">
+      <div>
+        <p class="verhaal__label">{{VERHAAL_LABEL}}</p>
+        <h2 class="verhaal__titel">{{VERHAAL_TITEL}}</h2>
+        <p class="verhaal__tekst">{{VERHAAL_TEKST_1}}</p>
+        <p class="verhaal__tekst">{{VERHAAL_TEKST_2}}</p>
+        <button class="btn-accent" style="margin-top:24px;">{{VERHAAL_CTA}}</button>
+      </div>
+      <div class="verhaal__beeld">[ {{VERHAAL_AFBEELDING}} ]</div>
+    </div>
+  </section>
+
+  <!-- WINKELWAGEN BALK -->
+  <div class="winkelwagen-balk" id="winkelwagenBalk">
+    <div class="winkelwagen-balk__info">
+      🛒 <strong>{{WINKELWAGEN_COUNT}}</strong> producten geselecteerd
+    </div>
+    <div class="winkelwagen-balk__cta">
+      <span class="winkelwagen-balk__prijs">{{WINKELWAGEN_TOTAAL}}</span>
+      <button class="btn-accent">Bestelling plaatsen</button>
+      <button class="btn-outline" style="color:white;border-color:rgba(255,255,255,0.3);" onclick="winkelwagenToggle()">✕</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contact">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_BESCHRIJVING}}</p></div>
+      <div><div class="footer__kolom-titel">Assortiment</div><ul class="footer__links"><li><a href="#">{{CAT_1}}</a></li><li><a href="#">{{CAT_2}}</a></li><li><a href="#">{{CAT_3}}</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Informatie</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Bezorging</a></li><li><a href="#">Allergenen</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Contact</div><ul class="footer__links"><li><a href="#">{{TELEFOON}}</a></li><li><a href="#">{{EMAIL}}</a></li><li><a href="#">{{ADRES}}</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <span>{{FOOTER_TAGLINE}}</span>
+    </div>
+  </footer>
+
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click', menuToggle);
+    document.getElementById('jaar').textContent = new Date().getFullYear();
+
+    function dagSelecteer(el) {
+      if (el.classList.contains('verleden') || el.classList.contains('vol')) return;
+      document.querySelectorAll('.dag').forEach(d => d.classList.remove('actief'));
+      el.classList.add('actief');
+    }
+    function tijdSelecteer(el) {
+      if (el.classList.contains('vol')) return;
+      document.querySelectorAll('.tijdslot').forEach(t => t.classList.remove('actief'));
+      el.classList.add('actief');
+    }
+    function winkelwagenToggle() {
+      document.getElementById('winkelwagenBalk').classList.toggle('open');
+    }
+
+    document.querySelectorAll('.filter-chip').forEach(t => t.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(x => x.classList.remove('actief'));
+      t.classList.add('actief');
+    }));
+
+    document.querySelectorAll('.product-card__bestellen').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('winkelwagenBalk').classList.add('open');
+      });
+    });
+
+    const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}),{threshold:0.08});
+    document.querySelectorAll('.product-card').forEach(el => { el.style.opacity='0';el.style.transform='translateY(12px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el); });
+  </script>
+</body>
+</html>
