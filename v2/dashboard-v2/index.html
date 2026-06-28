@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}} Dashboard</title>
+  <style>
+    :root{
+      --bg:#f9fafb;--bg-wit:#fff;--tekst:#111827;--dim:#6b7280;
+      --accent:#6366f1;--accent-light:#eef2ff;--border:#e5e7eb;
+      --groen:#10b981;--rood:#ef4444;--oranje:#f59e0b;--blauw:#3b82f6;
+      --nav-b:240px;--top:56px;--radius:8px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;display:flex;min-height:100vh;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .sidebar{width:var(--nav-b);background:var(--bg-wit);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:50;transition:transform 0.3s}
+    .sidebar__logo{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+    .sidebar__logo-icon{width:30px;height:30px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;color:#fff}
+    .sidebar__logo-naam{font-size:0.92rem;font-weight:700}
+    .sidebar__nav{flex:1;padding:10px 8px;overflow-y:auto}
+    .nav-label{font-size:0.65rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;padding:10px 8px 5px}
+    .nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;font-size:0.85rem;color:var(--dim);cursor:pointer;border-radius:6px;transition:all 0.15s;margin-bottom:1px}
+    .nav-item:hover{background:var(--bg);color:var(--tekst)}
+    .nav-item.actief{background:var(--accent-light);color:var(--accent);font-weight:600}
+    .nav-item__icon{font-size:0.95rem;width:18px;text-align:center;flex-shrink:0}
+    .nav-item__badge{margin-left:auto;background:var(--accent);color:#fff;font-size:0.62rem;font-weight:700;padding:1px 6px;border-radius:999px}
+    .sidebar__footer{padding:14px;border-top:1px solid var(--border)}
+    .sidebar__user{display:flex;align-items:center;gap:9px;padding:8px;border-radius:6px;cursor:pointer;transition:background 0.15s}
+    .sidebar__user:hover{background:var(--bg)}
+    .sidebar__user-avatar{width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:700;color:#fff;flex-shrink:0}
+    .sidebar__user-naam{font-size:0.82rem;font-weight:600}
+    .sidebar__user-rol{font-size:0.72rem;color:var(--dim)}
+    .main{margin-left:var(--nav-b);flex:1;display:flex;flex-direction:column;min-height:100vh}
+    .topbar{height:var(--top);background:var(--bg-wit);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:40}
+    .topbar__left{display:flex;align-items:center;gap:12px}
+    .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer}
+    .hamburger span{display:block;width:18px;height:1.5px;background:var(--dim)}
+    .topbar__breadcrumb{font-size:0.85rem;color:var(--dim)}
+    .topbar__breadcrumb strong{color:var(--tekst)}
+    .topbar__right{display:flex;gap:10px;align-items:center}
+    .topbar__periode{display:flex;gap:0;background:var(--bg);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+    .periode-opt{padding:5px 12px;font-size:0.78rem;font-weight:500;cursor:pointer;color:var(--dim);transition:all 0.15s;border:none;background:transparent}
+    .periode-opt.actief{background:var(--bg-wit);color:var(--tekst);border:1px solid var(--border);border-radius:5px;margin:2px}
+    .btn-sm{padding:6px 14px;border-radius:6px;font-size:0.82rem;font-weight:600;cursor:pointer;border:none;transition:opacity 0.2s}
+    .btn-sm-accent{background:var(--accent);color:#fff}
+    .btn-sm-accent:hover{opacity:0.88}
+    .inhoud{padding:24px;flex:1}
+    .pagina-header{margin-bottom:24px}
+    .pagina-titel{font-size:1.25rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px}
+    .pagina-sub{font-size:0.83rem;color:var(--dim)}
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+    .metric{background:var(--bg-wit);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+    .metric__header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .metric__label{font-size:0.75rem;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:0.06em}
+    .metric__icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.8rem}
+    .icon-paars{background:var(--accent-light)}
+    .icon-groen{background:rgba(16,185,129,0.1)}
+    .icon-blauw{background:rgba(59,130,246,0.1)}
+    .icon-oranje{background:rgba(245,158,11,0.1)}
+    .metric__waarde{font-size:1.7rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:6px}
+    .metric__trend{font-size:0.75rem;display:flex;align-items:center;gap:4px}
+    .trend-up{color:var(--groen)}
+    .trend-down{color:var(--rood)}
+    .charts-rij{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:20px}
+    .card{background:var(--bg-wit);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .card__header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)}
+    .card__titel{font-size:0.88rem;font-weight:600}
+    .card__acties{display:flex;gap:8px}
+    .card__body{padding:20px}
+    .chart-area{height:180px;background:var(--bg);border-radius:6px;position:relative;overflow:hidden;display:flex;align-items:flex-end;gap:3px;padding:0 8px 0}
+    .chart-lijn{position:absolute;inset:0;display:flex;align-items:flex-end;padding:8px}
+    .bar{flex:1;background:var(--accent);border-radius:3px 3px 0 0;opacity:0.8;transition:opacity 0.2s;min-height:4px}
+    .bar:hover{opacity:1}
+    .bar-groen{background:var(--groen)}
+    .bar-oranje{background:var(--oranje)}
+    .donut-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+    .donut{width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--accent) 0% 42%,var(--groen) 42% 68%,var(--oranje) 68% 85%,var(--border) 85% 100%)}
+    .donut-legs{width:100%;display:flex;flex-direction:column;gap:8px}
+    .donut-leg{display:flex;align-items:center;justify-content:space-between;font-size:0.78rem}
+    .donut-leg__left{display:flex;align-items:center;gap:7px;color:var(--dim)}
+    .donut-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+    .donut-leg__pct{font-weight:700;font-size:0.82rem}
+    .bottom-rij{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+    .tabel{width:100%;border-collapse:collapse}
+    .tabel th{padding:9px 16px;text-align:left;font-size:0.7rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--border);background:var(--bg)}
+    .tabel td{padding:11px 16px;font-size:0.83rem;border-bottom:1px solid var(--border)}
+    .tabel tr:last-child td{border-bottom:none}
+    .tabel tr:hover td{background:var(--bg)}
+    .badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:0.7rem;font-weight:600}
+    .badge-groen{background:rgba(16,185,129,0.1);color:var(--groen)}
+    .badge-rood{background:rgba(239,68,68,0.1);color:var(--rood)}
+    .badge-oranje{background:rgba(245,158,11,0.1);color:var(--oranje)}
+    .activiteit{display:flex;flex-direction:column;gap:0}
+    .act-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+    .act-item:last-child{border-bottom:none}
+    .act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+    .act-content{flex:1;min-width:0}
+    .act-tekst{font-size:0.83rem;margin-bottom:2px}
+    .act-tijd{font-size:0.72rem;color:var(--dim)}
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:49}
+    .sidebar-overlay.open{display:block}
+    @media(max-width:1100px){.metrics{grid-template-columns:repeat(2,1fr)}.charts-rij{grid-template-columns:1fr}}
+    @media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.hamburger{display:flex}.topbar{padding:0 16px}.topbar__periode{display:none}.inhoud{padding:14px}.metrics{grid-template-columns:1fr 1fr;gap:12px}.bottom-rij{grid-template-columns:1fr}}
+    @media(max-width:480px){.metrics{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="sidebar-overlay" id="overlay" onclick="sidebarToggle()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icon">{{LOGO_L}}</div>
+      <span class="sidebar__logo-naam">{{BEDRIJFSNAAM}}</span>
+    </div>
+    <nav class="sidebar__nav">
+      <div class="nav-label">Overzicht</div>
+      <div class="nav-item actief"><span class="nav-item__icon">📊</span>Dashboard</div>
+      <div class="nav-item"><span class="nav-item__icon">📈</span>Analyses</div>
+      <div class="nav-item"><span class="nav-item__icon">👥</span>Gebruikers<span class="nav-item__badge">{{N_GEBRUIKERS}}</span></div>
+      <div class="nav-label">Beheer</div>
+      <div class="nav-item"><span class="nav-item__icon">📦</span>{{NAV_1}}</div>
+      <div class="nav-item"><span class="nav-item__icon">💳</span>{{NAV_2}}</div>
+      <div class="nav-item"><span class="nav-item__icon">🔔</span>{{NAV_3}}<span class="nav-item__badge">{{N_NOTIFS}}</span></div>
+      <div class="nav-label">Instellingen</div>
+      <div class="nav-item"><span class="nav-item__icon">⚙️</span>Instellingen</div>
+      <div class="nav-item"><span class="nav-item__icon">🔒</span>Beveiliging</div>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__user-avatar">{{USER_INT}}</div>
+        <div><div class="sidebar__user-naam">{{USER_NAAM}}</div><div class="sidebar__user-rol">{{USER_ROL}}</div></div>
+      </div>
+    </div>
+  </aside>
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar__left">
+        <div class="hamburger" id="hamburgerBtn" onclick="sidebarToggle()"><span></span><span></span><span></span></div>
+        <div class="topbar__breadcrumb">{{BREADCRUMB}} / <strong>{{PAGINA_NAAM}}</strong></div>
+      </div>
+      <div class="topbar__right">
+        <div class="topbar__periode">
+          <button class="periode-opt">7d</button>
+          <button class="periode-opt actief">30d</button>
+          <button class="periode-opt">90d</button>
+          <button class="periode-opt">1j</button>
+        </div>
+        <button class="btn-sm btn-sm-accent">+ {{ACTIE}}</button>
+      </div>
+    </div>
+    <div class="inhoud">
+      <div class="pagina-header">
+        <div class="pagina-titel">{{PAGINA_TITEL}}</div>
+        <div class="pagina-sub">{{PAGINA_SUB}}</div>
+      </div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric__header"><div class="metric__label">{{M1_LABEL}}</div><div class="metric__icon icon-paars">📊</div></div>
+          <div class="metric__waarde">{{M1_WAARDE}}</div>
+          <div class="metric__trend trend-up">↑ {{M1_TREND}} t.o.v. vorige periode</div>
+        </div>
+        <div class="metric">
+          <div class="metric__header"><div class="metric__label">{{M2_LABEL}}</div><div class="metric__icon icon-groen">💰</div></div>
+          <div class="metric__waarde">{{M2_WAARDE}}</div>
+          <div class="metric__trend trend-up">↑ {{M2_TREND}} t.o.v. vorige periode</div>
+        </div>
+        <div class="metric">
+          <div class="metric__header"><div class="metric__label">{{M3_LABEL}}</div><div class="metric__icon icon-blauw">👤</div></div>
+          <div class="metric__waarde">{{M3_WAARDE}}</div>
+          <div class="metric__trend trend-down">↓ {{M3_TREND}} t.o.v. vorige periode</div>
+        </div>
+        <div class="metric">
+          <div class="metric__header"><div class="metric__label">{{M4_LABEL}}</div><div class="metric__icon icon-oranje">⚡</div></div>
+          <div class="metric__waarde">{{M4_WAARDE}}</div>
+          <div class="metric__trend trend-up">↑ {{M4_TREND}} t.o.v. vorige periode</div>
+        </div>
+      </div>
+      <div class="charts-rij">
+        <div class="card">
+          <div class="card__header">
+            <span class="card__titel">{{CHART_1_TITEL}}</span>
+            <div class="card__acties"><button class="btn-sm" style="background:var(--bg);border:1px solid var(--border);color:var(--dim)">Exporteren</button></div>
+          </div>
+          <div class="card__body">
+            <div class="chart-area">
+              <div class="bar" style="height:38%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:42%"></div><div class="bar" style="height:70%"></div>
+              <div class="bar" style="height:60%"></div><div class="bar" style="height:85%"></div><div class="bar" style="height:72%"></div><div class="bar" style="height:90%"></div>
+              <div class="bar" style="height:65%"></div><div class="bar" style="height:95%"></div><div class="bar" style="height:78%"></div><div class="bar" style="height:88%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__header"><span class="card__titel">{{CHART_2_TITEL}}</span></div>
+          <div class="card__body">
+            <div class="donut-wrap">
+              <div class="donut"></div>
+              <div class="donut-legs">
+                <div class="donut-leg"><div class="donut-leg__left"><div class="donut-dot" style="background:var(--accent)"></div>{{D1_LABEL}}</div><div class="donut-leg__pct">{{D1_PCT}}%</div></div>
+                <div class="donut-leg"><div class="donut-leg__left"><div class="donut-dot" style="background:var(--groen)"></div>{{D2_LABEL}}</div><div class="donut-leg__pct">{{D2_PCT}}%</div></div>
+                <div class="donut-leg"><div class="donut-leg__left"><div class="donut-dot" style="background:var(--oranje)"></div>{{D3_LABEL}}</div><div class="donut-leg__pct">{{D3_PCT}}%</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-rij">
+        <div class="card">
+          <div class="card__header"><span class="card__titel">{{TABEL_TITEL}}</span><button class="btn-sm" style="background:var(--bg);border:1px solid var(--border);color:var(--dim);font-size:0.78rem">Alles</button></div>
+          <table class="tabel">
+            <thead><tr><th>{{KOP_1}}</th><th>{{KOP_2}}</th><th>{{KOP_3}}</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>{{R1_K1}}</td><td>{{R1_K2}}</td><td>{{R1_K3}}</td><td><span class="badge badge-groen">● Actief</span></td></tr>
+              <tr><td>{{R2_K1}}</td><td>{{R2_K2}}</td><td>{{R2_K3}}</td><td><span class="badge badge-oranje">● Wacht</span></td></tr>
+              <tr><td>{{R3_K1}}</td><td>{{R3_K2}}</td><td>{{R3_K3}}</td><td><span class="badge badge-groen">● Actief</span></td></tr>
+              <tr><td>{{R4_K1}}</td><td>{{R4_K2}}</td><td>{{R4_K3}}</td><td><span class="badge badge-rood">● Inactief</span></td></tr>
+              <tr><td>{{R5_K1}}</td><td>{{R5_K2}}</td><td>{{R5_K3}}</td><td><span class="badge badge-groen">● Actief</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card__header"><span class="card__titel">Recente activiteit</span></div>
+          <div class="card__body">
+            <div class="activiteit">
+              <div class="act-item"><div class="act-dot" style="background:var(--groen)"></div><div class="act-content"><div class="act-tekst">{{ACT_1}}</div><div class="act-tijd">{{ACT_1_TIJD}}</div></div></div>
+              <div class="act-item"><div class="act-dot" style="background:var(--accent)"></div><div class="act-content"><div class="act-tekst">{{ACT_2}}</div><div class="act-tijd">{{ACT_2_TIJD}}</div></div></div>
+              <div class="act-item"><div class="act-dot" style="background:var(--oranje)"></div><div class="act-content"><div class="act-tekst">{{ACT_3}}</div><div class="act-tijd">{{ACT_3_TIJD}}</div></div></div>
+              <div class="act-item"><div class="act-dot" style="background:var(--rood)"></div><div class="act-content"><div class="act-tekst">{{ACT_4}}</div><div class="act-tijd">{{ACT_4_TIJD}}</div></div></div>
+              <div class="act-item"><div class="act-dot" style="background:var(--groen)"></div><div class="act-content"><div class="act-tekst">{{ACT_5}}</div><div class="act-tijd">{{ACT_5_TIJD}}</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function sidebarToggle(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('open')}
+    document.querySelectorAll('.periode-opt').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.periode-opt').forEach(x=>x.classList.remove('actief'));b.classList.add('actief')}));
+    document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('actief'));b.classList.add('actief')}));
+  </script>
+</body>
+</html>
