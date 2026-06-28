@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#0a0a0a;--bg-alt:#141414;--bg-card:#1a1a1a;--tekst:#fff;--dim:#999;--accent:#00ff87;--accent-dark:#00cc6a;--border:#2a2a2a;--rood:#ff3b3b;--nav:56px;--max:1280px;--radius:2px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .aankondiging{background:var(--accent);color:var(--bg);text-align:center;padding:9px;font-size:0.78rem;font-weight:700;letter-spacing:0.04em}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:0 24px}
+    .navbar__logo{font-size:1.1rem;font-weight:900;letter-spacing:-0.02em;flex-shrink:0}
+    .navbar__links{display:flex;gap:20px;list-style:none;margin:0 auto}
+    .navbar__links a{font-size:0.82rem;color:var(--dim);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;transition:color 0.15s}
+    .navbar__links a:hover{color:var(--tekst)}
+    .navbar__acties{display:flex;gap:14px;align-items:center}
+    .navbar__acties a{font-size:0.85rem;color:var(--dim);transition:color 0.15s}
+    .navbar__acties a:hover{color:var(--tekst)}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer}
+    .navbar__hamburger span{display:block;width:20px;height:1.5px;background:#fff}
+    .hero{display:grid;grid-template-columns:1fr 1fr;min-height:86vh;position:relative;overflow:hidden}
+    .hero__links{background:var(--accent);display:flex;flex-direction:column;justify-content:flex-end;padding:56px 48px;position:relative}
+    .hero__label{font-size:0.68rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.6);margin-bottom:14px}
+    .hero__headline{font-size:clamp(2.4rem,5vw,5rem);font-weight:900;letter-spacing:-0.05em;line-height:0.92;color:var(--bg);margin-bottom:20px}
+    .hero__sub{font-size:0.92rem;color:rgba(0,0,0,0.7);max-width:360px;margin-bottom:28px;line-height:1.7}
+    .btn-donker{background:var(--bg);color:var(--tekst);padding:14px 28px;font-size:0.88rem;font-weight:800;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;transition:opacity 0.2s}
+    .btn-donker:hover{opacity:0.85}
+    .hero__rechts{background:var(--bg-alt);display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:#444;position:relative}
+    .hero__rechts-label{position:absolute;top:24px;right:24px;font-size:0.68rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.08em}
+    .cat-balk{background:var(--bg-alt);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:0;overflow-x:auto}
+    .cat-link{padding:14px 18px;font-size:0.75rem;font-weight:700;color:var(--dim);white-space:nowrap;border-bottom:2px solid transparent;text-transform:uppercase;letter-spacing:0.06em;cursor:pointer;transition:all 0.15s}
+    .cat-link:hover,.cat-link.actief{color:var(--tekst);border-bottom-color:var(--accent)}
+    .hoofd{max-width:var(--max);margin:0 auto;padding:32px 24px 64px}
+    .sectie-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+    .sectie-titel{font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em}
+    .sectie-link{font-size:0.75rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em}
+    .filter-balk{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+    .filter-chip{padding:7px 16px;border:1px solid var(--border);font-size:0.75rem;font-weight:700;cursor:pointer;background:transparent;color:var(--dim);text-transform:uppercase;letter-spacing:0.04em;transition:all 0.15s}
+    .filter-chip:hover,.filter-chip.actief{background:var(--tekst);color:var(--bg);border-color:var(--tekst)}
+    .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
+    .product-card{cursor:pointer;position:relative;overflow:hidden}
+    .product-card:hover .product-card__beeld-inner{transform:scale(1.04)}
+    .product-card:hover .product-card__overlay{opacity:1}
+    .product-card__beeld{aspect-ratio:3/4;background:var(--bg-card);overflow:hidden;position:relative}
+    .product-card__beeld-inner{width:100%;height:100%;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#444;transition:transform 0.4s}
+    .product-card__overlay{position:absolute;inset:0;background:rgba(0,255,135,0.08);opacity:0;transition:opacity 0.2s;display:flex;align-items:flex-end;padding:14px}
+    .product-card__snelkoop{background:var(--accent);color:var(--bg);font-size:0.72rem;font-weight:800;padding:8px 14px;width:100%;text-align:center;text-transform:uppercase;letter-spacing:0.06em;cursor:pointer;border:none}
+    .product-card__badge{position:absolute;top:10px;left:10px;font-size:0.62rem;font-weight:800;padding:3px 8px;text-transform:uppercase;letter-spacing:0.06em}
+    .badge-new{background:var(--accent);color:var(--bg)}
+    .badge-sale{background:var(--rood);color:#fff}
+    .product-card__body{padding:12px 0}
+    .product-card__cat{font-size:0.65rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px}
+    .product-card__naam{font-size:0.88rem;font-weight:700;margin-bottom:5px}
+    .product-card__prijs{font-size:0.92rem;font-weight:800}
+    .product-card__prijs-oud{font-size:0.78rem;color:var(--dim);text-decoration:line-through;margin-left:6px}
+    .product-card__kleuren{display:flex;gap:4px;margin-top:6px}
+    .kleur-dot{width:12px;height:12px;border-radius:50%;border:1px solid var(--border)}
+    .banner{background:var(--bg-alt);margin:0 0 2px;display:grid;grid-template-columns:1fr 1fr;min-height:320px}
+    .banner__content{padding:48px;display:flex;flex-direction:column;justify-content:center}
+    .banner__label{font-size:0.68rem;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
+    .banner__titel{font-size:clamp(1.6rem,3vw,2.8rem);font-weight:900;letter-spacing:-0.04em;margin-bottom:14px}
+    .banner__sub{font-size:0.88rem;color:var(--dim);margin-bottom:24px;line-height:1.65}
+    .btn-accent{background:var(--accent);color:var(--bg);padding:12px 24px;font-size:0.82rem;font-weight:800;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;transition:opacity 0.2s}
+    .btn-accent:hover{opacity:0.88}
+    .banner__beeld{background:var(--bg-card);display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:#444}
+    .social-sectie{background:var(--bg-alt);padding:56px 24px;text-align:center}
+    .social-sectie h2{font-size:clamp(1.4rem,3vw,2rem);font-weight:900;letter-spacing:-0.04em;margin-bottom:8px}
+    .social-sectie p{font-size:0.88rem;color:var(--dim);margin-bottom:24px}
+    .social-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;max-width:var(--max);margin:0 auto}
+    .social-cel{background:var(--bg-card);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:0.72rem;color:#444;cursor:pointer;transition:filter 0.2s;overflow:hidden}
+    .social-cel:hover{filter:brightness(1.2)}
+    .footer{background:var(--bg-alt);border-top:1px solid var(--border);padding:48px 24px 24px}
+    .footer__top{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+    .footer__logo{font-size:1rem;font-weight:900;margin-bottom:10px}
+    .footer__tekst{font-size:0.8rem;color:var(--dim);line-height:1.6;max-width:200px}
+    .footer__kolom-titel{font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+    .footer__links{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .footer__links a{font-size:0.8rem;color:var(--dim);transition:color 0.15s}
+    .footer__links a:hover{color:var(--tekst)}
+    .footer__bottom{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;padding-top:18px;border-top:1px solid var(--border);font-size:0.73rem;color:var(--dim)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;flex-direction:column;padding:72px 20px 40px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.3rem;font-weight:800;color:#fff;padding:14px 0;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:0.04em}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1100px){.product-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:900px){.hero{grid-template-columns:1fr}.hero__rechts{min-height:300px}.footer__top{grid-template-columns:1fr 1fr}.social-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:768px){.navbar{padding:0 16px}.navbar__links{display:none}.navbar__hamburger{display:flex}.product-grid{grid-template-columns:repeat(2,1fr)}.banner{grid-template-columns:1fr}.banner__beeld{min-height:200px}.footer{padding:40px 16px 24px}.footer__bottom{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.footer__top{grid-template-columns:1fr}.social-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+  <div class="aankondiging">{{AANKONDIGING}}</div>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links"><li><a href="#">{{NAV_1}}</a></li><li><a href="#">{{NAV_2}}</a></li><li><a href="#">{{NAV_3}}</a></li><li><a href="#">{{NAV_4}}</a></li></ul>
+    <div class="navbar__acties"><a href="#">🔍</a><a href="#">♡</a><a href="#">🛒 {{WAGEN_COUNT}}</a></div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">{{NAV_1}}</a><a href="#" onclick="menuToggle()">{{NAV_2}}</a><a href="#" onclick="menuToggle()">{{NAV_3}}</a>
+  </div>
+  <section class="hero">
+    <div class="hero__links">
+      <div class="hero__label">{{HERO_LABEL}}</div>
+      <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+      <p class="hero__sub">{{HERO_SUB}}</p>
+      <button class="btn-donker">{{CTA_PRIMAIR}}</button>
+    </div>
+    <div class="hero__rechts"><div class="hero__rechts-label">{{HERO_BEELD_LABEL}}</div>[ {{HERO_AFBEELDING}} ]</div>
+  </section>
+  <div class="cat-balk">
+    <span class="cat-link actief">{{CAT_0}}</span><span class="cat-link">{{CAT_1}}</span><span class="cat-link">{{CAT_2}}</span><span class="cat-link">{{CAT_3}}</span><span class="cat-link">{{CAT_4}}</span><span class="cat-link">Sale</span>
+  </div>
+  <div class="hoofd">
+    <div class="sectie-header"><span class="sectie-titel">{{PROD_SECTIE_TITEL}}</span><span class="sectie-link">Alles bekijken →</span></div>
+    <div class="filter-balk">
+      <span class="filter-chip actief">Alles</span><span class="filter-chip">{{CAT_1}}</span><span class="filter-chip">{{CAT_2}}</span><span class="filter-chip">{{CAT_3}}</span><span class="filter-chip">Sale</span>
+    </div>
+    <div class="product-grid">
+      <div class="product-card"><div class="product-card__beeld"><div class="product-card__beeld-inner">[ afb ]</div><span class="product-card__badge badge-new">Nieuw</span><div class="product-card__overlay"><button class="product-card__snelkoop">Snel toevoegen</button></div></div><div class="product-card__body"><div class="product-card__cat">{{P1_CAT}}</div><div class="product-card__naam">{{P1_NAAM}}</div><div><span class="product-card__prijs">{{P1_PRIJS}}</span></div><div class="product-card__kleuren"><div class="kleur-dot" style="background:#111"></div><div class="kleur-dot" style="background:#eee"></div><div class="kleur-dot" style="background:var(--accent)"></div></div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><div class="product-card__beeld-inner">[ afb ]</div><span class="product-card__badge badge-sale">-30%</span><div class="product-card__overlay"><button class="product-card__snelkoop">Snel toevoegen</button></div></div><div class="product-card__body"><div class="product-card__cat">{{P2_CAT}}</div><div class="product-card__naam">{{P2_NAAM}}</div><div><span class="product-card__prijs">{{P2_PRIJS}}</span><span class="product-card__prijs-oud">{{P2_PRIJS_OUD}}</span></div><div class="product-card__kleuren"><div class="kleur-dot" style="background:#333"></div><div class="kleur-dot" style="background:#888"></div></div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><div class="product-card__beeld-inner">[ afb ]</div><div class="product-card__overlay"><button class="product-card__snelkoop">Snel toevoegen</button></div></div><div class="product-card__body"><div class="product-card__cat">{{P3_CAT}}</div><div class="product-card__naam">{{P3_NAAM}}</div><div><span class="product-card__prijs">{{P3_PRIJS}}</span></div><div class="product-card__kleuren"><div class="kleur-dot" style="background:var(--accent)"></div><div class="kleur-dot" style="background:#111"></div></div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><div class="product-card__beeld-inner">[ afb ]</div><span class="product-card__badge badge-new">Bestseller</span><div class="product-card__overlay"><button class="product-card__snelkoop">Snel toevoegen</button></div></div><div class="product-card__body"><div class="product-card__cat">{{P4_CAT}}</div><div class="product-card__naam">{{P4_NAAM}}</div><div><span class="product-card__prijs">{{P4_PRIJS}}</span></div><div class="product-card__kleuren"><div class="kleur-dot" style="background:#222"></div><div class="kleur-dot" style="background:#fff;border:1px solid var(--border)"></div></div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><div class="product-card__beeld-inner">[ afb ]</div><div class="product-card__overlay"><button class="product-card__snelkoop">Snel toevoegen</button></div></div><div class="product-card__body"><div class="product-card__cat">{{P5_CAT}}</div><div class="product-card__naam">{{P5_NAAM}}</div><div><span class="product-card__prijs">{{P5_PRIJS}}</span></div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><div class="product-card__beeld-inner">[ afb ]</div><span class="product-card__badge badge-sale">Sale</span><div class="product-card__overlay"><button class="product-card__snelkoop">Snel toevoegen</button></div></div><div class="product-card__body"><div class="product-card__cat">{{P6_CAT}}</div><div class="product-card__naam">{{P6_NAAM}}</div><div><span class="product-card__prijs">{{P6_PRIJS}}</span><span class="product-card__prijs-oud">{{P6_PRIJS_OUD}}</span></div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><div class="product-card__beeld-inner">[ afb ]</div><div class="product-card__overlay"><button class="product-card__snelkoop">Snel toevoegen</button></div></div><div class="product-card__body"><div class="product-card__cat">{{P7_CAT}}</div><div class="product-card__naam">{{P7_NAAM}}</div><div><span class="product-card__prijs">{{P7_PRIJS}}</span></div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><div class="product-card__beeld-inner">[ afb ]</div><span class="product-card__badge badge-new">Nieuw</span><div class="product-card__overlay"><button class="product-card__snelkoop">Snel toevoegen</button></div></div><div class="product-card__body"><div class="product-card__cat">{{P8_CAT}}</div><div class="product-card__naam">{{P8_NAAM}}</div><div><span class="product-card__prijs">{{P8_PRIJS}}</span></div></div></div>
+    </div>
+  </div>
+  <div class="banner">
+    <div class="banner__content"><div class="banner__label">{{BANNER_LABEL}}</div><h2 class="banner__titel">{{BANNER_TITEL}}</h2><p class="banner__sub">{{BANNER_SUB}}</p><button class="btn-accent">{{BANNER_CTA}}</button></div>
+    <div class="banner__beeld">[ banner afbeelding ]</div>
+  </div>
+  <div class="social-sectie">
+    <h2>{{SOCIAL_TITEL}}</h2>
+    <p>{{SOCIAL_SUB}}</p>
+    <div class="social-grid"><div class="social-cel">[ afb ]</div><div class="social-cel">[ afb ]</div><div class="social-cel">[ afb ]</div><div class="social-cel">[ afb ]</div><div class="social-cel">[ afb ]</div></div>
+  </div>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_TEKST}}</p></div>
+      <div><div class="footer__kolom-titel">Shop</div><ul class="footer__links"><li><a href="#">{{CAT_1}}</a></li><li><a href="#">{{CAT_2}}</a></li><li><a href="#">Sale</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Help</div><ul class="footer__links"><li><a href="#">Bezorging</a></li><li><a href="#">Retourneren</a></li><li><a href="#">Maatgids</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Duurzaamheid</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span><span>{{FOOTER_TAGLINE}}</span></div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    document.querySelectorAll('.filter-chip').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('actief'));t.classList.add('actief')}));
+    document.querySelectorAll('.cat-link').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.cat-link').forEach(x=>x.classList.remove('actief'));t.classList.add('actief')}));
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.06});
+    document.querySelectorAll('.product-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(10px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
