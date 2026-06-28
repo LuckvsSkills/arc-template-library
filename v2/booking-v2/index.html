@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}} — Plan een afspraak</title>
+  <style>
+    :root {
+      --bg:#fff;--bg-alt:#f8f9fa;--tekst:#1a1a2e;--dim:#6b7280;
+      --accent:#006bff;--accent-light:#e8f0fe;--accent-dark:#0054cc;
+      --border:#e5e7eb;--groen:#00a878;--nav:60px;--max:1100px;--radius:8px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+    .navbar__logo{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px}
+    .navbar__logo-dot{width:8px;height:8px;background:var(--accent);border-radius:50%}
+    .navbar__links{display:flex;gap:24px;list-style:none}
+    .navbar__links a{font-size:0.85rem;color:var(--dim);transition:color 0.15s}
+    .navbar__links a:hover{color:var(--tekst)}
+    .navbar__cta{display:flex;gap:10px}
+    .btn-accent{background:var(--accent);color:#fff;padding:8px 20px;border-radius:var(--radius);font-size:0.85rem;font-weight:600;border:none;cursor:pointer;transition:background 0.2s}
+    .btn-accent:hover{background:var(--accent-dark)}
+    .btn-ghost{color:var(--dim);font-size:0.85rem;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius);background:#fff;cursor:pointer;transition:all 0.15s}
+    .btn-ghost:hover{color:var(--tekst);border-color:#aaa}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer}
+    .navbar__hamburger span{display:block;width:20px;height:2px;background:var(--tekst)}
+    .hero{padding:72px 32px 80px;text-align:center;background:linear-gradient(180deg,var(--accent-light) 0%,#fff 100%)}
+    .hero__chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border);border-radius:999px;padding:5px 14px;font-size:0.78rem;color:var(--dim);margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+    .hero__chip-dot{width:6px;height:6px;background:var(--groen);border-radius:50%}
+    .hero__headline{font-size:clamp(2rem,5vw,3.6rem);font-weight:800;letter-spacing:-0.04em;line-height:1.08;margin-bottom:18px}
+    .hero__headline span{color:var(--accent)}
+    .hero__sub{font-size:1.05rem;color:var(--dim);max-width:500px;margin:0 auto 40px;line-height:1.7}
+    .hero__demo{max-width:860px;margin:0 auto;background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,0.1);overflow:hidden;display:grid;grid-template-columns:260px 1fr 220px}
+    .demo__profiel{padding:28px 20px;border-right:1px solid var(--border)}
+    .demo__avatar{width:52px;height:52px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:12px}
+    .demo__naam{font-size:0.92rem;font-weight:700;margin-bottom:4px}
+    .demo__type{font-size:0.8rem;color:var(--dim);margin-bottom:14px}
+    .demo__info{display:flex;flex-direction:column;gap:8px}
+    .demo__info-item{display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--dim)}
+    .demo__kalender{padding:20px}
+    .demo__kalender-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .demo__kalender-maand{font-size:0.88rem;font-weight:700}
+    .demo__kalender-btn{width:26px;height:26px;border:1px solid var(--border);border-radius:50%;background:#fff;cursor:pointer;font-size:0.82rem;display:flex;align-items:center;justify-content:center}
+    .demo__dagen-header{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px}
+    .demo__dag-naam{text-align:center;font-size:0.62rem;font-weight:700;color:var(--dim);text-transform:uppercase;padding:3px 0}
+    .demo__dagen{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+    .demo__dag{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:0.8rem;border-radius:50%;cursor:pointer;transition:all 0.15s}
+    .demo__dag:hover{background:var(--accent-light);color:var(--accent)}
+    .demo__dag.actief{background:var(--accent);color:#fff;font-weight:700}
+    .demo__dag.leeg,.demo__dag.verleden{cursor:default}
+    .demo__dag.verleden{color:var(--border)}
+    .demo__dag.beschikbaar{font-weight:600}
+    .demo__tijden{padding:20px;border-left:1px solid var(--border)}
+    .demo__tijden-label{font-size:0.8rem;font-weight:700;margin-bottom:12px;color:var(--dim)}
+    .demo__tijdsloten{display:flex;flex-direction:column;gap:7px}
+    .demo__tijdslot{padding:9px 14px;border:1px solid var(--accent);border-radius:var(--radius);font-size:0.82rem;font-weight:600;color:var(--accent);cursor:pointer;text-align:center;transition:all 0.15s}
+    .demo__tijdslot:hover,.demo__tijdslot.actief{background:var(--accent);color:#fff}
+    .demo__tijdslot.vol{border-color:var(--border);color:var(--border);cursor:not-allowed}
+    .sectie-chip{display:inline-block;background:var(--accent-light);color:var(--accent);font-size:0.72rem;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:14px}
+    .sectie-titel{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-0.04em;line-height:1.1;margin-bottom:12px}
+    .sectie-sub{font-size:0.95rem;color:var(--dim);max-width:460px;line-height:1.7}
+    .hoe-werkt{padding:80px 32px;max-width:var(--max);margin:0 auto}
+    .stappen-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:48px}
+    .stap{text-align:center}
+    .stap__nummer{width:42px;height:42px;border-radius:50%;background:var(--accent-light);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.88rem;font-weight:800;color:var(--accent);margin:0 auto 14px}
+    .stap__naam{font-size:0.92rem;font-weight:700;margin-bottom:6px}
+    .stap__tekst{font-size:0.83rem;color:var(--dim);line-height:1.65}
+    .use-cases{background:var(--bg-alt);padding:80px 32px;border-top:1px solid var(--border)}
+    .use-cases__inner{max-width:var(--max);margin:0 auto}
+    .use-cases__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+    .use-case-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px;transition:box-shadow 0.2s,transform 0.2s;cursor:pointer}
+    .use-case-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.08);transform:translateY(-2px)}
+    .use-case-card__icon{font-size:1.8rem;margin-bottom:12px}
+    .use-case-card__naam{font-size:0.95rem;font-weight:700;margin-bottom:6px}
+    .use-case-card__tekst{font-size:0.83rem;color:var(--dim);line-height:1.65}
+    .prijzen{background:var(--bg-alt);border-top:1px solid var(--border);padding:80px 32px}
+    .prijzen__inner{max-width:var(--max);margin:0 auto}
+    .prijzen__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+    .prijs-card{background:#fff;border:2px solid var(--border);border-radius:12px;padding:28px;transition:border-color 0.2s;position:relative}
+    .prijs-card:hover{border-color:var(--accent)}
+    .prijs-card--featured{border-color:var(--accent)}
+    .prijs-card__top-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:0.7rem;font-weight:700;padding:3px 12px;border-radius:999px;white-space:nowrap}
+    .prijs-card__naam{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--dim);margin-bottom:8px}
+    .prijs-card__bedrag{font-size:2.4rem;font-weight:800;letter-spacing:-0.04em;margin-bottom:4px}
+    .prijs-card__periode{font-size:0.8rem;color:var(--dim);margin-bottom:20px}
+    .prijs-card__features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+    .prijs-card__features li{font-size:0.83rem;color:var(--dim);display:flex;align-items:center;gap:7px}
+    .prijs-card__features li::before{content:'✓';color:var(--groen);font-weight:800;font-size:0.72rem}
+    .cta{padding:88px 32px;text-align:center;background:var(--accent);color:#fff}
+    .cta h2{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-0.04em;margin-bottom:14px}
+    .cta p{font-size:1rem;opacity:0.85;max-width:420px;margin:0 auto 32px;line-height:1.7}
+    .btn-wit{background:#fff;color:var(--accent);padding:13px 30px;border-radius:var(--radius);font-size:0.92rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-wit:hover{opacity:0.9}
+    .footer{border-top:1px solid var(--border);padding:48px 32px 28px}
+    .footer__top{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+    .footer__logo{font-size:0.92rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+    .footer__tekst{font-size:0.8rem;color:var(--dim);line-height:1.6;max-width:180px}
+    .footer__kolom-titel{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+    .footer__links{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .footer__links a{font-size:0.8rem;color:var(--dim);transition:color 0.15s}
+    .footer__links a:hover{color:var(--tekst)}
+    .footer__bottom{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;padding-top:18px;border-top:1px solid var(--border);font-size:0.73rem;color:var(--dim)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:#fff;z-index:200;flex-direction:column;padding:72px 24px 40px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.3rem;font-weight:600;padding:14px 0;border-bottom:1px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1024px){.hero__demo{grid-template-columns:1fr 1fr}.demo__tijden{display:none}.stappen-grid{grid-template-columns:repeat(2,1fr)}.use-cases__grid{grid-template-columns:repeat(2,1fr)}.prijzen__grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}.footer__top{grid-template-columns:1fr 1fr}}
+    @media(max-width:768px){.navbar{padding:0 16px}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hero{padding:48px 16px 56px}.hero__demo{grid-template-columns:1fr}.demo__profiel{border-right:none;border-bottom:1px solid var(--border)}.hoe-werkt{padding:56px 16px}.stappen-grid{grid-template-columns:1fr 1fr;gap:20px}.use-cases{padding:56px 16px}.use-cases__grid{grid-template-columns:1fr}.prijzen{padding:56px 16px}.cta{padding:64px 16px}.footer{padding:40px 16px 24px}.footer__top{grid-template-columns:1fr 1fr}.footer__bottom{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.stappen-grid{grid-template-columns:1fr}.footer__top{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo"><div class="navbar__logo-dot"></div>{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links">
+      <li><a href="#hoe-werkt">Hoe het werkt</a></li>
+      <li><a href="#use-cases">Use cases</a></li>
+      <li><a href="#prijzen">Prijzen</a></li>
+    </ul>
+    <div class="navbar__cta">
+      <button class="btn-ghost">Inloggen</button>
+      <button class="btn-accent">Gratis starten</button>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#hoe-werkt" onclick="menuToggle()">Hoe het werkt</a>
+    <a href="#use-cases" onclick="menuToggle()">Use cases</a>
+    <a href="#prijzen" onclick="menuToggle()">Prijzen</a>
+    <a href="#" onclick="menuToggle()">Inloggen</a>
+  </div>
+  <section class="hero">
+    <div class="hero__chip"><div class="hero__chip-dot"></div>{{HERO_CHIP}}</div>
+    <h1 class="hero__headline">{{HERO_HEADLINE_1}}<br><span>{{HERO_HEADLINE_2}}</span></h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__demo">
+      <div class="demo__profiel">
+        <div class="demo__avatar">{{DEMO_INITIALEN}}</div>
+        <div class="demo__naam">{{DEMO_NAAM}}</div>
+        <div class="demo__type">{{DEMO_TYPE}}</div>
+        <div class="demo__info">
+          <div class="demo__info-item">🕐 {{DEMO_DUUR}}</div>
+          <div class="demo__info-item">📹 {{DEMO_MEDIUM}}</div>
+          <div class="demo__info-item">🌍 {{DEMO_TIJDZONE}}</div>
+        </div>
+      </div>
+      <div class="demo__kalender">
+        <div class="demo__kalender-nav">
+          <button class="demo__kalender-btn">‹</button>
+          <span class="demo__kalender-maand">{{DEMO_MAAND}}</span>
+          <button class="demo__kalender-btn">›</button>
+        </div>
+        <div class="demo__dagen-header"><div class="demo__dag-naam">Ma</div><div class="demo__dag-naam">Di</div><div class="demo__dag-naam">Wo</div><div class="demo__dag-naam">Do</div><div class="demo__dag-naam">Vr</div><div class="demo__dag-naam">Za</div><div class="demo__dag-naam">Zo</div></div>
+        <div class="demo__dagen">
+          <div class="demo__dag leeg"></div><div class="demo__dag leeg"></div>
+          <div class="demo__dag verleden">1</div><div class="demo__dag verleden">2</div><div class="demo__dag verleden">3</div><div class="demo__dag verleden">4</div><div class="demo__dag verleden">5</div>
+          <div class="demo__dag verleden">6</div><div class="demo__dag verleden">7</div><div class="demo__dag verleden">8</div>
+          <div class="demo__dag beschikbaar" onclick="dagKlik(this)">9</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">10</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">11</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">12</div>
+          <div class="demo__dag beschikbaar" onclick="dagKlik(this)">13</div><div class="demo__dag beschikbaar actief" onclick="dagKlik(this)">14</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">15</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">16</div>
+          <div class="demo__dag beschikbaar" onclick="dagKlik(this)">17</div><div class="demo__dag" onclick="dagKlik(this)">18</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">19</div>
+          <div class="demo__dag beschikbaar" onclick="dagKlik(this)">20</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">21</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">22</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">23</div>
+          <div class="demo__dag beschikbaar" onclick="dagKlik(this)">24</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">25</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">26</div>
+          <div class="demo__dag beschikbaar" onclick="dagKlik(this)">27</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">28</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">29</div><div class="demo__dag beschikbaar" onclick="dagKlik(this)">30</div>
+        </div>
+      </div>
+      <div class="demo__tijden">
+        <div class="demo__tijden-label">14 juni — kies tijd</div>
+        <div class="demo__tijdsloten">
+          <div class="demo__tijdslot" onclick="tijdKlik(this)">09:00</div>
+          <div class="demo__tijdslot" onclick="tijdKlik(this)">09:30</div>
+          <div class="demo__tijdslot vol">10:00</div>
+          <div class="demo__tijdslot actief" onclick="tijdKlik(this)">10:30</div>
+          <div class="demo__tijdslot" onclick="tijdKlik(this)">11:00</div>
+          <div class="demo__tijdslot" onclick="tijdKlik(this)">13:00</div>
+          <div class="demo__tijdslot vol">14:00</div>
+          <div class="demo__tijdslot" onclick="tijdKlik(this)">15:00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="hoe-werkt" id="hoe-werkt">
+    <div style="text-align:center"><div class="sectie-chip">Hoe het werkt</div><h2 class="sectie-titel">{{HOE_WERKT_TITEL}}</h2><p class="sectie-sub" style="margin:0 auto">{{HOE_WERKT_SUB}}</p></div>
+    <div class="stappen-grid">
+      <div class="stap"><div class="stap__nummer">1</div><div class="stap__naam">{{STAP_1_NAAM}}</div><p class="stap__tekst">{{STAP_1_TEKST}}</p></div>
+      <div class="stap"><div class="stap__nummer">2</div><div class="stap__naam">{{STAP_2_NAAM}}</div><p class="stap__tekst">{{STAP_2_TEKST}}</p></div>
+      <div class="stap"><div class="stap__nummer">3</div><div class="stap__naam">{{STAP_3_NAAM}}</div><p class="stap__tekst">{{STAP_3_TEKST}}</p></div>
+      <div class="stap"><div class="stap__nummer">4</div><div class="stap__naam">{{STAP_4_NAAM}}</div><p class="stap__tekst">{{STAP_4_TEKST}}</p></div>
+    </div>
+  </section>
+  <section class="use-cases" id="use-cases">
+    <div class="use-cases__inner">
+      <div style="text-align:center"><div class="sectie-chip">Use cases</div><h2 class="sectie-titel">{{USE_CASES_TITEL}}</h2></div>
+      <div class="use-cases__grid">
+        <div class="use-case-card"><div class="use-case-card__icon">{{UC1_ICON}}</div><div class="use-case-card__naam">{{UC1_NAAM}}</div><p class="use-case-card__tekst">{{UC1_TEKST}}</p></div>
+        <div class="use-case-card"><div class="use-case-card__icon">{{UC2_ICON}}</div><div class="use-case-card__naam">{{UC2_NAAM}}</div><p class="use-case-card__tekst">{{UC2_TEKST}}</p></div>
+        <div class="use-case-card"><div class="use-case-card__icon">{{UC3_ICON}}</div><div class="use-case-card__naam">{{UC3_NAAM}}</div><p class="use-case-card__tekst">{{UC3_TEKST}}</p></div>
+        <div class="use-case-card"><div class="use-case-card__icon">{{UC4_ICON}}</div><div class="use-case-card__naam">{{UC4_NAAM}}</div><p class="use-case-card__tekst">{{UC4_TEKST}}</p></div>
+        <div class="use-case-card"><div class="use-case-card__icon">{{UC5_ICON}}</div><div class="use-case-card__naam">{{UC5_NAAM}}</div><p class="use-case-card__tekst">{{UC5_TEKST}}</p></div>
+        <div class="use-case-card"><div class="use-case-card__icon">{{UC6_ICON}}</div><div class="use-case-card__naam">{{UC6_NAAM}}</div><p class="use-case-card__tekst">{{UC6_TEKST}}</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="prijzen" id="prijzen">
+    <div class="prijzen__inner">
+      <div style="text-align:center"><div class="sectie-chip">Prijzen</div><h2 class="sectie-titel">{{PRIJZEN_TITEL}}</h2><p class="sectie-sub" style="margin:0 auto">{{PRIJZEN_SUB}}</p></div>
+      <div class="prijzen__grid">
+        <div class="prijs-card"><div class="prijs-card__naam">{{P1_NAAM}}</div><div class="prijs-card__bedrag">{{P1_PRIJS}}</div><div class="prijs-card__periode">{{P1_PERIODE}}</div><ul class="prijs-card__features"><li>{{P1_F1}}</li><li>{{P1_F2}}</li><li>{{P1_F3}}</li></ul><button class="btn-ghost" style="width:100%;padding:10px">{{P1_CTA}}</button></div>
+        <div class="prijs-card prijs-card--featured"><span class="prijs-card__top-badge">{{P2_BADGE}}</span><div class="prijs-card__naam">{{P2_NAAM}}</div><div class="prijs-card__bedrag">{{P2_PRIJS}}</div><div class="prijs-card__periode">{{P2_PERIODE}}</div><ul class="prijs-card__features"><li>{{P2_F1}}</li><li>{{P2_F2}}</li><li>{{P2_F3}}</li><li>{{P2_F4}}</li></ul><button class="btn-accent" style="width:100%;padding:10px">{{P2_CTA}}</button></div>
+        <div class="prijs-card"><div class="prijs-card__naam">{{P3_NAAM}}</div><div class="prijs-card__bedrag">{{P3_PRIJS}}</div><div class="prijs-card__periode">{{P3_PERIODE}}</div><ul class="prijs-card__features"><li>{{P3_F1}}</li><li>{{P3_F2}}</li><li>{{P3_F3}}</li><li>{{P3_F4}}</li></ul><button class="btn-ghost" style="width:100%;padding:10px">{{P3_CTA}}</button></div>
+      </div>
+    </div>
+  </section>
+  <section class="cta">
+    <h2>{{CTA_HEADLINE}}</h2>
+    <p>{{CTA_SUB}}</p>
+    <button class="btn-wit">{{CTA_KNOP}}</button>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo"><div class="navbar__logo-dot"></div>{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_BESCHRIJVING}}</p></div>
+      <div><div class="footer__kolom-titel">Product</div><ul class="footer__links"><li><a href="#">Features</a></li><li><a href="#">Integraties</a></li><li><a href="#">Prijzen</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Blog</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Juridisch</div><ul class="footer__links"><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li><li><a href="#">Beveiliging</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <span>{{FOOTER_TAGLINE}}</span>
+    </div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    function dagKlik(el){if(el.classList.contains('verleden')||el.classList.contains('leeg'))return;document.querySelectorAll('.demo__dag').forEach(d=>d.classList.remove('actief'));el.classList.add('actief')}
+    function tijdKlik(el){if(el.classList.contains('vol'))return;document.querySelectorAll('.demo__tijdslot').forEach(t=>t.classList.remove('actief'));el.classList.add('actief')}
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.08});
+    document.querySelectorAll('.stap,.use-case-card,.prijs-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(14px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
