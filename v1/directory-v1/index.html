@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root {
+      --bg: #ffffff; --bg-alt: #f5f5f5; --tekst: #1a1a1a; --dim: #666;
+      --accent: #d32323; --accent-dark: #b01e1e; --border: #e0e0e0;
+      --ster: #f5a623; --nav: 60px; --max: 1200px; --radius: 4px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg-alt); color: var(--tekst); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    .navbar { position: sticky; top: 0; z-index: 100; height: var(--nav); background: var(--accent); display: flex; align-items: center; gap: 16px; padding: 0 24px; }
+    .navbar__logo { font-size: 1.4rem; font-weight: 900; color: white; letter-spacing: -0.02em; flex-shrink: 0; }
+    .navbar__zoekbalk { flex: 1; display: flex; max-width: 700px; background: white; border-radius: var(--radius); overflow: hidden; }
+    .zoek-veld { flex: 1; display: flex; align-items: center; gap: 8px; padding: 0 14px; border-right: 1px solid var(--border); }
+    .zoek-veld__icon { color: var(--dim); font-size: 0.9rem; }
+    .zoek-veld input { flex: 1; border: none; outline: none; font-size: 0.88rem; color: var(--tekst); padding: 10px 0; }
+    .zoek-btn { background: var(--accent-dark); color: white; border: none; padding: 0 20px; font-size: 0.88rem; font-weight: 700; cursor: pointer; }
+    .navbar__acties { margin-left: auto; display: flex; gap: 12px; }
+    .navbar__acties a { font-size: 0.82rem; color: rgba(255,255,255,0.85); font-weight: 500; transition: color 0.15s; }
+    .navbar__acties a:hover { color: white; }
+    .navbar__hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+    .navbar__hamburger span { display: block; width: 20px; height: 2px; background: white; }
+    .hero { background: linear-gradient(135deg, #d32323 0%, #b01e1e 100%); padding: 48px 24px 56px; text-align: center; }
+    .hero__headline { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: white; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .hero__sub { font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 28px; }
+    .hero__zoekbalk { display: flex; max-width: 660px; margin: 0 auto; background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+    .hero__zoekbalk .zoek-veld { flex: 1; }
+    .hero__zoekbalk .zoek-btn { padding: 0 28px; font-size: 0.95rem; }
+    .cat-balk { background: white; border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; overflow-x: auto; }
+    .cat-link { padding: 14px 18px; font-size: 0.85rem; font-weight: 600; color: var(--dim); white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .cat-link:hover, .cat-link.actief { color: var(--accent); border-bottom-color: var(--accent); }
+    .hoofd { max-width: var(--max); margin: 0 auto; padding: 24px; display: grid; grid-template-columns: 260px 1fr; gap: 24px; }
+    .filters { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; height: fit-content; }
+    .filter-sectie { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .filter-sectie:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .filter-titel { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--tekst); margin-bottom: 12px; }
+    .filter-opties { display: flex; flex-direction: column; gap: 8px; }
+    .filter-optie { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; cursor: pointer; }
+    .filter-optie input { cursor: pointer; accent-color: var(--accent); }
+    .filter-optie__count { margin-left: auto; font-size: 0.75rem; color: var(--dim); }
+    .prijs-opties { display: flex; gap: 6px; flex-wrap: wrap; }
+    .prijs-btn { padding: 5px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.82rem; cursor: pointer; transition: all 0.15s; }
+    .prijs-btn:hover, .prijs-btn.actief { background: var(--accent); color: white; border-color: var(--accent); }
+    .ster-filter { display: flex; flex-direction: column; gap: 6px; }
+    .ster-rij { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; }
+    .sterren { color: var(--ster); font-size: 0.9rem; }
+    .results { }
+    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding: 0 0 12px; border-bottom: 1px solid var(--border); }
+    .results-count { font-size: 0.88rem; color: var(--dim); }
+    .sort-select { padding: 7px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.85rem; cursor: pointer; background: white; }
+    .listing-lijst { display: flex; flex-direction: column; gap: 16px; }
+    .listing-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); display: flex; overflow: hidden; transition: box-shadow 0.2s; }
+    .listing-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    .listing-card__beeld { width: 220px; flex-shrink: 0; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #bbb; position: relative; }
+    .listing-card__promo { position: absolute; top: 10px; left: 10px; background: var(--accent); color: white; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 2px; }
+    .listing-card__body { flex: 1; padding: 18px 20px; }
+    .listing-card__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+    .listing-card__naam { font-size: 1.05rem; font-weight: 700; color: var(--tekst); transition: color 0.15s; }
+    .listing-card__naam:hover { color: var(--accent); cursor: pointer; }
+    .listing-card__fav { color: var(--dim); font-size: 1.1rem; cursor: pointer; transition: color 0.15s; }
+    .listing-card__fav:hover { color: var(--accent); }
+    .rating-rij { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .sterren-groot { color: var(--ster); font-size: 0.95rem; }
+    .rating-getal { font-weight: 700; font-size: 0.9rem; }
+    .rating-count { font-size: 0.82rem; color: var(--dim); }
+    .listing-meta { display: flex; gap: 12px; font-size: 0.82rem; color: var(--dim); margin-bottom: 10px; flex-wrap: wrap; }
+    .listing-meta span { display: flex; align-items: center; gap: 4px; }
+    .listing-card__beschrijving { font-size: 0.85rem; color: var(--dim); line-height: 1.6; margin-bottom: 12px; }
+    .listing-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .listing-tag { padding: 3px 10px; background: var(--bg-alt); border-radius: 999px; font-size: 0.75rem; color: var(--dim); }
+    .kaart-placeholder { background: white; border: 1px solid var(--border); border-radius: var(--radius); height: 300px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--dim); margin-bottom: 24px; position: relative; overflow: hidden; }
+    .kaart-placeholder::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, #e8f0e8 25%, #d4e4d4 50%, #e8f0e8 75%); }
+    .kaart-label { position: relative; z-index: 1; background: white; padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--border); font-size: 0.82rem; }
+    .paginatie { display: flex; justify-content: center; gap: 6px; margin-top: 24px; }
+    .pagina-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; background: white; }
+    .pagina-btn:hover, .pagina-btn.actief { background: var(--accent); color: white; border-color: var(--accent); }
+    .footer { background: #2b2b2b; color: white; padding: 48px 24px 28px; margin-top: 48px; }
+    .footer__top { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer__logo { font-size: 1.2rem; font-weight: 900; color: var(--accent); margin-bottom: 10px; }
+    .footer__tekst { font-size: 0.82rem; color: #999; line-height: 1.6; }
+    .footer__kolom-titel { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #777; margin-bottom: 14px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer__links a { font-size: 0.82rem; color: #bbb; transition: color 0.15s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom { max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid #3a3a3a; font-size: 0.78rem; color: #666; }
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: white; z-index: 200; flex-direction: column; padding: 70px 24px 40px; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu a { font-size: 1.2rem; font-weight: 600; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .mobiel-menu__sluiten { position: absolute; top: 16px; right: 20px; font-size: 1.4rem; cursor: pointer; color: var(--dim); }
+    @media (max-width: 1024px) {
+      .hoofd { grid-template-columns: 1fr; }
+      .filters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      .filter-sectie { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 16px; }
+      .navbar__zoekbalk { display: none; }
+      .navbar__acties { display: none; }
+      .navbar__hamburger { display: flex; }
+      .hero { padding: 36px 16px 44px; }
+      .hero__zoekbalk { flex-direction: column; border-radius: var(--radius); }
+      .hero__zoekbalk .zoek-veld { border-right: none; border-bottom: 1px solid var(--border); }
+      .hero__zoekbalk .zoek-btn { padding: 12px; }
+      .cat-balk { padding: 0 16px; }
+      .hoofd { padding: 16px; }
+      .filters { grid-template-columns: 1fr 1fr; }
+      .listing-card { flex-direction: column; }
+      .listing-card__beeld { width: 100%; height: 180px; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+      .footer__bottom { flex-direction: column; gap: 10px; }
+    }
+    @media (max-width: 480px) {
+      .filters { grid-template-columns: 1fr; }
+      .footer__top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <div class="navbar__zoekbalk">
+      <div class="zoek-veld"><span class="zoek-veld__icon">🔍</span><input type="text" placeholder="{{ZOEK_PLACEHOLDER_1}}" /></div>
+      <div class="zoek-veld"><span class="zoek-veld__icon">📍</span><input type="text" placeholder="{{ZOEK_PLACEHOLDER_2}}" /></div>
+      <button class="zoek-btn">Zoeken</button>
+    </div>
+    <div class="navbar__acties">
+      <a href="#">Inloggen</a>
+      <a href="#">Registreren</a>
+      <a href="#">Bedrijf toevoegen</a>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">{{CAT_1}}</a>
+    <a href="#" onclick="menuToggle()">{{CAT_2}}</a>
+    <a href="#" onclick="menuToggle()">Inloggen</a>
+    <a href="#" onclick="menuToggle()">Bedrijf toevoegen</a>
+  </div>
+  <section class="hero">
+    <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__zoekbalk">
+      <div class="zoek-veld"><span class="zoek-veld__icon">🔍</span><input type="text" placeholder="{{ZOEK_PLACEHOLDER_1}}" /></div>
+      <div class="zoek-veld"><span class="zoek-veld__icon">📍</span><input type="text" placeholder="{{ZOEK_PLACEHOLDER_2}}" /></div>
+      <button class="zoek-btn">Zoeken</button>
+    </div>
+  </section>
+  <div class="cat-balk">
+    <span class="cat-link actief">{{CAT_1}}</span>
+    <span class="cat-link">{{CAT_2}}</span>
+    <span class="cat-link">{{CAT_3}}</span>
+    <span class="cat-link">{{CAT_4}}</span>
+    <span class="cat-link">{{CAT_5}}</span>
+    <span class="cat-link">{{CAT_6}}</span>
+  </div>
+  <div class="hoofd">
+    <aside class="filters">
+      <div class="filter-sectie">
+        <div class="filter-titel">Afstand</div>
+        <div class="filter-opties">
+          <label class="filter-optie"><input type="radio" name="afstand" checked /> Binnen 1 km<span class="filter-optie__count">{{COUNT_1KM}}</span></label>
+          <label class="filter-optie"><input type="radio" name="afstand" /> Binnen 5 km<span class="filter-optie__count">{{COUNT_5KM}}</span></label>
+          <label class="filter-optie"><input type="radio" name="afstand" /> Binnen 10 km<span class="filter-optie__count">{{COUNT_10KM}}</span></label>
+        </div>
+      </div>
+      <div class="filter-sectie">
+        <div class="filter-titel">Prijsklasse</div>
+        <div class="prijs-opties">
+          <button class="prijs-btn actief">€</button>
+          <button class="prijs-btn">€€</button>
+          <button class="prijs-btn">€€€</button>
+          <button class="prijs-btn">€€€€</button>
+        </div>
+      </div>
+      <div class="filter-sectie">
+        <div class="filter-titel">Beoordeling</div>
+        <div class="ster-filter">
+          <label class="ster-rij"><input type="checkbox" /> <span class="sterren">★★★★★</span> 5 sterren</label>
+          <label class="ster-rij"><input type="checkbox" checked /> <span class="sterren">★★★★☆</span> 4+ sterren</label>
+          <label class="ster-rij"><input type="checkbox" /> <span class="sterren">★★★☆☆</span> 3+ sterren</label>
+        </div>
+      </div>
+      <div class="filter-sectie">
+        <div class="filter-titel">Kenmerken</div>
+        <div class="filter-opties">
+          <label class="filter-optie"><input type="checkbox" /> {{KENMERK_1}}<span class="filter-optie__count">{{COUNT_K1}}</span></label>
+          <label class="filter-optie"><input type="checkbox" /> {{KENMERK_2}}<span class="filter-optie__count">{{COUNT_K2}}</span></label>
+          <label class="filter-optie"><input type="checkbox" /> {{KENMERK_3}}<span class="filter-optie__count">{{COUNT_K3}}</span></label>
+        </div>
+      </div>
+    </aside>
+    <main class="results">
+      <div class="kaart-placeholder"><span class="kaart-label">🗺️ Kaartweergave — {{LOCATIE}}</span></div>
+      <div class="results-header">
+        <span class="results-count">{{RESULTS_COUNT}} resultaten gevonden</span>
+        <select class="sort-select"><option>Beste match</option><option>Hoogste beoordeling</option><option>Meeste reviews</option><option>Dichtst bij</option></select>
+      </div>
+      <div class="listing-lijst">
+        <div class="listing-card">
+          <div class="listing-card__beeld"><span class="listing-card__promo">{{LISTING_1_PROMO}}</span>[ afbeelding ]</div>
+          <div class="listing-card__body">
+            <div class="listing-card__header"><div class="listing-card__naam">{{LISTING_1_NAAM}}</div><span class="listing-card__fav">♡</span></div>
+            <div class="rating-rij"><span class="sterren-groot">★★★★★</span><span class="rating-getal">{{LISTING_1_RATING}}</span><span class="rating-count">({{LISTING_1_REVIEWS}} reviews)</span></div>
+            <div class="listing-meta"><span>{{LISTING_1_CAT}}</span><span>· {{LISTING_1_PRIJS}}</span><span>· {{LISTING_1_AFSTAND}}</span></div>
+            <p class="listing-card__beschrijving">{{LISTING_1_BESCHRIJVING}}</p>
+            <div class="listing-tags"><span class="listing-tag">{{LISTING_1_TAG_1}}</span><span class="listing-tag">{{LISTING_1_TAG_2}}</span><span class="listing-tag">{{LISTING_1_TAG_3}}</span></div>
+          </div>
+        </div>
+        <div class="listing-card">
+          <div class="listing-card__beeld">[ afbeelding ]</div>
+          <div class="listing-card__body">
+            <div class="listing-card__header"><div class="listing-card__naam">{{LISTING_2_NAAM}}</div><span class="listing-card__fav">♡</span></div>
+            <div class="rating-rij"><span class="sterren-groot">★★★★☆</span><span class="rating-getal">{{LISTING_2_RATING}}</span><span class="rating-count">({{LISTING_2_REVIEWS}} reviews)</span></div>
+            <div class="listing-meta"><span>{{LISTING_2_CAT}}</span><span>· {{LISTING_2_PRIJS}}</span><span>· {{LISTING_2_AFSTAND}}</span></div>
+            <p class="listing-card__beschrijving">{{LISTING_2_BESCHRIJVING}}</p>
+            <div class="listing-tags"><span class="listing-tag">{{LISTING_2_TAG_1}}</span><span class="listing-tag">{{LISTING_2_TAG_2}}</span></div>
+          </div>
+        </div>
+        <div class="listing-card">
+          <div class="listing-card__beeld"><span class="listing-card__promo">{{LISTING_3_PROMO}}</span>[ afbeelding ]</div>
+          <div class="listing-card__body">
+            <div class="listing-card__header"><div class="listing-card__naam">{{LISTING_3_NAAM}}</div><span class="listing-card__fav">♡</span></div>
+            <div class="rating-rij"><span class="sterren-groot">★★★★★</span><span class="rating-getal">{{LISTING_3_RATING}}</span><span class="rating-count">({{LISTING_3_REVIEWS}} reviews)</span></div>
+            <div class="listing-meta"><span>{{LISTING_3_CAT}}</span><span>· {{LISTING_3_PRIJS}}</span><span>· {{LISTING_3_AFSTAND}}</span></div>
+            <p class="listing-card__beschrijving">{{LISTING_3_BESCHRIJVING}}</p>
+            <div class="listing-tags"><span class="listing-tag">{{LISTING_3_TAG_1}}</span><span class="listing-tag">{{LISTING_3_TAG_2}}</span><span class="listing-tag">{{LISTING_3_TAG_3}}</span></div>
+          </div>
+        </div>
+        <div class="listing-card">
+          <div class="listing-card__beeld">[ afbeelding ]</div>
+          <div class="listing-card__body">
+            <div class="listing-card__header"><div class="listing-card__naam">{{LISTING_4_NAAM}}</div><span class="listing-card__fav">♡</span></div>
+            <div class="rating-rij"><span class="sterren-groot">★★★★☆</span><span class="rating-getal">{{LISTING_4_RATING}}</span><span class="rating-count">({{LISTING_4_REVIEWS}} reviews)</span></div>
+            <div class="listing-meta"><span>{{LISTING_4_CAT}}</span><span>· {{LISTING_4_PRIJS}}</span><span>· {{LISTING_4_AFSTAND}}</span></div>
+            <p class="listing-card__beschrijving">{{LISTING_4_BESCHRIJVING}}</p>
+            <div class="listing-tags"><span class="listing-tag">{{LISTING_4_TAG_1}}</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="paginatie">
+        <button class="pagina-btn actief">1</button>
+        <button class="pagina-btn">2</button>
+        <button class="pagina-btn">3</button>
+        <button class="pagina-btn">→</button>
+      </div>
+    </main>
+  </div>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_BESCHRIJVING}}</p></div>
+      <div><div class="footer__kolom-titel">Ontdekken</div><ul class="footer__links"><li><a href="#">{{CAT_1}}</a></li><li><a href="#">{{CAT_2}}</a></li><li><a href="#">Nieuw</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijven</div><ul class="footer__links"><li><a href="#">Aanmelden</a></li><li><a href="#">Adverteren</a></li><li><a href="#">API</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Help</div><ul class="footer__links"><li><a href="#">FAQ</a></li><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <span>{{FOOTER_TAGLINE}}</span>
+    </div>
+  </footer>
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click', menuToggle);
+    document.getElementById('jaar').textContent = new Date().getFullYear();
+    document.querySelectorAll('.cat-link').forEach(t => t.addEventListener('click', () => { document.querySelectorAll('.cat-link').forEach(x => x.classList.remove('actief')); t.classList.add('actief'); }));
+    document.querySelectorAll('.prijs-btn').forEach(t => t.addEventListener('click', () => { document.querySelectorAll('.prijs-btn').forEach(x => x.classList.remove('actief')); t.classList.add('actief'); }));
+    document.querySelectorAll('.pagina-btn').forEach(t => t.addEventListener('click', () => { document.querySelectorAll('.pagina-btn').forEach(x => x.classList.remove('actief')); t.classList.add('actief'); }));
+    const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}),{threshold:0.08});
+    document.querySelectorAll('.listing-card').forEach(el => { el.style.opacity='0';el.style.transform='translateY(12px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el); });
+  </script>
+</body>
+</html>
