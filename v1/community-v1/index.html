@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}} Community</title>
+  <style>
+    :root {
+      --bg: #ffffff; --bg-alt: #f8f8fb; --bg-card: #f3f4f8; --tekst: #1a1a1a;
+      --dim: #6b7280; --accent: #006dcc; --accent-light: #e8f0fe; --border: #e5e7eb;
+      --groen: #12a012; --oranje: #e45735; --nav: 56px; --max: 1200px; --radius: 6px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg-alt); color: var(--tekst); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    .navbar { position: sticky; top: 0; z-index: 100; height: var(--nav); background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; padding: 0 24px; }
+    .navbar__logo { font-size: 1rem; font-weight: 700; color: var(--tekst); flex-shrink: 0; }
+    .navbar__zoek { flex: 1; max-width: 400px; position: relative; }
+    .navbar__zoek input { width: 100%; padding: 7px 14px 7px 34px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.85rem; background: var(--bg-alt); outline: none; }
+    .navbar__zoek input:focus { border-color: var(--accent); background: white; }
+    .navbar__zoek-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--dim); font-size: 0.85rem; }
+    .navbar__acties { display: flex; gap: 10px; align-items: center; margin-left: auto; }
+    .btn-primary { background: var(--accent); color: white; padding: 7px 16px; border-radius: var(--radius); font-size: 0.85rem; font-weight: 600; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-ghost { color: var(--dim); font-size: 0.85rem; padding: 7px 12px; border-radius: var(--radius); transition: all 0.15s; border: 1px solid var(--border); background: white; cursor: pointer; }
+    .btn-ghost:hover { color: var(--tekst); background: var(--bg-alt); }
+    .navbar__hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; margin-left: 8px; }
+    .navbar__hamburger span { display: block; width: 20px; height: 2px; background: var(--dim); }
+    .hero { background: var(--accent); color: white; padding: 48px 24px; text-align: center; }
+    .hero__headline { font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .hero__sub { font-size: 0.95rem; opacity: 0.85; max-width: 480px; margin: 0 auto 28px; line-height: 1.7; }
+    .hero__zoek { display: flex; max-width: 500px; margin: 0 auto; background: white; border-radius: var(--radius); overflow: hidden; }
+    .hero__zoek input { flex: 1; padding: 12px 16px; border: none; outline: none; font-size: 0.9rem; color: var(--tekst); }
+    .hero__zoek button { background: var(--oranje); color: white; border: none; padding: 12px 20px; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
+    .hoofd { max-width: var(--max); margin: 0 auto; padding: 32px 24px; display: grid; grid-template-columns: 1fr 280px; gap: 24px; }
+    .main { }
+    .sectie-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .sectie-titel { font-size: 0.88rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); }
+    .topic-lijst { background: white; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .topic-header { display: grid; grid-template-columns: 1fr 60px 60px 80px; gap: 8px; padding: 10px 16px; background: var(--bg-alt); border-bottom: 1px solid var(--border); font-size: 0.75rem; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; }
+    .topic-rij { display: grid; grid-template-columns: 1fr 60px 60px 80px; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--border); align-items: center; transition: background 0.15s; }
+    .topic-rij:last-child { border-bottom: none; }
+    .topic-rij:hover { background: var(--bg-alt); }
+    .topic-rij__info { display: flex; align-items: flex-start; gap: 12px; min-width: 0; }
+    .topic-rij__avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: var(--dim); flex-shrink: 0; }
+    .topic-rij__content { min-width: 0; }
+    .topic-rij__titel { font-size: 0.9rem; font-weight: 600; color: var(--tekst); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .topic-rij__titel:hover { color: var(--accent); cursor: pointer; }
+    .topic-rij__meta { display: flex; gap: 8px; flex-wrap: wrap; }
+    .topic-cat { font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 3px; background: var(--accent-light); color: var(--accent); }
+    .topic-tag { font-size: 0.72rem; color: var(--dim); padding: 2px 6px; background: var(--bg-card); border-radius: 3px; }
+    .topic-rij__getal { font-size: 0.82rem; color: var(--dim); text-align: center; }
+    .topic-rij__tijd { font-size: 0.78rem; color: var(--dim); text-align: right; white-space: nowrap; }
+    .topic-rij__new { display: inline-block; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; margin-left: 6px; vertical-align: middle; }
+    .laad-meer { padding: 16px; text-align: center; border-top: 1px solid var(--border); }
+    .laad-meer a { font-size: 0.85rem; color: var(--accent); font-weight: 500; }
+    .sidebar { }
+    .sidebar-blok { background: white; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 16px; overflow: hidden; }
+    .sidebar-blok__header { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); display: flex; justify-content: space-between; align-items: center; }
+    .sidebar-blok__header a { font-size: 0.75rem; color: var(--accent); font-weight: 500; text-transform: none; letter-spacing: 0; }
+    .cat-lijst { list-style: none; }
+    .cat-lijst li { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; }
+    .cat-lijst li:last-child { border-bottom: none; }
+    .cat-lijst li:hover { background: var(--bg-alt); }
+    .cat-kleur { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .cat-naam { font-size: 0.88rem; font-weight: 500; flex: 1; }
+    .cat-count { font-size: 0.78rem; color: var(--dim); }
+    .stats-lijst { list-style: none; }
+    .stats-lijst li { display: flex; justify-content: space-between; padding: 8px 16px; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .stats-lijst li:last-child { border-bottom: none; }
+    .stats-lijst .getal { font-weight: 700; }
+    .actieve-leden { padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .lid-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 700; color: var(--dim); cursor: pointer; transition: transform 0.15s; }
+    .lid-avatar:hover { transform: scale(1.15); }
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: white; z-index: 200; flex-direction: column; padding: 70px 24px 40px; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu a { font-size: 1.2rem; font-weight: 600; padding: 14px 0; border-bottom: 1px solid var(--border); color: var(--tekst); }
+    .mobiel-menu__sluiten { position: absolute; top: 16px; right: 20px; font-size: 1.4rem; cursor: pointer; color: var(--dim); }
+    @media (max-width: 900px) {
+      .hoofd { grid-template-columns: 1fr; }
+      .sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    }
+    @media (max-width: 768px) {
+      .navbar__zoek { display: none; }
+      .navbar__acties .btn-ghost { display: none; }
+      .navbar__hamburger { display: flex; }
+      .hero { padding: 36px 20px; }
+      .hoofd { padding: 20px 16px; }
+      .topic-header { display: none; }
+      .topic-rij { grid-template-columns: 1fr 50px; }
+      .topic-rij__getal:first-of-type { display: none; }
+      .topic-rij__getal:last-of-type { display: none; }
+      .sidebar { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <div class="navbar__zoek">
+      <span class="navbar__zoek-icon">🔍</span>
+      <input type="text" placeholder="Zoek in community..." />
+    </div>
+    <div class="navbar__acties">
+      <button class="btn-ghost">Inloggen</button>
+      <button class="btn-primary">+ Nieuw topic</button>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">Categorieën</a>
+    <a href="#" onclick="menuToggle()">Nieuwste</a>
+    <a href="#" onclick="menuToggle()">Inloggen</a>
+    <a href="#" onclick="menuToggle()">Registreren</a>
+  </div>
+  <section class="hero">
+    <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__zoek">
+      <input type="text" placeholder="Zoek discussies, vragen, ideeën..." />
+      <button>Zoeken</button>
+    </div>
+  </section>
+  <div class="hoofd">
+    <main class="main">
+      <div class="sectie-header">
+        <span class="sectie-titel">Nieuwste discussies</span>
+        <button class="btn-primary" style="font-size:0.82rem;padding:6px 14px;">+ Nieuw topic</button>
+      </div>
+      <div class="topic-lijst">
+        <div class="topic-header">
+          <span>Topic</span><span style="text-align:center;">Reacties</span><span style="text-align:center;">Views</span><span style="text-align:right;">Activiteit</span>
+        </div>
+        <div class="topic-rij">
+          <div class="topic-rij__info">
+            <div class="topic-rij__avatar">{{TOPIC_1_INITIALEN}}</div>
+            <div class="topic-rij__content">
+              <div class="topic-rij__titel">{{TOPIC_1_TITEL}}<span class="topic-rij__new"></span></div>
+              <div class="topic-rij__meta"><span class="topic-cat">{{TOPIC_1_CAT}}</span><span class="topic-tag">{{TOPIC_1_TAG}}</span></div>
+            </div>
+          </div>
+          <div class="topic-rij__getal">{{TOPIC_1_REACTIES}}</div>
+          <div class="topic-rij__getal">{{TOPIC_1_VIEWS}}</div>
+          <div class="topic-rij__tijd">{{TOPIC_1_TIJD}}</div>
+        </div>
+        <div class="topic-rij">
+          <div class="topic-rij__info">
+            <div class="topic-rij__avatar">{{TOPIC_2_INITIALEN}}</div>
+            <div class="topic-rij__content">
+              <div class="topic-rij__titel">{{TOPIC_2_TITEL}}</div>
+              <div class="topic-rij__meta"><span class="topic-cat">{{TOPIC_2_CAT}}</span></div>
+            </div>
+          </div>
+          <div class="topic-rij__getal">{{TOPIC_2_REACTIES}}</div>
+          <div class="topic-rij__getal">{{TOPIC_2_VIEWS}}</div>
+          <div class="topic-rij__tijd">{{TOPIC_2_TIJD}}</div>
+        </div>
+        <div class="topic-rij">
+          <div class="topic-rij__info">
+            <div class="topic-rij__avatar">{{TOPIC_3_INITIALEN}}</div>
+            <div class="topic-rij__content">
+              <div class="topic-rij__titel">{{TOPIC_3_TITEL}}<span class="topic-rij__new"></span></div>
+              <div class="topic-rij__meta"><span class="topic-cat">{{TOPIC_3_CAT}}</span><span class="topic-tag">{{TOPIC_3_TAG}}</span></div>
+            </div>
+          </div>
+          <div class="topic-rij__getal">{{TOPIC_3_REACTIES}}</div>
+          <div class="topic-rij__getal">{{TOPIC_3_VIEWS}}</div>
+          <div class="topic-rij__tijd">{{TOPIC_3_TIJD}}</div>
+        </div>
+        <div class="topic-rij">
+          <div class="topic-rij__info">
+            <div class="topic-rij__avatar">{{TOPIC_4_INITIALEN}}</div>
+            <div class="topic-rij__content">
+              <div class="topic-rij__titel">{{TOPIC_4_TITEL}}</div>
+              <div class="topic-rij__meta"><span class="topic-cat">{{TOPIC_4_CAT}}</span></div>
+            </div>
+          </div>
+          <div class="topic-rij__getal">{{TOPIC_4_REACTIES}}</div>
+          <div class="topic-rij__getal">{{TOPIC_4_VIEWS}}</div>
+          <div class="topic-rij__tijd">{{TOPIC_4_TIJD}}</div>
+        </div>
+        <div class="topic-rij">
+          <div class="topic-rij__info">
+            <div class="topic-rij__avatar">{{TOPIC_5_INITIALEN}}</div>
+            <div class="topic-rij__content">
+              <div class="topic-rij__titel">{{TOPIC_5_TITEL}}<span class="topic-rij__new"></span></div>
+              <div class="topic-rij__meta"><span class="topic-cat">{{TOPIC_5_CAT}}</span><span class="topic-tag">{{TOPIC_5_TAG}}</span></div>
+            </div>
+          </div>
+          <div class="topic-rij__getal">{{TOPIC_5_REACTIES}}</div>
+          <div class="topic-rij__getal">{{TOPIC_5_VIEWS}}</div>
+          <div class="topic-rij__tijd">{{TOPIC_5_TIJD}}</div>
+        </div>
+        <div class="topic-rij">
+          <div class="topic-rij__info">
+            <div class="topic-rij__avatar">{{TOPIC_6_INITIALEN}}</div>
+            <div class="topic-rij__content">
+              <div class="topic-rij__titel">{{TOPIC_6_TITEL}}</div>
+              <div class="topic-rij__meta"><span class="topic-cat">{{TOPIC_6_CAT}}</span></div>
+            </div>
+          </div>
+          <div class="topic-rij__getal">{{TOPIC_6_REACTIES}}</div>
+          <div class="topic-rij__getal">{{TOPIC_6_VIEWS}}</div>
+          <div class="topic-rij__tijd">{{TOPIC_6_TIJD}}</div>
+        </div>
+        <div class="topic-rij">
+          <div class="topic-rij__info">
+            <div class="topic-rij__avatar">{{TOPIC_7_INITIALEN}}</div>
+            <div class="topic-rij__content">
+              <div class="topic-rij__titel">{{TOPIC_7_TITEL}}</div>
+              <div class="topic-rij__meta"><span class="topic-cat">{{TOPIC_7_CAT}}</span><span class="topic-tag">{{TOPIC_7_TAG}}</span></div>
+            </div>
+          </div>
+          <div class="topic-rij__getal">{{TOPIC_7_REACTIES}}</div>
+          <div class="topic-rij__getal">{{TOPIC_7_VIEWS}}</div>
+          <div class="topic-rij__tijd">{{TOPIC_7_TIJD}}</div>
+        </div>
+        <div class="laad-meer"><a href="#">Meer topics laden →</a></div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <div class="sidebar-blok">
+        <div class="sidebar-blok__header"><span>Categorieën</span><a href="#">Alles</a></div>
+        <ul class="cat-lijst">
+          <li><span class="cat-kleur" style="background:{{CAT_1_KLEUR}};"></span><span class="cat-naam">{{CAT_1_NAAM}}</span><span class="cat-count">{{CAT_1_COUNT}}</span></li>
+          <li><span class="cat-kleur" style="background:{{CAT_2_KLEUR}};"></span><span class="cat-naam">{{CAT_2_NAAM}}</span><span class="cat-count">{{CAT_2_COUNT}}</span></li>
+          <li><span class="cat-kleur" style="background:{{CAT_3_KLEUR}};"></span><span class="cat-naam">{{CAT_3_NAAM}}</span><span class="cat-count">{{CAT_3_COUNT}}</span></li>
+          <li><span class="cat-kleur" style="background:{{CAT_4_KLEUR}};"></span><span class="cat-naam">{{CAT_4_NAAM}}</span><span class="cat-count">{{CAT_4_COUNT}}</span></li>
+          <li><span class="cat-kleur" style="background:{{CAT_5_KLEUR}};"></span><span class="cat-naam">{{CAT_5_NAAM}}</span><span class="cat-count">{{CAT_5_COUNT}}</span></li>
+        </ul>
+      </div>
+      <div class="sidebar-blok">
+        <div class="sidebar-blok__header"><span>Community stats</span></div>
+        <ul class="stats-lijst">
+          <li><span>Topics</span><span class="getal">{{STAT_TOPICS}}</span></li>
+          <li><span>Reacties</span><span class="getal">{{STAT_REACTIES}}</span></li>
+          <li><span>Leden</span><span class="getal">{{STAT_LEDEN}}</span></li>
+          <li><span>Online nu</span><span class="getal" style="color:var(--groen);">{{STAT_ONLINE}}</span></li>
+        </ul>
+      </div>
+      <div class="sidebar-blok">
+        <div class="sidebar-blok__header"><span>Actieve leden</span></div>
+        <div class="actieve-leden">
+          <div class="lid-avatar">{{LID_1}}</div>
+          <div class="lid-avatar">{{LID_2}}</div>
+          <div class="lid-avatar">{{LID_3}}</div>
+          <div class="lid-avatar">{{LID_4}}</div>
+          <div class="lid-avatar">{{LID_5}}</div>
+          <div class="lid-avatar">{{LID_6}}</div>
+          <div class="lid-avatar">{{LID_7}}</div>
+          <div class="lid-avatar">{{LID_8}}</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click', menuToggle);
+  </script>
+</body>
+</html>
