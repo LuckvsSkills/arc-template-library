@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{
+      --bg:#fff;--bg-alt:#f0faf5;--tekst:#1a1a1a;--dim:#6b7280;
+      --accent:#09b267;--accent-dark:#078a51;--accent-light:#e6f9f0;
+      --border:#e5e7eb;--rood:#e63946;--nav:56px;--max:1280px;--radius:12px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 24px}
+    .navbar__logo{font-size:1.3rem;font-weight:900;color:var(--accent);letter-spacing:-0.02em;flex-shrink:0}
+    .navbar__zoek{flex:1;max-width:560px;display:flex;background:var(--bg-alt);border:1px solid var(--border);border-radius:999px;overflow:hidden;align-items:center;padding:0 16px;gap:8px}
+    .navbar__zoek input{flex:1;padding:9px 0;border:none;outline:none;font-size:0.88rem;background:transparent;color:var(--tekst)}
+    .navbar__zoek-icon{color:var(--dim);font-size:0.9rem;flex-shrink:0}
+    .navbar__acties{display:flex;gap:10px;align-items:center;margin-left:auto}
+    .navbar__acties a{font-size:0.82rem;color:var(--dim);font-weight:500;transition:color 0.15s}
+    .navbar__acties a:hover{color:var(--tekst)}
+    .btn-accent{background:var(--accent);color:#fff;padding:8px 18px;border-radius:999px;font-size:0.85rem;font-weight:700;border:none;cursor:pointer;transition:background 0.2s}
+    .btn-accent:hover{background:var(--accent-dark)}
+    .btn-outline{border:1px solid var(--border);color:var(--tekst);padding:7px 16px;border-radius:999px;font-size:0.85rem;font-weight:500;background:#fff;cursor:pointer;transition:all 0.15s}
+    .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;margin-left:8px}
+    .navbar__hamburger span{display:block;width:20px;height:2px;background:var(--tekst)}
+    .cat-balk{padding:0 24px;border-bottom:1px solid var(--border);display:flex;gap:4px;overflow-x:auto}
+    .cat-link{padding:12px 14px;font-size:0.82rem;font-weight:600;color:var(--dim);white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.15s;cursor:pointer;display:flex;align-items:center;gap:6px}
+    .cat-link:hover,.cat-link.actief{color:var(--accent);border-bottom-color:var(--accent)}
+    .hero{background:var(--bg-alt);padding:56px 24px;text-align:center;border-bottom:1px solid var(--border)}
+    .hero__headline{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:10px}
+    .hero__sub{font-size:0.95rem;color:var(--dim);max-width:440px;margin:0 auto 28px;line-height:1.7}
+    .hero__zoekbalk{display:flex;max-width:600px;margin:0 auto;background:#fff;border:1px solid var(--border);border-radius:999px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);padding:6px 6px 6px 20px;gap:10px;align-items:center}
+    .hero__zoekbalk input{flex:1;border:none;outline:none;font-size:0.9rem}
+    .hero__zoekbalk button{background:var(--accent);color:#fff;border:none;border-radius:999px;padding:10px 22px;font-size:0.88rem;font-weight:700;cursor:pointer;flex-shrink:0}
+    .hero__tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+    .hero-tag{padding:5px 14px;background:#fff;border:1px solid var(--border);border-radius:999px;font-size:0.78rem;color:var(--dim);cursor:pointer;transition:all 0.15s}
+    .hero-tag:hover{border-color:var(--accent);color:var(--accent)}
+    .hoofd{max-width:var(--max);margin:0 auto;padding:28px 24px}
+    .sectie-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    .sectie-titel{font-size:1.05rem;font-weight:700}
+    .sectie-filter{display:flex;gap:8px;overflow-x:auto}
+    .filter-pill{padding:6px 14px;border:1px solid var(--border);border-radius:999px;font-size:0.78rem;font-weight:500;cursor:pointer;background:#fff;transition:all 0.15s;white-space:nowrap}
+    .filter-pill:hover,.filter-pill.actief{background:var(--tekst);color:#fff;border-color:var(--tekst)}
+    .product-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:36px}
+    .product-card{cursor:pointer;border-radius:var(--radius);overflow:hidden;transition:transform 0.2s,box-shadow 0.2s}
+    .product-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.1)}
+    .product-card__beeld{aspect-ratio:3/4;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#bbb;position:relative;overflow:hidden}
+    .product-card__fav{position:absolute;top:8px;right:8px;width:28px;height:28px;background:rgba(255,255,255,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;opacity:0;transition:opacity 0.2s;backdrop-filter:blur(4px)}
+    .product-card:hover .product-card__fav{opacity:1}
+    .product-card__badge{position:absolute;top:8px;left:8px;background:var(--rood);color:#fff;font-size:0.62rem;font-weight:700;padding:2px 7px;border-radius:999px}
+    .product-card__body{padding:10px 8px}
+    .product-card__naam{font-size:0.85rem;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .product-card__merk{font-size:0.75rem;color:var(--dim);margin-bottom:4px}
+    .product-card__prijs{font-size:0.95rem;font-weight:800;color:var(--tekst)}
+    .product-card__prijs-oud{font-size:0.75rem;color:var(--dim);text-decoration:line-through;margin-left:4px}
+    .product-card__maat{font-size:0.72rem;color:var(--dim);margin-top:2px}
+    .sellers-sectie{background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 24px;margin-bottom:28px}
+    .sellers-sectie__inner{max-width:var(--max);margin:0 auto}
+    .sellers-grid{display:flex;gap:16px;overflow-x:auto;padding-bottom:8px;margin-top:18px}
+    .seller-card{flex-shrink:0;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center;width:140px;cursor:pointer;transition:all 0.2s}
+    .seller-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .seller-card__avatar{width:52px;height:52px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:var(--accent);margin:0 auto 10px}
+    .seller-card__naam{font-size:0.82rem;font-weight:700;margin-bottom:2px}
+    .seller-card__items{font-size:0.72rem;color:var(--dim)}
+    .seller-card__rating{font-size:0.72rem;color:#f5a623;margin-top:4px}
+    .hoe-werkt{max-width:var(--max);margin:0 auto;padding:48px 24px;text-align:center}
+    .hoe-werkt h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:40px}
+    .stappen{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+    .stap{text-align:center}
+    .stap__icon{font-size:2.4rem;margin-bottom:14px}
+    .stap__naam{font-size:0.92rem;font-weight:700;margin-bottom:6px}
+    .stap__tekst{font-size:0.82rem;color:var(--dim);line-height:1.65}
+    .cta-banner{background:var(--accent);color:#fff;padding:64px 24px;text-align:center}
+    .cta-banner h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:12px}
+    .cta-banner p{font-size:0.95rem;opacity:0.85;max-width:400px;margin:0 auto 28px;line-height:1.7}
+    .btn-wit{background:#fff;color:var(--accent);padding:12px 28px;border-radius:999px;font-size:0.92rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-wit:hover{opacity:0.9}
+    .footer{border-top:1px solid var(--border);padding:48px 24px 28px}
+    .footer__top{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+    .footer__logo{font-size:1.1rem;font-weight:900;color:var(--accent);margin-bottom:10px}
+    .footer__tekst{font-size:0.8rem;color:var(--dim);line-height:1.6;max-width:200px}
+    .footer__kolom-titel{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+    .footer__links{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .footer__links a{font-size:0.8rem;color:var(--dim);transition:color 0.15s}
+    .footer__links a:hover{color:var(--tekst)}
+    .footer__bottom{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;padding-top:18px;border-top:1px solid var(--border);font-size:0.73rem;color:var(--dim)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:#fff;z-index:200;flex-direction:column;padding:72px 24px 40px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.3rem;font-weight:600;padding:14px 0;border-bottom:1px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1100px){.product-grid{grid-template-columns:repeat(4,1fr)}}
+    @media(max-width:900px){.product-grid{grid-template-columns:repeat(3,1fr)}.footer__top{grid-template-columns:1fr 1fr}.stappen{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:768px){.navbar{padding:0 16px}.navbar__zoek{display:none}.navbar__acties{display:none}.navbar__hamburger{display:flex}.cat-balk{padding:0 16px}.hero{padding:40px 16px}.hoofd{padding:20px 16px}.product-grid{grid-template-columns:repeat(2,1fr)}.sellers-sectie{padding:24px 16px}.hoe-werkt{padding:40px 16px}.footer{padding:40px 16px 24px}.footer__bottom{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.footer__top{grid-template-columns:1fr}.stappen{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <div class="navbar__zoek">
+      <span class="navbar__zoek-icon">🔍</span>
+      <input type="text" placeholder="Zoek naar merken, items..." />
+    </div>
+    <div class="navbar__acties">
+      <a href="#">Inloggen</a>
+      <button class="btn-outline">Registreren</button>
+      <button class="btn-accent">Verkopen</button>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">{{CAT_1}}</a>
+    <a href="#" onclick="menuToggle()">{{CAT_2}}</a>
+    <a href="#" onclick="menuToggle()">Inloggen</a>
+    <a href="#" onclick="menuToggle()">Verkopen</a>
+  </div>
+  <div class="cat-balk">
+    <span class="cat-link actief">{{CAT_1}}</span>
+    <span class="cat-link">{{CAT_2}}</span>
+    <span class="cat-link">{{CAT_3}}</span>
+    <span class="cat-link">{{CAT_4}}</span>
+    <span class="cat-link">{{CAT_5}}</span>
+    <span class="cat-link">{{CAT_6}}</span>
+  </div>
+  <section class="hero">
+    <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__zoekbalk">
+      <input type="text" placeholder="Zoek naar items, merken..." />
+      <button>Zoeken</button>
+    </div>
+    <div class="hero__tags">
+      <span class="hero-tag">{{TAG_1}}</span>
+      <span class="hero-tag">{{TAG_2}}</span>
+      <span class="hero-tag">{{TAG_3}}</span>
+      <span class="hero-tag">{{TAG_4}}</span>
+      <span class="hero-tag">{{TAG_5}}</span>
+    </div>
+  </section>
+  <div class="hoofd">
+    <div class="sectie-header">
+      <span class="sectie-titel">{{SECTIE_1_TITEL}}</span>
+      <div class="sectie-filter">
+        <span class="filter-pill actief">Nieuwste</span>
+        <span class="filter-pill">Prijs ↑</span>
+        <span class="filter-pill">Prijs ↓</span>
+        <span class="filter-pill">Populair</span>
+      </div>
+    </div>
+    <div class="product-grid">
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__body"><div class="product-card__naam">{{P1_NAAM}}</div><div class="product-card__merk">{{P1_MERK}}</div><div><span class="product-card__prijs">{{P1_PRIJS}}</span></div><div class="product-card__maat">{{P1_MAAT}}</div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge">Nieuw</span><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__body"><div class="product-card__naam">{{P2_NAAM}}</div><div class="product-card__merk">{{P2_MERK}}</div><div><span class="product-card__prijs">{{P2_PRIJS}}</span></div><div class="product-card__maat">{{P2_MAAT}}</div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__body"><div class="product-card__naam">{{P3_NAAM}}</div><div class="product-card__merk">{{P3_MERK}}</div><div><span class="product-card__prijs">{{P3_PRIJS}}</span><span class="product-card__prijs-oud">{{P3_PRIJS_OUD}}</span></div><div class="product-card__maat">{{P3_MAAT}}</div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__body"><div class="product-card__naam">{{P4_NAAM}}</div><div class="product-card__merk">{{P4_MERK}}</div><div><span class="product-card__prijs">{{P4_PRIJS}}</span></div><div class="product-card__maat">{{P4_MAAT}}</div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge">Gereserveerd</span><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__body"><div class="product-card__naam">{{P5_NAAM}}</div><div class="product-card__merk">{{P5_MERK}}</div><div><span class="product-card__prijs">{{P5_PRIJS}}</span></div><div class="product-card__maat">{{P5_MAAT}}</div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__body"><div class="product-card__naam">{{P6_NAAM}}</div><div class="product-card__merk">{{P6_MERK}}</div><div><span class="product-card__prijs">{{P6_PRIJS}}</span></div><div class="product-card__maat">{{P6_MAAT}}</div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__body"><div class="product-card__naam">{{P7_NAAM}}</div><div class="product-card__merk">{{P7_MERK}}</div><div><span class="product-card__prijs">{{P7_PRIJS}}</span></div><div class="product-card__maat">{{P7_MAAT}}</div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge">Nieuw</span><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__body"><div class="product-card__naam">{{P8_NAAM}}</div><div class="product-card__merk">{{P8_MERK}}</div><div><span class="product-card__prijs">{{P8_PRIJS}}</span></div><div class="product-card__maat">{{P8_MAAT}}</div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__body"><div class="product-card__naam">{{P9_NAAM}}</div><div class="product-card__merk">{{P9_MERK}}</div><div><span class="product-card__prijs">{{P9_PRIJS}}</span></div><div class="product-card__maat">{{P9_MAAT}}</div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afb ]</div><div class="product-card__body"><div class="product-card__naam">{{P10_NAAM}}</div><div class="product-card__merk">{{P10_MERK}}</div><div><span class="product-card__prijs">{{P10_PRIJS}}</span></div><div class="product-card__maat">{{P10_MAAT}}</div></div></div>
+    </div>
+  </div>
+  <div class="sellers-sectie">
+    <div class="sellers-sectie__inner">
+      <div class="sectie-header"><span class="sectie-titel">{{SELLERS_TITEL}}</span><a href="#" style="font-size:0.82rem;color:var(--accent);font-weight:600">Alle verkopers →</a></div>
+      <div class="sellers-grid">
+        <div class="seller-card"><div class="seller-card__avatar">{{S1_INT}}</div><div class="seller-card__naam">{{S1_NAAM}}</div><div class="seller-card__items">{{S1_ITEMS}} items</div><div class="seller-card__rating">★★★★★</div></div>
+        <div class="seller-card"><div class="seller-card__avatar">{{S2_INT}}</div><div class="seller-card__naam">{{S2_NAAM}}</div><div class="seller-card__items">{{S2_ITEMS}} items</div><div class="seller-card__rating">★★★★★</div></div>
+        <div class="seller-card"><div class="seller-card__avatar">{{S3_INT}}</div><div class="seller-card__naam">{{S3_NAAM}}</div><div class="seller-card__items">{{S3_ITEMS}} items</div><div class="seller-card__rating">★★★★☆</div></div>
+        <div class="seller-card"><div class="seller-card__avatar">{{S4_INT}}</div><div class="seller-card__naam">{{S4_NAAM}}</div><div class="seller-card__items">{{S4_ITEMS}} items</div><div class="seller-card__rating">★★★★★</div></div>
+        <div class="seller-card"><div class="seller-card__avatar">{{S5_INT}}</div><div class="seller-card__naam">{{S5_NAAM}}</div><div class="seller-card__items">{{S5_ITEMS}} items</div><div class="seller-card__rating">★★★★★</div></div>
+        <div class="seller-card"><div class="seller-card__avatar">{{S6_INT}}</div><div class="seller-card__naam">{{S6_NAAM}}</div><div class="seller-card__items">{{S6_ITEMS}} items</div><div class="seller-card__rating">★★★★☆</div></div>
+      </div>
+    </div>
+  </div>
+  <section class="hoe-werkt">
+    <h2>{{HOE_WERKT_TITEL}}</h2>
+    <div class="stappen">
+      <div class="stap"><div class="stap__icon">{{S1_ICON}}</div><div class="stap__naam">{{STAP_1_NAAM}}</div><p class="stap__tekst">{{STAP_1_TEKST}}</p></div>
+      <div class="stap"><div class="stap__icon">{{S2_ICON}}</div><div class="stap__naam">{{STAP_2_NAAM}}</div><p class="stap__tekst">{{STAP_2_TEKST}}</p></div>
+      <div class="stap"><div class="stap__icon">{{S3_ICON}}</div><div class="stap__naam">{{STAP_3_NAAM}}</div><p class="stap__tekst">{{STAP_3_TEKST}}</p></div>
+      <div class="stap"><div class="stap__icon">{{S4_ICON}}</div><div class="stap__naam">{{STAP_4_NAAM}}</div><p class="stap__tekst">{{STAP_4_TEKST}}</p></div>
+    </div>
+  </section>
+  <section class="cta-banner">
+    <h2>{{CTA_HEADLINE}}</h2>
+    <p>{{CTA_SUB}}</p>
+    <button class="btn-wit">{{CTA_KNOP}}</button>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_BESCHRIJVING}}</p></div>
+      <div><div class="footer__kolom-titel">Kopen</div><ul class="footer__links"><li><a href="#">{{CAT_1}}</a></li><li><a href="#">{{CAT_2}}</a></li><li><a href="#">Nieuwe items</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Verkopen</div><ul class="footer__links"><li><a href="#">Begin met verkopen</a></li><li><a href="#">Tips</a></li><li><a href="#">Verkooptarieven</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Help</div><ul class="footer__links"><li><a href="#">FAQ</a></li><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <span>{{FOOTER_TAGLINE}}</span>
+    </div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    document.querySelectorAll('.filter-pill').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.filter-pill').forEach(x=>x.classList.remove('actief'));t.classList.add('actief')}));
+    document.querySelectorAll('.cat-link').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.cat-link').forEach(x=>x.classList.remove('actief'));t.classList.add('actief')}));
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.08});
+    document.querySelectorAll('.product-card,.seller-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(10px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
