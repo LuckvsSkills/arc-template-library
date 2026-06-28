@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}} Community</title>
+  <style>
+    :root{
+      --bg:#fff;--bg-alt:#f5f5f5;--bg-card:#fff;--tekst:#1a1a1a;--dim:#717171;
+      --accent:#3b49df;--accent-light:#e8eafd;--border:#d6d6d7;
+      --groen:#3d9970;--rood:#bb0000;--nav:56px;--max:1280px;--radius:6px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg-alt);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 16px}
+    .navbar__logo{font-size:1.4rem;font-weight:900;color:var(--tekst);letter-spacing:-0.02em;flex-shrink:0;display:flex;align-items:center;gap:8px}
+    .navbar__logo-box{width:36px;height:36px;background:var(--tekst);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:900;color:#fff;line-height:1}
+    .navbar__zoek{flex:1;max-width:480px;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;padding:0 12px;gap:8px}
+    .navbar__zoek input{flex:1;padding:8px 0;border:none;outline:none;font-size:0.88rem;background:transparent}
+    .navbar__zoek-icon{color:var(--dim);font-size:0.85rem}
+    .navbar__acties{display:flex;gap:8px;align-items:center;margin-left:auto}
+    .btn-accent{background:var(--accent);color:#fff;padding:7px 16px;border-radius:var(--radius);font-size:0.85rem;font-weight:600;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-accent:hover{opacity:0.88}
+    .btn-ghost{color:var(--accent);font-size:0.85rem;padding:6px 14px;border:1px solid var(--accent);border-radius:var(--radius);background:#fff;cursor:pointer;transition:all 0.15s}
+    .btn-ghost:hover{background:var(--accent-light)}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;margin-left:8px}
+    .navbar__hamburger span{display:block;width:20px;height:2px;background:var(--tekst)}
+    .hoofd{max-width:var(--max);margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:220px 1fr 300px;gap:16px}
+    .sidebar-links{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .sidebar-link{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:0.88rem;font-weight:500;color:var(--dim);cursor:pointer;transition:all 0.15s;border-radius:var(--radius)}
+    .sidebar-link:hover,.sidebar-link.actief{background:var(--accent-light);color:var(--accent);font-weight:600}
+    .sidebar-link__icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+    .sidebar-section{padding:8px}
+    .sidebar-section-label{font-size:0.68rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;padding:8px 6px 4px}
+    .tag-item{display:flex;align-items:center;gap:8px;padding:8px 6px;cursor:pointer;border-radius:4px;transition:background 0.15s}
+    .tag-item:hover{background:var(--bg-alt)}
+    .tag-item__kleur{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+    .tag-item__naam{font-size:0.85rem;color:var(--dim)}
+    .feed{display:flex;flex-direction:column;gap:0}
+    .feed-tabs{display:flex;gap:0;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:2px}
+    .feed-tab{padding:12px 18px;font-size:0.85rem;font-weight:600;color:var(--dim);cursor:pointer;transition:all 0.15s;border-bottom:2px solid transparent;flex:1;text-align:center}
+    .feed-tab:hover{color:var(--tekst);background:var(--bg-alt)}
+    .feed-tab.actief{color:var(--accent);border-bottom-color:var(--accent)}
+    .artikel-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:2px;transition:box-shadow 0.2s}
+    .artikel-card:hover{box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+    .artikel-card__header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .artikel-card__avatar{width:32px;height:32px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:var(--accent);flex-shrink:0}
+    .artikel-card__auteur-info{font-size:0.78rem;color:var(--dim)}
+    .artikel-card__auteur-naam{font-size:0.82rem;font-weight:600;color:var(--tekst)}
+    .artikel-card__cover{aspect-ratio:100/42;background:var(--bg-alt);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;color:#bbb;margin-bottom:12px;overflow:hidden}
+    .artikel-card__titel{font-size:1.2rem;font-weight:800;letter-spacing:-0.02em;line-height:1.2;margin-bottom:10px;cursor:pointer;transition:color 0.15s}
+    .artikel-card__titel:hover{color:var(--accent)}
+    .artikel-card__tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+    .artikel-tag{padding:4px 10px;border-radius:4px;font-size:0.75rem;font-weight:500;color:var(--dim);background:transparent;border:1px solid transparent;cursor:pointer;transition:all 0.15s}
+    .artikel-tag:hover{border-color:var(--border);background:var(--bg-alt)}
+    .artikel-card__footer{display:flex;align-items:center;justify-content:space-between}
+    .artikel-acties{display:flex;gap:12px}
+    .artikel-actie{display:flex;align-items:center;gap:5px;font-size:0.78rem;color:var(--dim);cursor:pointer;padding:4px 8px;border-radius:4px;transition:background 0.15s}
+    .artikel-actie:hover{background:var(--bg-alt);color:var(--tekst)}
+    .artikel-card__tijd{font-size:0.75rem;color:var(--dim)}
+    .artikel-card__leestijd{font-size:0.75rem;color:var(--dim)}
+    .artikel-card__bookmark{font-size:0.85rem;color:var(--dim);cursor:pointer;padding:4px 8px;border-radius:4px;transition:background 0.15s}
+    .artikel-card__bookmark:hover{background:var(--bg-alt)}
+    .sidebar-rechts{display:flex;flex-direction:column;gap:16px}
+    .widget{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .widget__header{padding:12px 16px;border-bottom:1px solid var(--border);font-size:0.88rem;font-weight:700}
+    .widget__body{padding:12px 16px}
+    .tag-lijst{display:flex;flex-direction:column;gap:4px}
+    .tag-rij{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-radius:4px;cursor:pointer;transition:background 0.15s}
+    .tag-rij:hover{background:var(--bg-alt)}
+    .tag-rij__naam{font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px}
+    .tag-rij__count{font-size:0.72rem;color:var(--dim)}
+    .tag-hash{color:var(--dim);font-weight:400}
+    .leaderboard{display:flex;flex-direction:column;gap:0}
+    .leider-rij{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+    .leider-rij:last-child{border-bottom:none}
+    .leider-rij__rang{font-size:0.82rem;font-weight:700;color:var(--dim);width:16px;flex-shrink:0}
+    .leider-rij__avatar{width:28px;height:28px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:700;color:var(--accent);flex-shrink:0}
+    .leider-rij__info{flex:1;min-width:0}
+    .leider-rij__naam{font-size:0.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .leider-rij__score{font-size:0.72rem;color:var(--dim)}
+    .btn-schrijf{width:100%;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:0.88rem;font-weight:700;cursor:pointer;margin-bottom:12px;transition:opacity 0.2s}
+    .btn-schrijf:hover{opacity:0.88}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:#fff;z-index:200;flex-direction:column;padding:72px 20px 40px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.2rem;font-weight:600;padding:14px 0;border-bottom:1px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1100px){.hoofd{grid-template-columns:200px 1fr}.sidebar-rechts{display:none}}
+    @media(max-width:768px){.navbar__zoek{display:none}.navbar__acties .btn-ghost{display:none}.navbar__hamburger{display:flex}.hoofd{grid-template-columns:1fr;padding:12px}.sidebar-links{display:none}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">
+      <div class="navbar__logo-box">{{LOGO_L}}</div>
+      {{BEDRIJFSNAAM}}
+    </div>
+    <div class="navbar__zoek">
+      <span class="navbar__zoek-icon">🔍</span>
+      <input type="text" placeholder="Zoek posts, tags, gebruikers..." />
+    </div>
+    <div class="navbar__acties">
+      <button class="btn-ghost">Inloggen</button>
+      <button class="btn-accent">Registreren</button>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">Home</a>
+    <a href="#" onclick="menuToggle()">Nieuwste</a>
+    <a href="#" onclick="menuToggle()">Inloggen</a>
+    <a href="#" onclick="menuToggle()">Registreren</a>
+  </div>
+  <div class="hoofd">
+    <!-- SIDEBAR LINKS -->
+    <aside>
+      <div class="sidebar-links">
+        <div class="sidebar-section">
+          <div class="sidebar-link actief"><span class="sidebar-link__icon">🏠</span> Home</div>
+          <div class="sidebar-link"><span class="sidebar-link__icon">🔖</span> Opgeslagen</div>
+          <div class="sidebar-link"><span class="sidebar-link__icon">🏷️</span> Tags</div>
+          <div class="sidebar-link"><span class="sidebar-link__icon">👤</span> Profiel</div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-section-label">Mijn tags</div>
+          <div class="tag-item"><div class="tag-kleur" style="background:#3b49df;width:12px;height:12px;border-radius:2px"></div><span class="tag-item__naam">#{{TAG_1}}</span></div>
+          <div class="tag-item"><div class="tag-kleur" style="background:#09b267;width:12px;height:12px;border-radius:2px"></div><span class="tag-item__naam">#{{TAG_2}}</span></div>
+          <div class="tag-item"><div class="tag-kleur" style="background:#7c3aed;width:12px;height:12px;border-radius:2px"></div><span class="tag-item__naam">#{{TAG_3}}</span></div>
+          <div class="tag-item"><div class="tag-kleur" style="background:#e63946;width:12px;height:12px;border-radius:2px"></div><span class="tag-item__naam">#{{TAG_4}}</span></div>
+        </div>
+      </div>
+    </aside>
+    <!-- FEED -->
+    <main>
+      <div class="feed-tabs">
+        <div class="feed-tab actief">Feed</div>
+        <div class="feed-tab">Nieuwste</div>
+        <div class="feed-tab">Trending</div>
+        <div class="feed-tab">Top van week</div>
+      </div>
+      <div class="feed">
+        <div class="artikel-card">
+          <div class="artikel-card__header">
+            <div class="artikel-card__avatar">{{A1_INT}}</div>
+            <div><div class="artikel-card__auteur-naam">{{A1_AUTEUR}}</div><div class="artikel-card__auteur-info">{{A1_DATUM}}</div></div>
+          </div>
+          <div class="artikel-card__cover">[ cover afbeelding ]</div>
+          <div class="artikel-card__titel">{{A1_TITEL}}</div>
+          <div class="artikel-card__tags"><span class="artikel-tag">#{{TAG_1}}</span><span class="artikel-tag">#{{TAG_2}}</span><span class="artikel-tag">#{{TAG_3}}</span></div>
+          <div class="artikel-card__footer">
+            <div class="artikel-acties">
+              <div class="artikel-actie">❤️ {{A1_LIKES}}</div>
+              <div class="artikel-actie">💬 {{A1_REACTIES}}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <span class="artikel-card__leestijd">{{A1_LEESTIJD}} min lezen</span>
+              <span class="artikel-card__bookmark">🔖</span>
+            </div>
+          </div>
+        </div>
+        <div class="artikel-card">
+          <div class="artikel-card__header">
+            <div class="artikel-card__avatar">{{A2_INT}}</div>
+            <div><div class="artikel-card__auteur-naam">{{A2_AUTEUR}}</div><div class="artikel-card__auteur-info">{{A2_DATUM}}</div></div>
+          </div>
+          <div class="artikel-card__titel">{{A2_TITEL}}</div>
+          <div class="artikel-card__tags"><span class="artikel-tag">#{{TAG_2}}</span><span class="artikel-tag">#{{TAG_4}}</span></div>
+          <div class="artikel-card__footer">
+            <div class="artikel-acties"><div class="artikel-actie">❤️ {{A2_LIKES}}</div><div class="artikel-actie">💬 {{A2_REACTIES}}</div></div>
+            <div style="display:flex;align-items:center;gap:12px"><span class="artikel-card__leestijd">{{A2_LEESTIJD}} min lezen</span><span class="artikel-card__bookmark">🔖</span></div>
+          </div>
+        </div>
+        <div class="artikel-card">
+          <div class="artikel-card__header">
+            <div class="artikel-card__avatar">{{A3_INT}}</div>
+            <div><div class="artikel-card__auteur-naam">{{A3_AUTEUR}}</div><div class="artikel-card__auteur-info">{{A3_DATUM}}</div></div>
+          </div>
+          <div class="artikel-card__cover">[ cover afbeelding ]</div>
+          <div class="artikel-card__titel">{{A3_TITEL}}</div>
+          <div class="artikel-card__tags"><span class="artikel-tag">#{{TAG_1}}</span><span class="artikel-tag">#{{TAG_3}}</span><span class="artikel-tag">#{{TAG_5}}</span></div>
+          <div class="artikel-card__footer">
+            <div class="artikel-acties"><div class="artikel-actie">❤️ {{A3_LIKES}}</div><div class="artikel-actie">💬 {{A3_REACTIES}}</div></div>
+            <div style="display:flex;align-items:center;gap:12px"><span class="artikel-card__leestijd">{{A3_LEESTIJD}} min lezen</span><span class="artikel-card__bookmark">🔖</span></div>
+          </div>
+        </div>
+        <div class="artikel-card">
+          <div class="artikel-card__header">
+            <div class="artikel-card__avatar">{{A4_INT}}</div>
+            <div><div class="artikel-card__auteur-naam">{{A4_AUTEUR}}</div><div class="artikel-card__auteur-info">{{A4_DATUM}}</div></div>
+          </div>
+          <div class="artikel-card__titel">{{A4_TITEL}}</div>
+          <div class="artikel-card__tags"><span class="artikel-tag">#{{TAG_4}}</span><span class="artikel-tag">#{{TAG_5}}</span></div>
+          <div class="artikel-card__footer">
+            <div class="artikel-acties"><div class="artikel-actie">❤️ {{A4_LIKES}}</div><div class="artikel-actie">💬 {{A4_REACTIES}}</div></div>
+            <div style="display:flex;align-items:center;gap:12px"><span class="artikel-card__leestijd">{{A4_LEESTIJD}} min lezen</span><span class="artikel-card__bookmark">🔖</span></div>
+          </div>
+        </div>
+        <div class="artikel-card">
+          <div class="artikel-card__header">
+            <div class="artikel-card__avatar">{{A5_INT}}</div>
+            <div><div class="artikel-card__auteur-naam">{{A5_AUTEUR}}</div><div class="artikel-card__auteur-info">{{A5_DATUM}}</div></div>
+          </div>
+          <div class="artikel-card__cover">[ cover afbeelding ]</div>
+          <div class="artikel-card__titel">{{A5_TITEL}}</div>
+          <div class="artikel-card__tags"><span class="artikel-tag">#{{TAG_1}}</span><span class="artikel-tag">#{{TAG_2}}</span></div>
+          <div class="artikel-card__footer">
+            <div class="artikel-acties"><div class="artikel-actie">❤️ {{A5_LIKES}}</div><div class="artikel-actie">💬 {{A5_REACTIES}}</div></div>
+            <div style="display:flex;align-items:center;gap:12px"><span class="artikel-card__leestijd">{{A5_LEESTIJD}} min lezen</span><span class="artikel-card__bookmark">🔖</span></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- SIDEBAR RECHTS -->
+    <aside class="sidebar-rechts">
+      <button class="btn-schrijf">✏️ Schrijf een post</button>
+      <div class="widget">
+        <div class="widget__header">#trending tags</div>
+        <div class="widget__body">
+          <div class="tag-lijst">
+            <div class="tag-rij"><div class="tag-rij__naam"><span class="tag-hash">#</span>{{TAG_1}}</div><div class="tag-rij__count">{{TAG_1_POSTS}} posts</div></div>
+            <div class="tag-rij"><div class="tag-rij__naam"><span class="tag-hash">#</span>{{TAG_2}}</div><div class="tag-rij__count">{{TAG_2_POSTS}} posts</div></div>
+            <div class="tag-rij"><div class="tag-rij__naam"><span class="tag-hash">#</span>{{TAG_3}}</div><div class="tag-rij__count">{{TAG_3_POSTS}} posts</div></div>
+            <div class="tag-rij"><div class="tag-rij__naam"><span class="tag-hash">#</span>{{TAG_4}}</div><div class="tag-rij__count">{{TAG_4_POSTS}} posts</div></div>
+            <div class="tag-rij"><div class="tag-rij__naam"><span class="tag-hash">#</span>{{TAG_5}}</div><div class="tag-rij__count">{{TAG_5_POSTS}} posts</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget__header">Top auteurs</div>
+        <div class="widget__body">
+          <div class="leaderboard">
+            <div class="leider-rij"><div class="leider-rij__rang">1</div><div class="leider-rij__avatar">{{L1_INT}}</div><div class="leider-rij__info"><div class="leider-rij__naam">{{L1_NAAM}}</div><div class="leider-rij__score">{{L1_POSTS}} posts · {{L1_LIKES}} ❤️</div></div></div>
+            <div class="leider-rij"><div class="leider-rij__rang">2</div><div class="leider-rij__avatar">{{L2_INT}}</div><div class="leider-rij__info"><div class="leider-rij__naam">{{L2_NAAM}}</div><div class="leider-rij__score">{{L2_POSTS}} posts · {{L2_LIKES}} ❤️</div></div></div>
+            <div class="leider-rij"><div class="leider-rij__rang">3</div><div class="leider-rij__avatar">{{L3_INT}}</div><div class="leider-rij__info"><div class="leider-rij__naam">{{L3_NAAM}}</div><div class="leider-rij__score">{{L3_POSTS}} posts · {{L3_LIKES}} ❤️</div></div></div>
+            <div class="leider-rij"><div class="leider-rij__rang">4</div><div class="leider-rij__avatar">{{L4_INT}}</div><div class="leider-rij__info"><div class="leider-rij__naam">{{L4_NAAM}}</div><div class="leider-rij__score">{{L4_POSTS}} posts · {{L4_LIKES}} ❤️</div></div></div>
+            <div class="leider-rij"><div class="leider-rij__rang">5</div><div class="leider-rij__avatar">{{L5_INT}}</div><div class="leider-rij__info"><div class="leider-rij__naam">{{L5_NAAM}}</div><div class="leider-rij__score">{{L5_POSTS}} posts · {{L5_LIKES}} ❤️</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget__header">Community stats</div>
+        <div class="widget__body" style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;font-size:0.85rem"><span style="color:var(--dim)">Leden</span><strong>{{STAT_LEDEN}}</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.85rem"><span style="color:var(--dim)">Posts</span><strong>{{STAT_POSTS}}</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.85rem"><span style="color:var(--dim)">Reacties</span><strong>{{STAT_REACTIES}}</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.85rem"><span style="color:var(--dim)">Online nu</span><strong style="color:var(--groen)">{{STAT_ONLINE}}</strong></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.querySelectorAll('.feed-tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.feed-tab').forEach(x=>x.classList.remove('actief'));t.classList.add('actief')}));
+    document.querySelectorAll('.sidebar-link').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.sidebar-link').forEach(x=>x.classList.remove('actief'));t.classList.add('actief')}));
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.05});
+    document.querySelectorAll('.artikel-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(8px)';el.style.transition='opacity 0.3s ease,transform 0.3s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
