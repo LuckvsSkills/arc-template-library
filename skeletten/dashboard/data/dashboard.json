@@ -1,0 +1,18 @@
+{
+  "stats": [
+    { "label": "Totaal gebruikers", "waarde": "1.248", "verandering": "+12%" },
+    { "label": "Actieve sessies", "waarde": "342", "verandering": "+5%" },
+    { "label": "Omzet (maand)", "waarde": "€8.420", "verandering": "+18%" },
+    { "label": "Openstaande taken", "waarde": "7", "verandering": "-2" }
+  ],
+  "tabel": {
+    "kolommen": ["Naam", "Status", "Datum", "Bedrag"],
+    "rijen": [
+      ["Project Alpha", "Actief", "12 jun 2026", "€1.200"],
+      ["Project Beta", "In review", "10 jun 2026", "€850"],
+      ["Project Gamma", "Afgerond", "5 jun 2026", "€2.400"],
+      ["Project Delta", "Actief", "1 jun 2026", "€600"]
+    ]
+  },
+  "menu": ["Overzicht", "Projecten", "Klanten", "Rapporten", "Instellingen"]
+}

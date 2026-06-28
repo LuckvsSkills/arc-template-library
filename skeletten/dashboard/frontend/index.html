@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PROJECT_NAAM}}</title>
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>{{PROJECT_NAAM}}</h1>
+            </div>
+            <nav id="sidebarMenu" class="sidebar-menu"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <button class="hamburger" id="sidebarToggle" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+                <p class="tagline">{{PROJECT_BESCHRIJVING}}</p>
+            </header>
+
+            <section id="statGrid" class="stat-grid"></section>
+
+            <section class="table-section">
+                <h2>Recente projecten</h2>
+                <div class="table-wrapper">
+                    <table id="dataTable"></table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../frontend/dashboard.js"></script>
+</body>
+</html>

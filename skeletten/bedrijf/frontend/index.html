@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    prime@Silver-Surfer:/tmp/template-bedrijf$ cd /tmp/template-bedrijf
+    <link rel="sprime@Silver-Surfer:/tmp/template-bedrijf$
+prime@Silver-Surfer:/tmp/template-bedrijf$ cat > frontend/index.html << 'EOF'
+> <!DOCTYPE html>
+ rel="stylesheet> <html lang="nl">
+> <head>
+ero">
+        <d>     <meta charset="UTF-8">
+>     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+="tagline">{{PRO>     <title>{{PROJECT_NAAM}}</title>
+>     <link rel="stylesheet" href="../styles/theme.css">
+>     <link rel="stylesheet" href="../styles/main.css">
+> </head>
+> <body>
+>     <header class="hero">
+>         <div class="container">
+>             <h1>{{PROJECT_NAAM}}</h1>
+>             <p class="tagline">{{PROJECT_BESCHRIJVING}}</p>
+>             <a href="#contact" class="btn-primary">Plan een gesprek</a>
+>         </div>
+>     </header>
+>
+>     <section class="services">
+>         <div class="container">
+>             <h2>Onze diensten</h2>
+>             <div class="service-grid">
+>                 <div class="service-card">
+>                     <h3>Dienst Een</h3>
+>                     <p>Beschrijving van deze dienst en de waarde die het biedt aan klanten.</p>
+>                 </div>
+>                 <div class="service-card">
+>                     <h3>Dienst Twee</h3>
+>                     <p>Beschrijving van deze dienst en de waarde die het biedt aan klanten.</p>
+     </div>
+                <div>                 </div>
+>                 <div class="service-card">
+>                     <h3>Dienst Drie</h3>
+>                     <p>Beschrijving van deze dienst en de waarde die het biedt aan klanten.</p>
+>                 </div>
+   </div>
+        </div>
+    </s>             </div>
+>         </div>
+ction class="tea>     </section>
+>
+>     <section class="team">
+ class="containe>         <div class="container">
+>             <h2>Ons team</h2>
+>             <div class="team-grid">
+>                 <div class="team-card">
+>                     <div class="team-photo-placeholder"></div>
+>                     <h3>Naam Persoon</h3>
+>                     <span class="role">Functietitel</span>
+>                 </div>
+>                 <div class="team-card">
+>                     <div class="team-photo-placeholder"></div>
+>                     <h3>Naam Persoon</h3>
+>                     <span class="role">Functietitel</span>
+>                 </div>
+>                 <div class="team-card">
+>                     <div class="team-photo-placeholder"></div>
+>                     <h3>Naam Persoon</h3>
+>                     <span class="role">Functietitel</span>
+>                 </div>
+>             </div>
+>         </div>
+>     </section>
+>
+>     <section class="testimonials">
+>         <div class="container">
+>             <h2>Wat klanten zeggen</h2>
+>             <div class="testimonial-grid">
+>                 <blockquote class="testimonial-card">
+>                     <p>"Een korte, krachtige quote van een tevreden klant over de samenwerking en het resultaat."</p>
+aam Klant, Bedrijfsnaam</cite>
+ >                     <cite>— Naam Klant, Bedrijfsnaam</cite>
+/blockquote>
+   >                 </blockquote>
+>                 <blockquote class="testimonial-card">
+>                     <p>"Een korte, krachtige quote van een tevreden klant over de samenwerking en het resultaat."</p>
+             <ci>                     <cite>— Naam Klant, Bedrijfsnaam</cite>
+>                 </blockquote>
+>             </div>
+>         </div>
+>     </section>
+>
+>     <section id="contact" class="contact">
+>         <div class="container">
+Neem contact op<>             <h2>Neem contact op</h2>
+>             <p>Klaar om samen te werken? Stuur ons een bericht.</p>
+     <form>
+    >             <form>
+>                 <input type="text" placeholder="Naam" required>
+>                 <input type="email" placeholder="E-mail" required>
+>                 <textarea placeholder="Bericht" required></textarea>
+>                 <button type="submit" class="btn-primary">Versturen</button>
+>             </form>
+>         </div>
+>     </section>
+>
+>     <footer>
+>         <div class="container">
+>             <p>&copy; {{JAAR}} {{PROJECT_NAAM}} — Gebouwd door ARC AI Agents</p>
+>         </div>
+>     </footer>
+> </body>
+/main.css << 'EOF'
+* { margin: 0> </html>
+; padding: 0; bo> EOF
+x-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  color: var(--text);
+}
+
+.hero {
+  background: var(--bg2);
+  padding: 6rem 0;
+  text-align: center;
+}
+
+.hero h1 { font-size: 2prime@Silver-Surfer:/tmp/template-bedrijf$
+.75rem; margin-bprime@Silver-Surfer:/tmp/template-bedrijf$ cat > styles/main.css << 'EOF'
+> * { margin: 0; padding: 0; box-sizing: border-box; }
+>
+ottom: 0.75rem; > body {
+>   background: var(--bg);
+>   color: var(--text);
+>   font-family: var(--font-body);
+>   line-height: 1.6;
+> }
+>
+> .container {
+>   max-width: 1100px;
+>   margin: 0 auto;
+>   padding: 0 2rem;
+> }
+>
+> h1, h2, h3 {
+>   font-family: var(--font-heading);
+>   color: var(--text);
+> }
+>
+> .hero {
+>   background: var(--bg2);
+>   padding: 6rem 0;
+mary {
+  display>   text-align: center;
+> }
+>
+> .hero h1 { font-size: 2.75rem; margin-bottom: 0.75rem; }
+> .hero .tagline { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem; }
+>
+> .btn-primary {
+>   display: inline-block;
+>   background: var(--accent);
+>   color: var(--bg);
+>   border: none;
+: var(--radius);
+  padding: 0.87>   border-radius: var(--radius);
+>   padding: 0.875rem 2rem;
+t-weight: 600;
+ >   font-weight: 600;
+>   cursor: pointer;
+>   text-decoration: none;
+t-family: var(-->   font-family: var(--font-body);
+>   font-size: 1rem;
+> }
+>
+> .services, .team, .testimonials { padding: 5rem 0; }
+> .services h2, .team h2, .testimonials h2 {
+>   text-align: center;
+-bottom: 3rem;
+  font-size: 2rem>   margin-bottom: 3rem;
+>   font-size: 2rem;
+> }
+>
+> .service-grid {
+>   display: grid;
+>   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+>   gap: 2rem;
+> }
+>
+rd {
+  backgroun> .service-card {
+>   background: var(--bg2);
+>   border: 1px solid var(--border);
+>   border-radius: var(--radius-lg);
+>   padding: 2rem;
+> }
+>
+> .service-card h3 { margin-bottom: 0.5rem; }
+> .service-card p { color: var(--text-muted); }
+>
+> .team { background: var(--bg2); }
+>
+> .team-grid {
+>   display: grid;
+late-columns: re>   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+enter;
+}
+
+.team->   gap: 2rem;
+>   text-align: center;
+> }
+>
+> .team-photo-placeholder {
+>   background: var(--border);
+120px;
+  height:>   border-radius: 50%;
+>   width: 120px;
+>   height: 120px;
+>   margin: 0 auto 1rem;
+> }
+>
+> .team-card h3 { margin-bottom: 0.25rem; }
+> .team-card .role { color: var(--text-muted); font-size: 0.9rem; }
+>
+> .testimonial-grid {
+>   display: grid;
+>   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+>   gap: 2rem;
+> }
+>
+> .testimonial-card {
+und: var(--bg2);
+  border: 1px s>   background: var(--bg2);
+>   border: 1px solid var(--border);
+>   border-radius: var(--radius-lg);
+>   padding: 2rem;
+> }
+>
+> .testimonial-card p {
+>   font-size: 1.05rem;
+>   margin-bottom: 1rem;
+>   font-style: italic;
+> }
+>
+> .testimonial-card cite {
+>   color: var(--text-muted);
+>   font-size: 0.9rem;
+> }
+>
+> .contact { padding: 5rem 0; text-align: center; }
+> .contact h2 { margin-bottom: 0.5rem; }
+> .contact p { color: var(--text-muted); margin-bottom: 2rem; }
+x-width: 500px;
+>
+;
+  display: fle> .contact form {
+>   max-width: 500px;
+>   margin: 0 auto;
+>   display: flex;
+>   flex-direction: column;
+>   gap: 1rem;
+> }
+>
+> .contact input, .contact textarea {
+>   padding: 0.875rem 1rem;
+>   border: 1px solid var(--border);
+>   border-radius: var(--radius);
+>   font-family: var(--font-body);
+ font-size: 1rem>   font-size: 1rem;
+var(--bg);
+  color: var(--text);
+}
+
+.contact textarea { min-height: 120px; resiz>   background: var(--bg);
+>   color: var(--text);
+> }
+>
+> .contact textarea { min-height: 120px; resize: vertical; }
+>
+> footer {
+>   padding: 2rem 0;
+>   text-align: center;
+ss << 'EOF'
+/* t>   color: var(--text-muted);
+>   font-size: 0.875rem;
+> }
+> EOF
+heme.css — wordt automatisch gegenereerd door Forge tijdens personalisatie */
+:root {
+  --bg: #ffffff;
+  --bg2: #f1f5f9;
+  --accent: #1e40af;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: rgba(0,0,0,0.08);
+  --font-heading: 'Roboto', sans-serif;
+  --font-body: 'Source Sans Pro', sans-serif;
+  --radius: 8px;
+  --radius-lg: 16px;
+  --shadow: 0 4px 24px rgba(prime@Silver-Surfer:/tmp/template-bedrijf$
+prime@Silver-Surfer:/tmp/template-bedrijf$ cat > styles/theme.css << 'EOF'
+0,0,0,0.08);
+}
+E> /* theme.css — wordt automatisch gegenereerd door Forge tijdens personalisatie */
+> :root {
+>   --bg: #ffffff;
+>   --bg2: #f1f5f9;
+>   --accent: #1e40af;
+>   --text: #1e293b;
+RIJVING}}
+
+## St>   --text-muted: #64748b;
+>   --border: rgba(0,0,0,0.08);
+>   --font-heading: 'Roboto', sans-serif;
+>   --font-body: 'Source Sans Pro', sans-serif;
+>   --radius: 8px;
+>   --radius-lg: 16px;
+>   --shadow: 0 4px 24px rgba(0,0,0,0.08);
+> }
+> EOF
+monials, contact)
+- `styles/` — CSS (theme.css automatisch gegenereerd per stijl)
+
+## Gegenereerd door
+ARC AI Agents Website Fabriek — Forge

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}} — Reserveren</title>
+  <style>
+    :root {
+      --bg: #ffffff; --bg-alt: #f8f8f8; --tekst: #1a1a1a; --dim: #666;
+      --accent: #da3743; --accent-dark: #b02d37; --border: #e8e8e8;
+      --ster: #f4a91e; --nav: 64px; --max: 1200px; --radius: 8px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tekst); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; object-fit: cover; }
+    .navbar { position: sticky; top: 0; z-index: 100; height: var(--nav); background: #1a1a1a; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+    .navbar__logo { font-size: 1.3rem; font-weight: 900; color: var(--accent); letter-spacing: -0.02em; }
+    .navbar__links { display: flex; gap: 24px; list-style: none; }
+    .navbar__links a { font-size: 0.85rem; color: rgba(255,255,255,0.75); transition: color 0.15s; font-weight: 500; }
+    .navbar__links a:hover { color: white; }
+    .navbar__cta { display: flex; gap: 10px; align-items: center; }
+    .btn-accent { background: var(--accent); color: white; padding: 9px 20px; border-radius: var(--radius); font-size: 0.88rem; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-accent:hover { background: var(--accent-dark); }
+    .btn-outline { border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 18px; border-radius: var(--radius); font-size: 0.88rem; font-weight: 500; transition: all 0.2s; }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); }
+    .navbar__hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .navbar__hamburger span { display: block; width: 22px; height: 2px; background: white; }
+    .hero { background: linear-gradient(135deg, #1a1a1a 0%, #2d1a1a 100%); padding: 72px 40px 80px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(218,55,67,0.15), transparent 70%); }
+    .hero__headline { font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 800; color: white; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px; position: relative; }
+    .hero__sub { font-size: 1rem; color: rgba(255,255,255,0.65); margin-bottom: 40px; position: relative; }
+    .zoekbalk { background: white; border-radius: 12px; padding: 8px; display: flex; gap: 0; max-width: 860px; margin: 0 auto; box-shadow: 0 8px 40px rgba(0,0,0,0.3); position: relative; }
+    .zoek-veld { flex: 1; display: flex; flex-direction: column; padding: 8px 16px; border-right: 1px solid var(--border); min-width: 0; }
+    .zoek-veld:last-of-type { border-right: none; }
+    .zoek-veld__label { font-size: 0.68rem; font-weight: 700; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .zoek-veld__input { font-size: 0.9rem; font-weight: 500; color: var(--tekst); border: none; outline: none; background: transparent; width: 100%; }
+    .zoek-veld__input::placeholder { color: #aaa; font-weight: 400; }
+    .zoek-btn { background: var(--accent); color: white; border: none; border-radius: 8px; padding: 0 28px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.2s; white-space: nowrap; min-height: 52px; }
+    .zoek-btn:hover { background: var(--accent-dark); }
+    .hero__tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 24px; position: relative; }
+    .hero-tag { padding: 6px 14px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; font-size: 0.8rem; color: rgba(255,255,255,0.8); cursor: pointer; transition: all 0.2s; }
+    .hero-tag:hover { background: rgba(255,255,255,0.2); color: white; }
+    .stats-balk { background: var(--bg-alt); border-bottom: 1px solid var(--border); padding: 20px 40px; }
+    .stats-balk__inner { max-width: var(--max); margin: 0 auto; display: flex; gap: 48px; justify-content: center; }
+    .stat-item { text-align: center; }
+    .stat-item__getal { font-size: 1.4rem; font-weight: 800; color: var(--tekst); }
+    .stat-item__label { font-size: 0.78rem; color: var(--dim); margin-top: 2px; }
+    .aanbod { padding: 64px 40px; max-width: var(--max); margin: 0 auto; }
+    .sectie-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .sectie-titel { font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 800; letter-spacing: -0.02em; }
+    .sectie-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+    .filter-chip { padding: 7px 16px; border: 1px solid var(--border); border-radius: 999px; font-size: 0.82rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.15s; background: white; }
+    .filter-chip:hover, .filter-chip.actief { background: var(--tekst); color: white; border-color: var(--tekst); }
+    .aanbod__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .venue-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: box-shadow 0.2s, transform 0.2s; background: white; }
+    .venue-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    .venue-card__beeld { aspect-ratio: 16/10; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #bbb; position: relative; }
+    .venue-card__promo { position: absolute; top: 12px; left: 12px; background: var(--accent); color: white; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; }
+    .venue-card__fav { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .venue-card__body { padding: 16px; }
+    .venue-card__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+    .venue-card__naam { font-size: 1rem; font-weight: 700; line-height: 1.3; }
+    .venue-card__prijs { font-size: 0.82rem; color: var(--dim); font-weight: 500; }
+    .venue-card__meta { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--dim); margin-bottom: 10px; }
+    .rating { display: flex; align-items: center; gap: 4px; color: var(--ster); font-weight: 700; font-size: 0.85rem; }
+    .rating__count { color: var(--dim); font-weight: 400; }
+    .venue-card__tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .venue-tag { padding: 3px 10px; background: var(--bg-alt); border-radius: 999px; font-size: 0.75rem; color: var(--dim); }
+    .venue-card__tijden { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tijd-btn { padding: 7px 12px; background: rgba(218,55,67,0.08); border: 1px solid rgba(218,55,67,0.2); border-radius: 6px; font-size: 0.82rem; font-weight: 600; color: var(--accent); cursor: pointer; transition: all 0.15s; }
+    .tijd-btn:hover { background: var(--accent); color: white; }
+    .hoe-werkt { background: var(--bg-alt); border-top: 1px solid var(--border); padding: 72px 40px; }
+    .hoe-werkt__inner { max-width: var(--max); margin: 0 auto; }
+    .hoe-werkt__stappen { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-top: 48px; }
+    .stap { text-align: center; }
+    .stap__nummer { width: 48px; height: 48px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; margin: 0 auto 16px; }
+    .stap__naam { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+    .stap__tekst { font-size: 0.85rem; color: var(--dim); line-height: 1.65; }
+    .cta-sectie { padding: 80px 40px; text-align: center; background: var(--accent); color: white; }
+    .cta-sectie__headline { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .cta-sectie__sub { font-size: 1rem; opacity: 0.85; max-width: 460px; margin: 0 auto 36px; line-height: 1.7; }
+    .btn-wit { background: white; color: var(--accent); padding: 13px 32px; border-radius: var(--radius); font-size: 0.95rem; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-wit:hover { opacity: 0.9; }
+    .footer { background: #1a1a1a; color: white; padding: 56px 40px 32px; }
+    .footer__top { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer__logo { font-size: 1.2rem; font-weight: 900; color: var(--accent); margin-bottom: 12px; }
+    .footer__tekst { font-size: 0.84rem; color: #999; line-height: 1.6; max-width: 200px; }
+    .footer__kolom-titel { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #777; margin-bottom: 16px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.84rem; color: #bbb; transition: color 0.15s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom { max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid #333; font-size: 0.8rem; color: #666; }
+    .footer__socials { display: flex; gap: 16px; }
+    .footer__socials a { color: #666; transition: color 0.15s; font-size: 0.8rem; }
+    .footer__socials a:hover { color: white; }
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: #1a1a1a; z-index: 200; flex-direction: column; padding: 80px 32px 40px; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu a { font-size: 1.6rem; font-weight: 700; color: white; padding: 18px 0; border-bottom: 1px solid #333; }
+    .mobiel-menu__sluiten { position: absolute; top: 20px; right: 28px; font-size: 1.4rem; cursor: pointer; color: #777; }
+    @media (max-width: 1024px) {
+      .aanbod__grid { grid-template-columns: repeat(2, 1fr); }
+      .hoe-werkt__stappen { grid-template-columns: repeat(2, 1fr); }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+      .navbar__links, .navbar__cta { display: none; }
+      .navbar__hamburger { display: flex; }
+      .hero { padding: 48px 20px 56px; }
+      .zoekbalk { flex-direction: column; padding: 12px; gap: 8px; }
+      .zoek-veld { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+      .zoek-veld:last-of-type { border-bottom: none; }
+      .zoek-btn { min-height: 44px; border-radius: 6px; }
+      .stats-balk { padding: 16px 20px; }
+      .stats-balk__inner { gap: 24px; }
+      .aanbod { padding: 48px 20px; }
+      .sectie-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .aanbod__grid { grid-template-columns: 1fr; }
+      .hoe-werkt { padding: 48px 20px; }
+      .cta-sectie { padding: 56px 20px; }
+      .footer { padding: 40px 20px 24px; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+      .footer__bottom { flex-direction: column; gap: 12px; }
+    }
+    @media (max-width: 480px) {
+      .hoe-werkt__stappen { grid-template-columns: 1fr; }
+      .footer__top { grid-template-columns: 1fr; }
+      .stats-balk__inner { flex-wrap: wrap; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links">
+      <li><a href="#aanbod">Ontdekken</a></li>
+      <li><a href="#hoe-werkt">Hoe het werkt</a></li>
+      <li><a href="#">Voor restaurants</a></li>
+    </ul>
+    <div class="navbar__cta">
+      <a href="#" class="btn-outline">Inloggen</a>
+      <a href="#" class="btn-accent">Registreren</a>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#aanbod" onclick="menuToggle()">Ontdekken</a>
+    <a href="#hoe-werkt" onclick="menuToggle()">Hoe het werkt</a>
+    <a href="#" onclick="menuToggle()">Inloggen</a>
+  </div>
+  <section class="hero">
+    <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="zoekbalk">
+      <div class="zoek-veld">
+        <span class="zoek-veld__label">Locatie of naam</span>
+        <input class="zoek-veld__input" type="text" placeholder="{{ZOEK_PLACEHOLDER_1}}" />
+      </div>
+      <div class="zoek-veld">
+        <span class="zoek-veld__label">Datum</span>
+        <input class="zoek-veld__input" type="text" placeholder="{{ZOEK_PLACEHOLDER_2}}" />
+      </div>
+      <div class="zoek-veld">
+        <span class="zoek-veld__label">Tijd</span>
+        <input class="zoek-veld__input" type="text" placeholder="{{ZOEK_PLACEHOLDER_3}}" />
+      </div>
+      <div class="zoek-veld">
+        <span class="zoek-veld__label">Personen</span>
+        <input class="zoek-veld__input" type="text" placeholder="{{ZOEK_PLACEHOLDER_4}}" />
+      </div>
+      <button class="zoek-btn">Zoeken</button>
+    </div>
+    <div class="hero__tags">
+      <span class="hero-tag">{{TAG_1}}</span>
+      <span class="hero-tag">{{TAG_2}}</span>
+      <span class="hero-tag">{{TAG_3}}</span>
+      <span class="hero-tag">{{TAG_4}}</span>
+      <span class="hero-tag">{{TAG_5}}</span>
+    </div>
+  </section>
+  <div class="stats-balk">
+    <div class="stats-balk__inner">
+      <div class="stat-item"><div class="stat-item__getal">{{STAT_1_GETAL}}</div><div class="stat-item__label">{{STAT_1_LABEL}}</div></div>
+      <div class="stat-item"><div class="stat-item__getal">{{STAT_2_GETAL}}</div><div class="stat-item__label">{{STAT_2_LABEL}}</div></div>
+      <div class="stat-item"><div class="stat-item__getal">{{STAT_3_GETAL}}</div><div class="stat-item__label">{{STAT_3_LABEL}}</div></div>
+    </div>
+  </div>
+  <section class="aanbod" id="aanbod">
+    <div class="sectie-header">
+      <h2 class="sectie-titel">{{AANBOD_TITEL}}</h2>
+    </div>
+    <div class="sectie-filter" style="margin-bottom:28px;">
+      <span class="filter-chip actief">Alles</span>
+      <span class="filter-chip">{{FILTER_1}}</span>
+      <span class="filter-chip">{{FILTER_2}}</span>
+      <span class="filter-chip">{{FILTER_3}}</span>
+      <span class="filter-chip">{{FILTER_4}}</span>
+    </div>
+    <div class="aanbod__grid">
+      <div class="venue-card">
+        <div class="venue-card__beeld"><span class="venue-card__promo">{{VENUE_1_PROMO}}</span><span class="venue-card__fav">♡</span>[ afbeelding ]</div>
+        <div class="venue-card__body">
+          <div class="venue-card__header"><div class="venue-card__naam">{{VENUE_1_NAAM}}</div><div class="venue-card__prijs">{{VENUE_1_PRIJS}}</div></div>
+          <div class="venue-card__meta"><div class="rating">★ {{VENUE_1_RATING}}<span class="rating__count">({{VENUE_1_REVIEWS}})</span></div><span>·</span><span>{{VENUE_1_KEUKEN}}</span><span>·</span><span>{{VENUE_1_LOCATIE}}</span></div>
+          <div class="venue-card__tags"><span class="venue-tag">{{VENUE_1_TAG_1}}</span><span class="venue-tag">{{VENUE_1_TAG_2}}</span></div>
+          <div class="venue-card__tijden"><button class="tijd-btn">{{TIJD_1}}</button><button class="tijd-btn">{{TIJD_2}}</button><button class="tijd-btn">{{TIJD_3}}</button></div>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-card__beeld"><span class="venue-card__fav">♡</span>[ afbeelding ]</div>
+        <div class="venue-card__body">
+          <div class="venue-card__header"><div class="venue-card__naam">{{VENUE_2_NAAM}}</div><div class="venue-card__prijs">{{VENUE_2_PRIJS}}</div></div>
+          <div class="venue-card__meta"><div class="rating">★ {{VENUE_2_RATING}}<span class="rating__count">({{VENUE_2_REVIEWS}})</span></div><span>·</span><span>{{VENUE_2_KEUKEN}}</span><span>·</span><span>{{VENUE_2_LOCATIE}}</span></div>
+          <div class="venue-card__tags"><span class="venue-tag">{{VENUE_2_TAG_1}}</span><span class="venue-tag">{{VENUE_2_TAG_2}}</span></div>
+          <div class="venue-card__tijden"><button class="tijd-btn">{{TIJD_1}}</button><button class="tijd-btn">{{TIJD_2}}</button><button class="tijd-btn">{{TIJD_3}}</button></div>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-card__beeld"><span class="venue-card__promo">{{VENUE_3_PROMO}}</span><span class="venue-card__fav">♡</span>[ afbeelding ]</div>
+        <div class="venue-card__body">
+          <div class="venue-card__header"><div class="venue-card__naam">{{VENUE_3_NAAM}}</div><div class="venue-card__prijs">{{VENUE_3_PRIJS}}</div></div>
+          <div class="venue-card__meta"><div class="rating">★ {{VENUE_3_RATING}}<span class="rating__count">({{VENUE_3_REVIEWS}})</span></div><span>·</span><span>{{VENUE_3_KEUKEN}}</span><span>·</span><span>{{VENUE_3_LOCATIE}}</span></div>
+          <div class="venue-card__tags"><span class="venue-tag">{{VENUE_3_TAG_1}}</span><span class="venue-tag">{{VENUE_3_TAG_2}}</span></div>
+          <div class="venue-card__tijden"><button class="tijd-btn">{{TIJD_1}}</button><button class="tijd-btn">{{TIJD_2}}</button><button class="tijd-btn">{{TIJD_3}}</button></div>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-card__beeld"><span class="venue-card__fav">♡</span>[ afbeelding ]</div>
+        <div class="venue-card__body">
+          <div class="venue-card__header"><div class="venue-card__naam">{{VENUE_4_NAAM}}</div><div class="venue-card__prijs">{{VENUE_4_PRIJS}}</div></div>
+          <div class="venue-card__meta"><div class="rating">★ {{VENUE_4_RATING}}<span class="rating__count">({{VENUE_4_REVIEWS}})</span></div><span>·</span><span>{{VENUE_4_KEUKEN}}</span></div>
+          <div class="venue-card__tags"><span class="venue-tag">{{VENUE_4_TAG_1}}</span></div>
+          <div class="venue-card__tijden"><button class="tijd-btn">{{TIJD_1}}</button><button class="tijd-btn">{{TIJD_2}}</button></div>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-card__beeld"><span class="venue-card__fav">♡</span>[ afbeelding ]</div>
+        <div class="venue-card__body">
+          <div class="venue-card__header"><div class="venue-card__naam">{{VENUE_5_NAAM}}</div><div class="venue-card__prijs">{{VENUE_5_PRIJS}}</div></div>
+          <div class="venue-card__meta"><div class="rating">★ {{VENUE_5_RATING}}<span class="rating__count">({{VENUE_5_REVIEWS}})</span></div><span>·</span><span>{{VENUE_5_KEUKEN}}</span></div>
+          <div class="venue-card__tags"><span class="venue-tag">{{VENUE_5_TAG_1}}</span><span class="venue-tag">{{VENUE_5_TAG_2}}</span></div>
+          <div class="venue-card__tijden"><button class="tijd-btn">{{TIJD_1}}</button><button class="tijd-btn">{{TIJD_2}}</button><button class="tijd-btn">{{TIJD_3}}</button></div>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-card__beeld"><span class="venue-card__fav">♡</span>[ afbeelding ]</div>
+        <div class="venue-card__body">
+          <div class="venue-card__header"><div class="venue-card__naam">{{VENUE_6_NAAM}}</div><div class="venue-card__prijs">{{VENUE_6_PRIJS}}</div></div>
+          <div class="venue-card__meta"><div class="rating">★ {{VENUE_6_RATING}}<span class="rating__count">({{VENUE_6_REVIEWS}})</span></div><span>·</span><span>{{VENUE_6_KEUKEN}}</span></div>
+          <div class="venue-card__tags"><span class="venue-tag">{{VENUE_6_TAG_1}}</span></div>
+          <div class="venue-card__tijden"><button class="tijd-btn">{{TIJD_1}}</button><button class="tijd-btn">{{TIJD_2}}</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="hoe-werkt" id="hoe-werkt">
+    <div class="hoe-werkt__inner">
+      <h2 class="sectie-titel" style="text-align:center;">{{HOE_WERKT_TITEL}}</h2>
+      <div class="hoe-werkt__stappen">
+        <div class="stap"><div class="stap__nummer">1</div><div class="stap__naam">{{STAP_1_NAAM}}</div><p class="stap__tekst">{{STAP_1_TEKST}}</p></div>
+        <div class="stap"><div class="stap__nummer">2</div><div class="stap__naam">{{STAP_2_NAAM}}</div><p class="stap__tekst">{{STAP_2_TEKST}}</p></div>
+        <div class="stap"><div class="stap__nummer">3</div><div class="stap__naam">{{STAP_3_NAAM}}</div><p class="stap__tekst">{{STAP_3_TEKST}}</p></div>
+        <div class="stap"><div class="stap__nummer">4</div><div class="stap__naam">{{STAP_4_NAAM}}</div><p class="stap__tekst">{{STAP_4_TEKST}}</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="cta-sectie">
+    <h2 class="cta-sectie__headline">{{CTA_HEADLINE}}</h2>
+    <p class="cta-sectie__sub">{{CTA_SUB}}</p>
+    <a href="#aanbod" class="btn-wit">{{CTA_KNOP}}</a>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_BESCHRIJVING}}</p></div>
+      <div><div class="footer__kolom-titel">Ontdekken</div><ul class="footer__links"><li><a href="#">{{FILTER_1}}</a></li><li><a href="#">{{FILTER_2}}</a></li><li><a href="#">Nieuw</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Restaurants</div><ul class="footer__links"><li><a href="#">Aanmelden</a></li><li><a href="#">Voor bedrijven</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Help</div><ul class="footer__links"><li><a href="#">FAQ</a></li><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <div class="footer__socials"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">Twitter</a></div>
+    </div>
+  </footer>
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click', menuToggle);
+    document.getElementById('jaar').textContent = new Date().getFullYear();
+    document.querySelectorAll('.filter-chip').forEach(t => t.addEventListener('click', () => { document.querySelectorAll('.filter-chip').forEach(x => x.classList.remove('actief')); t.classList.add('actief'); }));
+    const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}),{threshold:0.08});
+    document.querySelectorAll('.venue-card,.stap').forEach(el => { el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el); });
+  </script>
+</body>
+</html>

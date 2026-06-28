@@ -1,0 +1,36 @@
+{
+  "producten": [
+    {
+      "id": "p001",
+      "naam": "Product Een",
+      "prijs": 29.95,
+      "voorraad": 25,
+      "beschrijving": "Korte beschrijving van dit product en de belangrijkste kenmerken.",
+      "afbeelding": "product-1.jpg"
+    },
+    {
+      "id": "p002",
+      "naam": "Product Twee",
+      "prijs": 49.95,
+      "voorraad": 12,
+      "beschrijving": "Korte beschrijving van dit product en de belangrijkste kenmerken.",
+      "afbeelding": "product-2.jpg"
+    },
+    {
+      "id": "p003",
+      "naam": "Product Drie",
+      "prijs": 19.95,
+      "voorraad": 0,
+      "beschrijving": "Korte beschrijving van dit product en de belangrijkste kenmerken.",
+      "afbeelding": "product-3.jpg"
+    },
+    {
+      "id": "p004",
+      "naam": "Product Vier",
+      "prijs": 79.95,
+      "voorraad": 8,
+      "beschrijving": "Korte beschrijving van dit product en de belangrijkste kenmerken.",
+      "afbeelding": "product-4.jpg"
+    }
+  ]
+}

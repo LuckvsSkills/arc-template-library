@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PROJECT_NAAM}}</title>
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <h1>{{PROJECT_NAAM}}</h1>
+            <p class="tagline">{{PROJECT_BESCHRIJVING}}</p>
+        </div>
+    </header>
+
+    <section class="projects">
+        <div class="container">
+            <h2>Projecten</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <div class="project-image-placeholder"></div>
+                    <h3>Project Een</h3>
+                    <p>Korte beschrijving van dit project en de gebruikte aanpak.</p>
+                    <span class="tags">Web Design</span>
+                </div>
+                <div class="project-card">
+                    <div class="project-image-placeholder"></div>
+                    <h3>Project Twee</h3>
+                    <p>Korte beschrijving van dit project en de gebruikte aanpak.</p>
+                    <span class="tags">Branding</span>
+                </div>
+                <div class="project-card">
+                    <div class="project-image-placeholder"></div>
+                    <h3>Project Drie</h3>
+                    <p>Korte beschrijving van dit project en de gebruikte aanpak.</p>
+                    <span class="tags">Illustratie</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="container">
+            <h2>Over mij</h2>
+            <p>Vertel hier kort over jezelf, je achtergrond en je werkwijze. Deze sectie geeft bezoekers een persoonlijke indruk van wie er achter het werk zit.</p>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contact</h2>
+            <p>Interesse in samenwerken? Neem gerust contact op.</p>
+            <form>
+                <input type="text" placeholder="Naam" required>
+                <input type="email" placeholder="E-mail" required>
+                <textarea placeholder="Bericht" required></textarea>
+                <button type="submit" class="btn-primary">Versturen</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; {{JAAR}} {{PROJECT_NAAM}} — Gebouwd door ARC AI Agents</p>
+        </div>
+    </footer>
+</body>
+</html>

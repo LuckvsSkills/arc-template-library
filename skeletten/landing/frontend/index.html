@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PROJECT_NAAM}}</title>
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <h1>{{PROJECT_NAAM}}</h1>
+            <p class="tagline">{{PROJECT_BESCHRIJVING}}</p>
+            <a href="#contact" class="btn-primary">Neem contact op</a>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="container">
+            <h2>Wat wij bieden</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Feature 1</h3>
+                    <p>Beschrijving van de eerste belangrijke feature.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Feature 2</h3>
+                    <p>Beschrijving van de tweede belangrijke feature.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Feature 3</h3>
+                    <p>Beschrijving van de derde belangrijke feature.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contact</h2>
+            <p>Neem gerust contact met ons op voor meer informatie.</p>
+            <form>
+                <input type="text" placeholder="Naam" required>
+                <input type="email" placeholder="E-mail" required>
+                <textarea placeholder="Bericht" required></textarea>
+                <button type="submit" class="btn-primary">Versturen</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; {{JAAR}} {{PROJECT_NAAM}} — Gebouwd door ARC AI Agents</p>
+        </div>
+    </footer>
+</body>
+</html>

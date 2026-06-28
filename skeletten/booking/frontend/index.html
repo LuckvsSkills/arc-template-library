@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PROJECT_NAAM}}</title>
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <h1>{{PROJECT_NAAM}}</h1>
+            <p class="tagline">{{PROJECT_BESCHRIJVING}}</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="booking">
+            <h2>Maak een afspraak</h2>
+
+            <div class="booking-step">
+                <label>1. Kies een dienst</label>
+                <div id="serviceList" class="service-list"></div>
+            </div>
+
+            <div class="booking-step">
+                <label for="datePicker">2. Kies een datum</label>
+                <input type="date" id="datePicker">
+            </div>
+
+            <div class="booking-step">
+                <label>3. Kies een tijdslot</label>
+                <div id="timeSlots" class="time-slots">
+                    <p class="hint">Selecteer eerst een dienst en datum.</p>
+                </div>
+            </div>
+
+            <div class="booking-step">
+                <label>4. Jouw gegevens</label>
+                <form id="bookingForm">
+                    <input type="text" placeholder="Naam" required>
+                    <input type="email" placeholder="E-mail" required>
+                    <input type="tel" placeholder="Telefoonnummer" required>
+                    <button type="submit" class="btn-primary">Afspraak bevestigen</button>
+                </form>
+            </div>
+
+            <div id="bookingSummary" class="booking-summary" style="display:none"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; {{JAAR}} {{PROJECT_NAAM}} — Gebouwd door ARC AI Agents</p>
+        </div>
+    </footer>
+
+    <script src="../frontend/booking.js"></script>
+</body>
+</html>

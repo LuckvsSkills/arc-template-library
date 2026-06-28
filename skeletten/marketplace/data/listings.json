@@ -1,0 +1,41 @@
+{
+  "listings": [
+    {
+      "id": "l001",
+      "titel": "Vintage fiets",
+      "prijs": 150.00,
+      "categorie": "Vervoer",
+      "verkoper": "Jan de Vries",
+      "locatie": "Amsterdam",
+      "beschrijving": "Goed onderhouden vintage fiets, klaar voor gebruik."
+    },
+    {
+      "id": "l002",
+      "titel": "Houten eettafel",
+      "prijs": 220.00,
+      "categorie": "Meubels",
+      "verkoper": "Studio Berk",
+      "locatie": "Utrecht",
+      "beschrijving": "Massief houten eettafel, 6 personen."
+    },
+    {
+      "id": "l003",
+      "titel": "Camera met lens",
+      "prijs": 450.00,
+      "categorie": "Elektronica",
+      "verkoper": "PixelHub",
+      "locatie": "Rotterdam",
+      "beschrijving": "Spiegelreflexcamera inclusief 50mm lens."
+    },
+    {
+      "id": "l004",
+      "titel": "Designerjas",
+      "prijs": 85.00,
+      "categorie": "Kleding",
+      "verkoper": "Lotte M.",
+      "locatie": "Den Haag",
+      "beschrijving": "Nauwelijks gedragen designerjas, maat M."
+    }
+  ],
+  "categorieen": ["Vervoer", "Meubels", "Elektronica", "Kleding"]
+}

@@ -1,0 +1,32 @@
+{
+  "diensten": [
+    {
+      "id": "s001",
+      "naam": "Consult (30 min)",
+      "duur_minuten": 30,
+      "prijs": 35.00,
+      "beschrijving": "Kort adviesgesprek"
+    },
+    {
+      "id": "s002",
+      "naam": "Behandeling (60 min)",
+      "duur_minuten": 60,
+      "prijs": 65.00,
+      "beschrijving": "Uitgebreide behandeling"
+    },
+    {
+      "id": "s003",
+      "naam": "Intake (45 min)",
+      "duur_minuten": 45,
+      "prijs": 50.00,
+      "beschrijving": "Eerste kennismakingsgesprek"
+    }
+  ],
+  "openingstijden": {
+    "start": "09:00",
+    "eind": "17:00",
+    "interval_minuten": 30,
+    "gesloten_weekdagen": [0, 6]
+  },
+  "_comment": "gesloten_weekdagen: 0=zondag, 6=zaterdag"
+}

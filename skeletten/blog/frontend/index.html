@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PROJECT_NAAM}}</title>
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <h1>{{PROJECT_NAAM}}</h1>
+            <p class="tagline">{{PROJECT_BESCHRIJVING}}</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="articles">
+            <article class="article-card featured">
+                <div class="article-image-placeholder"></div>
+                <div class="article-content">
+                    <span class="article-meta">Uitgelicht — 14 juni 2026</span>
+                    <h2>Titel van het uitgelichte artikel</h2>
+                    <p>Korte introductie van het artikel die de lezer aanmoedigt om verder te lezen. Geeft een idee van waar het stuk over gaat.</p>
+                    <a href="#" class="read-more">Lees meer &rarr;</a>
+                </div>
+            </article>
+
+            <div class="article-grid">
+                <article class="article-card">
+                    <div class="article-image-placeholder"></div>
+                    <div class="article-content">
+                        <span class="article-meta">10 juni 2026</span>
+                        <h3>Tweede artikel titel</h3>
+                        <p>Korte samenvatting van dit artikel.</p>
+                        <a href="#" class="read-more">Lees meer &rarr;</a>
+                    </div>
+                </article>
+                <article class="article-card">
+                    <div class="article-image-placeholder"></div>
+                    <div class="article-content">
+                        <span class="article-meta">5 juni 2026</span>
+                        <h3>Derde artikel titel</h3>
+                        <p>Korte samenvatting van dit artikel.</p>
+                        <a href="#" class="read-more">Lees meer &rarr;</a>
+                    </div>
+                </article>
+                <article class="article-card">
+                    <div class="article-image-placeholder"></div>
+                    <div class="article-content">
+                        <span class="article-meta">1 juni 2026</span>
+                        <h3>Vierde artikel titel</h3>
+                        <p>Korte samenvatting van dit artikel.</p>
+                        <a href="#" class="read-more">Lees meer &rarr;</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <aside class="newsletter">
+            <h2>Blijf op de hoogte</h2>
+            <p>Schrijf je in voor de nieuwsbrief en ontvang updates over nieuwe artikelen.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Je e-mailadres" required>
+                <button type="submit" class="btn-primary">Inschrijven</button>
+            </form>
+        </aside>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; {{JAAR}} {{PROJECT_NAAM}} — Gebouwd door ARC AI Agents</p>
+        </div>
+    </footer>
+</body>
+</html>

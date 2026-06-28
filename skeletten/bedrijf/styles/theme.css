@@ -1,0 +1,14 @@
+/* theme.css — wordt automatisch gegenereerd door Forge tijdens personalisatie */
+:root {
+  --bg: #ffffff;
+  --bg2: #f1f5f9;
+  --accent: #1e40af;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: rgba(0,0,0,0.08);
+  --font-heading: 'Roboto', sans-serif;
+  --font-body: 'Source Sans Pro', sans-serif;
+  --radius: 8px;
+  --radius-lg: 16px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+}

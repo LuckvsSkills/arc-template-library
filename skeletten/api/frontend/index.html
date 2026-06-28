@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PROJECT_NAAM}} — API Documentatie</title>
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <h1>{{PROJECT_NAAM}}</h1>
+            <p class="tagline">{{PROJECT_BESCHRIJVING}}</p>
+            <span class="version-badge">API v1.0.0</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="intro">
+            <h2>Aan de slag</h2>
+            <p>Deze API biedt toegang tot de data van {{PROJECT_NAAM}}. Alle endpoints retourneren JSON.</p>
+            <div class="code-block">
+                <code>Base URL: https://api.{{PROJECT_NAAM_SLUG}}.example.com</code>
+            </div>
+        </section>
+
+        <section class="endpoints">
+            <h2>Endpoints</h2>
+
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <code>/items</code>
+                </div>
+                <p>Haal een lijst van alle items op.</p>
+            </div>
+
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <code>/items/{item_id}</code>
+                </div>
+                <p>Haal een specifiek item op aan de hand van het ID.</p>
+            </div>
+
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <code>/items</code>
+                </div>
+                <p>Maak een nieuw item aan. Verwacht JSON body met <code>naam</code> en optioneel <code>beschrijving</code>.</p>
+            </div>
+
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method delete">DELETE</span>
+                    <code>/items/{item_id}</code>
+                </div>
+                <p>Verwijder een item aan de hand van het ID.</p>
+            </div>
+        </section>
+
+        <section class="interactive-docs">
+            <h2>Interactieve documentatie</h2>
+            <p>FastAPI genereert automatisch interactieve API-documentatie:</p>
+            <ul>
+                <li><code>/docs</code> — Swagger UI</li>
+                <li><code>/redoc</code> — ReDoc</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; {{JAAR}} {{PROJECT_NAAM}} — Gebouwd door ARC AI Agents</p>
+        </div>
+    </footer>
+</body>
+</html>

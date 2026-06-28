@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root {
+      --bg: #ffffff; --bg-alt: #f5f5f0; --tekst: #111111; --dim: #555555;
+      --accent: #0058a3; --accent-geel: #ffda1a; --border: #dddddd;
+      --radius: 0px; --nav: 64px; --max: 1280px; --groot: clamp(2rem, 5vw, 4rem);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tekst); font-family: "Noto Sans", -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.5; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; object-fit: cover; }
+    .navbar { position: sticky; top: 0; z-index: 100; height: var(--nav); background: var(--accent); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+    .navbar__logo { font-size: 1.4rem; font-weight: 900; color: var(--accent-geel); letter-spacing: -0.02em; }
+    .navbar__links { display: flex; gap: 0; list-style: none; height: 100%; }
+    .navbar__links a { display: flex; align-items: center; padding: 0 18px; font-size: 0.88rem; font-weight: 500; color: white; height: 100%; transition: background 0.15s; }
+    .navbar__links a:hover { background: rgba(255,255,255,0.1); }
+    .navbar__cta { display: flex; gap: 12px; align-items: center; }
+    .btn-geel { background: var(--accent-geel); color: var(--tekst); padding: 10px 20px; font-size: 0.88rem; font-weight: 700; transition: opacity 0.2s; border: none; cursor: pointer; }
+    .btn-geel:hover { opacity: 0.88; }
+    .btn-blauw { background: var(--accent); color: white; padding: 10px 20px; font-size: 0.88rem; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-blauw:hover { opacity: 0.88; }
+    .navbar__hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .navbar__hamburger span { display: block; width: 22px; height: 2px; background: white; }
+    .hero { position: relative; background: var(--bg-alt); min-height: 560px; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+    .hero__content { padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; }
+    .hero__badge { display: inline-block; background: var(--accent-geel); color: var(--tekst); font-size: 0.75rem; font-weight: 700; padding: 4px 12px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px; }
+    .hero__headline { font-size: var(--groot); font-weight: 900; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 20px; }
+    .hero__sub { font-size: 1rem; color: var(--dim); max-width: 440px; margin-bottom: 36px; line-height: 1.7; }
+    .hero__knoppen { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero__beeld { background: #e0e0d8; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #aaa; min-height: 400px; }
+    .usp-balk { background: var(--accent); padding: 0; }
+    .usp-balk__inner { max-width: var(--max); margin: 0 auto; display: flex; }
+    .usp-item { flex: 1; padding: 20px 24px; display: flex; align-items: center; gap: 12px; border-right: 1px solid rgba(255,255,255,0.15); color: white; font-size: 0.85rem; font-weight: 500; }
+    .usp-item:last-child { border-right: none; }
+    .usp-item__icon { font-size: 1.2rem; flex-shrink: 0; }
+    .producten { padding: 72px 40px; max-width: var(--max); margin: 0 auto; }
+    .sectie-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
+    .sectie-titel { font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 900; letter-spacing: -0.02em; }
+    .sectie-link { font-size: 0.88rem; font-weight: 700; color: var(--accent); text-decoration: underline; }
+    .producten__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+    .product-card { background: var(--bg-alt); cursor: pointer; transition: transform 0.2s; }
+    .product-card:hover { transform: translateY(-2px); }
+    .product-card__beeld { aspect-ratio: 1/1; background: #e8e8e0; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #aaa; position: relative; overflow: hidden; }
+    .product-card__badge { position: absolute; top: 12px; left: 12px; background: var(--accent-geel); color: var(--tekst); font-size: 0.7rem; font-weight: 700; padding: 3px 8px; text-transform: uppercase; }
+    .product-card__body { padding: 16px; }
+    .product-card__naam { font-size: 0.92rem; font-weight: 700; margin-bottom: 4px; }
+    .product-card__beschrijving { font-size: 0.82rem; color: var(--dim); margin-bottom: 10px; line-height: 1.5; }
+    .product-card__prijs { font-size: 1rem; font-weight: 900; }
+    .product-card__prijs-oud { font-size: 0.82rem; color: var(--dim); text-decoration: line-through; margin-left: 6px; }
+    .over-ons { background: var(--bg-alt); padding: 80px 40px; }
+    .over-ons__inner { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .over-ons__beeld { aspect-ratio: 4/3; background: #ddd; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #aaa; }
+    .over-ons__label { font-size: 0.75rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+    .over-ons__titel { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 900; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 20px; }
+    .over-ons__tekst { font-size: 0.95rem; color: var(--dim); line-height: 1.8; margin-bottom: 16px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; padding-top: 32px; border-top: 2px solid var(--border); }
+    .stat__getal { font-size: 2.4rem; font-weight: 900; letter-spacing: -0.03em; color: var(--accent); }
+    .stat__label { font-size: 0.8rem; color: var(--dim); margin-top: 4px; }
+    .diensten { padding: 72px 40px; max-width: var(--max); margin: 0 auto; }
+    .diensten__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 40px; }
+    .dienst-card { background: var(--bg-alt); padding: 36px 32px; border-top: 4px solid transparent; transition: border-color 0.2s; }
+    .dienst-card:hover { border-top-color: var(--accent-geel); }
+    .dienst-card__icon { font-size: 2rem; margin-bottom: 16px; }
+    .dienst-card__naam { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+    .dienst-card__tekst { font-size: 0.88rem; color: var(--dim); line-height: 1.7; }
+    .cta-balk { background: var(--accent-geel); padding: 64px 40px; text-align: center; }
+    .cta-balk__headline { font-size: clamp(1.6rem, 4vw, 3rem); font-weight: 900; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .cta-balk__sub { font-size: 1rem; color: var(--dim); max-width: 480px; margin: 0 auto 36px; }
+    .footer { background: var(--tekst); color: white; padding: 56px 40px 32px; }
+    .footer__top { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer__merk-naam { font-size: 1.2rem; font-weight: 900; color: var(--accent-geel); margin-bottom: 12px; }
+    .footer__merk-tekst { font-size: 0.84rem; color: #aaa; line-height: 1.6; max-width: 200px; }
+    .footer__kolom-titel { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #aaa; margin-bottom: 16px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.84rem; color: #ccc; transition: color 0.15s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom { max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid #333; font-size: 0.8rem; color: #777; }
+    .footer__socials { display: flex; gap: 16px; }
+    .footer__socials a { color: #777; transition: color 0.15s; font-size: 0.8rem; }
+    .footer__socials a:hover { color: white; }
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: white; z-index: 200; flex-direction: column; padding: 80px 32px 40px; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu a { font-size: 1.6rem; font-weight: 700; padding: 18px 0; border-bottom: 1px solid var(--border); }
+    .mobiel-menu__sluiten { position: absolute; top: 20px; right: 28px; font-size: 1.4rem; cursor: pointer; }
+    @media (max-width: 1024px) {
+      .producten__grid { grid-template-columns: repeat(2, 1fr); }
+      .over-ons__inner { grid-template-columns: 1fr; gap: 40px; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+      .navbar__links, .navbar__cta { display: none; }
+      .navbar__hamburger { display: flex; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero__beeld { min-height: 260px; }
+      .hero__content { padding: 48px 24px; }
+      .usp-balk__inner { flex-direction: column; }
+      .usp-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.15); }
+      .producten { padding: 48px 20px; }
+      .diensten { padding: 48px 20px; }
+      .diensten__grid { grid-template-columns: 1fr; }
+      .over-ons { padding: 48px 20px; }
+      .cta-balk { padding: 48px 20px; }
+      .footer { padding: 40px 20px 24px; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+      .footer__bottom { flex-direction: column; gap: 12px; }
+    }
+    @media (max-width: 480px) {
+      .producten__grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .footer__top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links">
+      <li><a href="#producten">Producten</a></li>
+      <li><a href="#over-ons">Over ons</a></li>
+      <li><a href="#diensten">Diensten</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="navbar__cta">
+      <a href="#contact" class="btn-geel">Offerte aanvragen</a>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#producten" onclick="menuToggle()">Producten</a>
+    <a href="#over-ons" onclick="menuToggle()">Over ons</a>
+    <a href="#diensten" onclick="menuToggle()">Diensten</a>
+    <a href="#contact" onclick="menuToggle()">Contact</a>
+  </div>
+  <section class="hero">
+    <div class="hero__content">
+      <span class="hero__badge">{{HERO_BADGE}}</span>
+      <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+      <p class="hero__sub">{{HERO_SUB}}</p>
+      <div class="hero__knoppen">
+        <a href="#producten" class="btn-geel">{{CTA_PRIMAIR}}</a>
+        <a href="#over-ons" class="btn-blauw">{{CTA_SECUNDAIR}}</a>
+      </div>
+    </div>
+    <div class="hero__beeld">[ {{HERO_AFBEELDING}} ]</div>
+  </section>
+  <div class="usp-balk">
+    <div class="usp-balk__inner">
+      <div class="usp-item"><span class="usp-item__icon">🚚</span><span>{{USP_1}}</span></div>
+      <div class="usp-item"><span class="usp-item__icon">↩️</span><span>{{USP_2}}</span></div>
+      <div class="usp-item"><span class="usp-item__icon">💳</span><span>{{USP_3}}</span></div>
+      <div class="usp-item"><span class="usp-item__icon">🏆</span><span>{{USP_4}}</span></div>
+    </div>
+  </div>
+  <section class="producten" id="producten">
+    <div class="sectie-header">
+      <h2 class="sectie-titel">{{PRODUCTEN_TITEL}}</h2>
+      <a href="#" class="sectie-link">Alles bekijken →</a>
+    </div>
+    <div class="producten__grid">
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge">{{PRODUCT_1_BADGE}}</span>[ afbeelding ]</div><div class="product-card__body"><div class="product-card__naam">{{PRODUCT_1_NAAM}}</div><div class="product-card__beschrijving">{{PRODUCT_1_BESCHRIJVING}}</div><div><span class="product-card__prijs">{{PRODUCT_1_PRIJS}}</span><span class="product-card__prijs-oud">{{PRODUCT_1_PRIJS_OUD}}</span></div></div></div>
+      <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge">{{PRODUCT_2_BADGE}}</span>[ afbeelding ]</div><div class="product-card__body"><div class="product-card__naam">{{PRODUCT_2_NAAM}}</div><div class="product-card__beschrijving">{{PRODUCT_2_BESCHRIJVING}}</div><div><span class="product-card__prijs">{{PRODUCT_2_PRIJS}}</span></div></div></div>
+      <div class="product-card"><div class="product-card__beeld">[ afbeelding ]</div><div class="product-card__body"><div class="product-card__naam">{{PRODUCT_3_NAAM}}</div><div class="product-card__beschrijving">{{PRODUCT_3_BESCHRIJVING}}</div><div><span class="product-card__prijs">{{PRODUCT_3_PRIJS}}</span></div></div></div>
+      <div class="product-card"><div class="product-card__beeld">[ afbeelding ]</div><div class="product-card__body"><div class="product-card__naam">{{PRODUCT_4_NAAM}}</div><div class="product-card__beschrijving">{{PRODUCT_4_BESCHRIJVING}}</div><div><span class="product-card__prijs">{{PRODUCT_4_PRIJS}}</span></div></div></div>
+    </div>
+  </section>
+  <section class="over-ons" id="over-ons">
+    <div class="over-ons__inner">
+      <div class="over-ons__beeld">[ {{OVER_ONS_AFBEELDING}} ]</div>
+      <div>
+        <p class="over-ons__label">Over ons</p>
+        <h2 class="over-ons__titel">{{OVER_ONS_TITEL}}</h2>
+        <p class="over-ons__tekst">{{OVER_ONS_TEKST_1}}</p>
+        <p class="over-ons__tekst">{{OVER_ONS_TEKST_2}}</p>
+        <a href="#contact" class="btn-blauw" style="display:inline-block;margin-top:24px;">{{OVER_ONS_CTA}}</a>
+        <div class="stats">
+          <div><div class="stat__getal">{{STAT_1_GETAL}}</div><div class="stat__label">{{STAT_1_LABEL}}</div></div>
+          <div><div class="stat__getal">{{STAT_2_GETAL}}</div><div class="stat__label">{{STAT_2_LABEL}}</div></div>
+          <div><div class="stat__getal">{{STAT_3_GETAL}}</div><div class="stat__label">{{STAT_3_LABEL}}</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="diensten" id="diensten">
+    <div class="sectie-header"><h2 class="sectie-titel">{{DIENSTEN_TITEL}}</h2></div>
+    <div class="diensten__grid">
+      <div class="dienst-card"><div class="dienst-card__icon">{{DIENST_1_ICON}}</div><div class="dienst-card__naam">{{DIENST_1_NAAM}}</div><p class="dienst-card__tekst">{{DIENST_1_TEKST}}</p></div>
+      <div class="dienst-card"><div class="dienst-card__icon">{{DIENST_2_ICON}}</div><div class="dienst-card__naam">{{DIENST_2_NAAM}}</div><p class="dienst-card__tekst">{{DIENST_2_TEKST}}</p></div>
+      <div class="dienst-card"><div class="dienst-card__icon">{{DIENST_3_ICON}}</div><div class="dienst-card__naam">{{DIENST_3_NAAM}}</div><p class="dienst-card__tekst">{{DIENST_3_TEKST}}</p></div>
+    </div>
+  </section>
+  <section class="cta-balk" id="contact">
+    <h2 class="cta-balk__headline">{{CTA_HEADLINE}}</h2>
+    <p class="cta-balk__sub">{{CTA_SUB}}</p>
+    <a href="mailto:{{EMAIL}}" class="btn-blauw">{{CTA_KNOP}}</a>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__merk-naam">{{BEDRIJFSNAAM}}</div><p class="footer__merk-tekst">{{FOOTER_BESCHRIJVING}}</p></div>
+      <div><div class="footer__kolom-titel">Producten</div><ul class="footer__links"><li><a href="#">{{CATEGORIE_1}}</a></li><li><a href="#">{{CATEGORIE_2}}</a></li><li><a href="#">{{CATEGORIE_3}}</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Vacatures</a></li><li><a href="#">Pers</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Service</div><ul class="footer__links"><li><a href="#">Klantenservice</a></li><li><a href="#">Retourneren</a></li><li><a href="#">Bezorging</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <div class="footer__socials"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+    </div>
+  </footer>
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click', menuToggle);
+    document.getElementById('jaar').textContent = new Date().getFullYear();
+    const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}),{threshold:0.08});
+    document.querySelectorAll('.product-card,.dienst-card').forEach(el => { el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}} Blog</title>
+  <style>
+    :root {
+      --bg: #ffffff; --bg-alt: #f6f9fc; --tekst: #0a2540; --dim: #425466;
+      --accent: #635bff; --border: #e6ebf1; --radius: 8px; --nav: 68px;
+      --max: 1100px; --groot: clamp(2rem, 5vw, 3.8rem);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tekst); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; object-fit: cover; }
+    .navbar { position: sticky; top: 0; z-index: 100; height: var(--nav); background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+    .navbar__logo { font-size: 1rem; font-weight: 700; }
+    .navbar__links { display: flex; gap: 28px; list-style: none; }
+    .navbar__links a { font-size: 0.88rem; color: var(--dim); transition: color 0.15s; }
+    .navbar__links a:hover { color: var(--tekst); }
+    .btn-accent { background: var(--accent); color: white; padding: 8px 18px; border-radius: var(--radius); font-size: 0.88rem; font-weight: 500; transition: opacity 0.2s; }
+    .btn-accent:hover { opacity: 0.88; }
+    .navbar__hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .navbar__hamburger span { display: block; width: 22px; height: 2px; background: var(--tekst); border-radius: 2px; }
+    .hero { background: var(--bg-alt); border-bottom: 1px solid var(--border); padding: 80px 40px; text-align: center; }
+    .hero__label { font-size: 0.78rem; font-weight: 600; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
+    .hero__headline { font-size: var(--groot); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; max-width: 700px; margin-left: auto; margin-right: auto; }
+    .hero__sub { font-size: 1.1rem; color: var(--dim); max-width: 520px; margin: 0 auto 36px; line-height: 1.7; }
+    .hero__zoek { display: flex; max-width: 420px; margin: 0 auto; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: white; }
+    .hero__zoek input { flex: 1; padding: 12px 16px; border: none; outline: none; font-size: 0.9rem; }
+    .hero__zoek button { background: var(--accent); color: white; border: none; padding: 12px 20px; font-size: 0.88rem; font-weight: 500; cursor: pointer; }
+    .categorieen { padding: 32px 40px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; max-width: var(--max); margin: 0 auto; }
+    .cat-tag { padding: 6px 16px; border-radius: 999px; font-size: 0.82rem; font-weight: 500; border: 1px solid var(--border); color: var(--dim); cursor: pointer; transition: all 0.2s; }
+    .cat-tag:hover, .cat-tag.actief { background: var(--tekst); color: white; border-color: var(--tekst); }
+    .featured { padding: 60px 40px; max-width: var(--max); margin: 0 auto; }
+    .featured__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .featured__beeld { aspect-ratio: 4/3; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; color: #aaa; }
+    .featured__content { padding: 48px; }
+    .art-label { font-size: 0.75rem; font-weight: 600; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; }
+    .art-titel { font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 16px; }
+    .art-excerpt { font-size: 0.95rem; color: var(--dim); line-height: 1.7; margin-bottom: 24px; }
+    .art-meta { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: var(--dim); }
+    .avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-alt); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.62rem; font-weight: 600; flex-shrink: 0; }
+    .lees-meer { display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 600; color: var(--accent); margin-top: 20px; transition: gap 0.2s; }
+    .lees-meer:hover { gap: 10px; }
+    .artikelen { padding: 0 40px 80px; max-width: var(--max); margin: 0 auto; }
+    .artikelen__header { display: flex; justify-content: space-between; align-items: center; margin: 48px 0 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .artikelen__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .card { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; }
+    .card:hover { box-shadow: 0 8px 30px rgba(10,37,64,0.08); transform: translateY(-2px); }
+    .card__beeld { aspect-ratio: 16/9; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #bbb; }
+    .card__body { padding: 22px; flex: 1; display: flex; flex-direction: column; }
+    .card__cat { font-size: 0.72rem; font-weight: 600; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .card__titel { font-size: 0.98rem; font-weight: 700; line-height: 1.35; margin-bottom: 10px; flex: 1; }
+    .card__excerpt { font-size: 0.84rem; color: var(--dim); line-height: 1.65; margin-bottom: 16px; }
+    .card__meta { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--dim); padding-top: 14px; border-top: 1px solid var(--border); margin-top: auto; }
+    .nieuwsbrief { background: var(--bg-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 64px 40px; text-align: center; }
+    .nieuwsbrief h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .nieuwsbrief p { font-size: 0.95rem; color: var(--dim); margin-bottom: 28px; }
+    .nw-form { display: flex; max-width: 400px; margin: 0 auto; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: white; }
+    .nw-form input { flex: 1; padding: 13px 16px; border: none; outline: none; font-size: 0.9rem; }
+    .nw-form button { background: var(--accent); color: white; border: none; padding: 13px 22px; font-size: 0.88rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .nw-note { font-size: 0.76rem; color: #aaa; margin-top: 10px; }
+    .footer { padding: 48px 40px 32px; max-width: var(--max); margin: 0 auto; }
+    .footer__top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer__merk-naam { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+    .footer__merk-tekst { font-size: 0.84rem; color: var(--dim); line-height: 1.6; max-width: 200px; }
+    .footer__kolom-titel { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.84rem; color: var(--dim); transition: color 0.15s; }
+    .footer__links a:hover { color: var(--tekst); }
+    .footer__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--dim); }
+    .footer__socials { display: flex; gap: 16px; }
+    .footer__socials a { color: var(--dim); transition: color 0.15s; font-size: 0.8rem; }
+    .footer__socials a:hover { color: var(--tekst); }
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: white; z-index: 200; flex-direction: column; padding: 80px 32px 40px; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu a { font-size: 1.6rem; font-weight: 600; padding: 18px 0; border-bottom: 1px solid var(--border); }
+    .mobiel-menu__sluiten { position: absolute; top: 20px; right: 28px; font-size: 1.4rem; cursor: pointer; color: var(--dim); }
+    @media (max-width: 1024px) {
+      .featured__inner { grid-template-columns: 1fr; }
+      .artikelen__grid { grid-template-columns: repeat(2, 1fr); }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 24px; }
+      .navbar__links { display: none; }
+      .navbar__hamburger { display: flex; }
+      .hero, .featured, .artikelen, .nieuwsbrief, .footer { padding-left: 24px; padding-right: 24px; }
+      .artikelen__grid { grid-template-columns: 1fr; }
+      .categorieen { padding: 20px 24px; }
+      .footer__bottom { flex-direction: column; gap: 12px; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .footer__top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links">
+      <li><a href="#artikelen">Artikelen</a></li>
+      <li><a href="#categorieen">Categorieën</a></li>
+      <li><a href="#">Over</a></li>
+    </ul>
+    <a href="#nieuwsbrief" class="btn-accent" style="display:none" id="navCta">Abonneren</a>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#artikelen" onclick="menuToggle()">Artikelen</a>
+    <a href="#categorieen" onclick="menuToggle()">Categorieën</a>
+    <a href="#nieuwsbrief" onclick="menuToggle()">Abonneren</a>
+  </div>
+  <section class="hero">
+    <p class="hero__label">{{BLOG_LABEL}}</p>
+    <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__zoek">
+      <input type="text" placeholder="Zoek artikelen..." />
+      <button>Zoeken</button>
+    </div>
+  </section>
+  <div class="categorieen" id="categorieen">
+    <span class="cat-tag actief">Alles</span>
+    <span class="cat-tag">{{CATEGORIE_1}}</span>
+    <span class="cat-tag">{{CATEGORIE_2}}</span>
+    <span class="cat-tag">{{CATEGORIE_3}}</span>
+    <span class="cat-tag">{{CATEGORIE_4}}</span>
+    <span class="cat-tag">{{CATEGORIE_5}}</span>
+  </div>
+  <section class="featured">
+    <div class="featured__inner">
+      <div class="featured__beeld">[ {{FEATURED_AFBEELDING}} ]</div>
+      <div class="featured__content">
+        <p class="art-label">{{FEATURED_CATEGORIE}}</p>
+        <h2 class="art-titel">{{FEATURED_TITEL}}</h2>
+        <p class="art-excerpt">{{FEATURED_EXCERPT}}</p>
+        <div class="art-meta">
+          <div class="avatar">{{AUTEUR_1_INITIALEN}}</div>
+          <span>{{AUTEUR_1_NAAM}}</span><span>·</span>
+          <span>{{FEATURED_DATUM}}</span><span>·</span>
+          <span>{{FEATURED_LEESTIJD}} min</span>
+        </div>
+        <a href="{{FEATURED_URL}}" class="lees-meer">Lees artikel →</a>
+      </div>
+    </div>
+  </section>
+  <section class="artikelen" id="artikelen">
+    <div class="artikelen__header">
+      <span style="font-size:1.1rem;font-weight:700;">Recente artikelen</span>
+      <a href="#" style="font-size:0.85rem;color:var(--accent);font-weight:500;">Alle artikelen →</a>
+    </div>
+    <div class="artikelen__grid">
+      <a href="{{ARTIKEL_1_URL}}" class="card"><div class="card__beeld">[ afbeelding ]</div><div class="card__body"><div class="card__cat">{{ARTIKEL_1_CATEGORIE}}</div><div class="card__titel">{{ARTIKEL_1_TITEL}}</div><div class="card__excerpt">{{ARTIKEL_1_EXCERPT}}</div><div class="card__meta"><div class="avatar">{{ARTIKEL_1_INITIALEN}}</div><span>{{ARTIKEL_1_AUTEUR}}</span><span>·</span><span>{{ARTIKEL_1_DATUM}}</span></div></div></a>
+      <a href="{{ARTIKEL_2_URL}}" class="card"><div class="card__beeld">[ afbeelding ]</div><div class="card__body"><div class="card__cat">{{ARTIKEL_2_CATEGORIE}}</div><div class="card__titel">{{ARTIKEL_2_TITEL}}</div><div class="card__excerpt">{{ARTIKEL_2_EXCERPT}}</div><div class="card__meta"><div class="avatar">{{ARTIKEL_2_INITIALEN}}</div><span>{{ARTIKEL_2_AUTEUR}}</span><span>·</span><span>{{ARTIKEL_2_DATUM}}</span></div></div></a>
+      <a href="{{ARTIKEL_3_URL}}" class="card"><div class="card__beeld">[ afbeelding ]</div><div class="card__body"><div class="card__cat">{{ARTIKEL_3_CATEGORIE}}</div><div class="card__titel">{{ARTIKEL_3_TITEL}}</div><div class="card__excerpt">{{ARTIKEL_3_EXCERPT}}</div><div class="card__meta"><div class="avatar">{{ARTIKEL_3_INITIALEN}}</div><span>{{ARTIKEL_3_AUTEUR}}</span><span>·</span><span>{{ARTIKEL_3_DATUM}}</span></div></div></a>
+      <a href="{{ARTIKEL_4_URL}}" class="card"><div class="card__beeld">[ afbeelding ]</div><div class="card__body"><div class="card__cat">{{ARTIKEL_4_CATEGORIE}}</div><div class="card__titel">{{ARTIKEL_4_TITEL}}</div><div class="card__excerpt">{{ARTIKEL_4_EXCERPT}}</div><div class="card__meta"><div class="avatar">{{ARTIKEL_4_INITIALEN}}</div><span>{{ARTIKEL_4_AUTEUR}}</span><span>·</span><span>{{ARTIKEL_4_DATUM}}</span></div></div></a>
+      <a href="{{ARTIKEL_5_URL}}" class="card"><div class="card__beeld">[ afbeelding ]</div><div class="card__body"><div class="card__cat">{{ARTIKEL_5_CATEGORIE}}</div><div class="card__titel">{{ARTIKEL_5_TITEL}}</div><div class="card__excerpt">{{ARTIKEL_5_EXCERPT}}</div><div class="card__meta"><div class="avatar">{{ARTIKEL_5_INITIALEN}}</div><span>{{ARTIKEL_5_AUTEUR}}</span><span>·</span><span>{{ARTIKEL_5_DATUM}}</span></div></div></a>
+      <a href="{{ARTIKEL_6_URL}}" class="card"><div class="card__beeld">[ afbeelding ]</div><div class="card__body"><div class="card__cat">{{ARTIKEL_6_CATEGORIE}}</div><div class="card__titel">{{ARTIKEL_6_TITEL}}</div><div class="card__excerpt">{{ARTIKEL_6_EXCERPT}}</div><div class="card__meta"><div class="avatar">{{ARTIKEL_6_INITIALEN}}</div><span>{{ARTIKEL_6_AUTEUR}}</span><span>·</span><span>{{ARTIKEL_6_DATUM}}</span></div></div></a>
+    </div>
+  </section>
+  <section class="nieuwsbrief" id="nieuwsbrief">
+    <h2>{{NIEUWSBRIEF_TITEL}}</h2>
+    <p>{{NIEUWSBRIEF_SUB}}</p>
+    <div class="nw-form">
+      <input type="email" placeholder="jouw@email.nl" />
+      <button>Abonneren</button>
+    </div>
+    <p class="nw-note">{{NIEUWSBRIEF_NOTE}}</p>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__merk-naam">{{BEDRIJFSNAAM}}</div><p class="footer__merk-tekst">{{FOOTER_BESCHRIJVING}}</p></div>
+      <div><div class="footer__kolom-titel">Blog</div><ul class="footer__links"><li><a href="#">Alle artikelen</a></li><li><a href="#">{{CATEGORIE_1}}</a></li><li><a href="#">{{CATEGORIE_2}}</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Contact</a></li><li><a href="#">Adverteren</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Juridisch</div><ul class="footer__links"><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li><li><a href="#">Cookies</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <div class="footer__socials"><a href="#">Twitter</a><a href="#">LinkedIn</a><a href="#">RSS</a></div>
+    </div>
+  </footer>
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click', menuToggle);
+    document.getElementById('jaar').textContent = new Date().getFullYear();
+    document.querySelectorAll('.cat-tag').forEach(t => t.addEventListener('click', () => { document.querySelectorAll('.cat-tag').forEach(x => x.classList.remove('actief')); t.classList.add('actief'); }));
+    const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}),{threshold:0.08});
+    document.querySelectorAll('.card').forEach(el => { el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el); });
+  </script>
+</body>
+</html>

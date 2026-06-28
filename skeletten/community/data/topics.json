@@ -1,0 +1,37 @@
+{
+  "categorieen": ["Algemeen", "Vragen", "Tips & Tricks", "Aankondigingen"],
+  "topics": [
+    {
+      "id": "t001",
+      "titel": "Welkom in onze community!",
+      "categorie": "Aankondigingen",
+      "auteur": "Beheerder",
+      "reacties": 12,
+      "laatste_activiteit": "2 uur geleden"
+    },
+    {
+      "id": "t002",
+      "titel": "Hoe stel ik mijn profiel in?",
+      "categorie": "Vragen",
+      "auteur": "Lisa B.",
+      "reacties": 5,
+      "laatste_activiteit": "4 uur geleden"
+    },
+    {
+      "id": "t003",
+      "titel": "Mijn ervaring met de nieuwe update",
+      "categorie": "Algemeen",
+      "auteur": "Mark T.",
+      "reacties": 8,
+      "laatste_activiteit": "1 dag geleden"
+    },
+    {
+      "id": "t004",
+      "titel": "Handige snelkoppelingen die je moet kennen",
+      "categorie": "Tips & Tricks",
+      "auteur": "Sven K.",
+      "reacties": 21,
+      "laatste_activiteit": "2 dagen geleden"
+    }
+  ]
+}
