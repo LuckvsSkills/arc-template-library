@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root {
+      --bg: #ffffff; --bg-alt: #fdf8f2; --tekst: #222222; --dim: #757575;
+      --accent: #f1641e; --accent-dark: #d4561a; --border: #e8e0d8;
+      --ster: #e8a04a; --nav: 64px; --max: 1280px; --radius: 6px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tekst); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; object-fit: cover; }
+    .topbalk { background: var(--bg-alt); border-bottom: 1px solid var(--border); padding: 6px 40px; font-size: 0.78rem; color: var(--dim); display: flex; justify-content: space-between; }
+    .navbar { position: sticky; top: 0; z-index: 100; height: var(--nav); background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 20px; padding: 0 40px; }
+    .navbar__logo { font-size: 1.4rem; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; flex-shrink: 0; }
+    .navbar__zoek { flex: 1; display: flex; border: 2px solid var(--tekst); border-radius: var(--radius); overflow: hidden; max-width: 600px; }
+    .navbar__zoek input { flex: 1; padding: 10px 16px; border: none; outline: none; font-size: 0.9rem; }
+    .navbar__zoek button { background: var(--tekst); color: white; border: none; padding: 0 20px; font-size: 0.9rem; cursor: pointer; font-weight: 600; }
+    .navbar__acties { display: flex; gap: 20px; align-items: center; flex-shrink: 0; }
+    .navbar__acties a { font-size: 0.85rem; color: var(--dim); transition: color 0.15s; font-weight: 500; }
+    .navbar__acties a:hover { color: var(--tekst); }
+    .btn-accent { background: var(--accent); color: white; padding: 9px 18px; border-radius: var(--radius); font-size: 0.88rem; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-accent:hover { background: var(--accent-dark); }
+    .navbar__hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; margin-left: auto; }
+    .navbar__hamburger span { display: block; width: 22px; height: 2px; background: var(--tekst); }
+    .cat-nav { background: var(--bg-alt); border-bottom: 1px solid var(--border); padding: 0 40px; display: flex; gap: 0; overflow-x: auto; }
+    .cat-nav a { padding: 12px 16px; font-size: 0.82rem; font-weight: 600; color: var(--dim); white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }
+    .cat-nav a:hover, .cat-nav a.actief { color: var(--accent); border-bottom-color: var(--accent); }
+    .hero { background: var(--bg-alt); padding: 56px 40px; text-align: center; border-bottom: 1px solid var(--border); }
+    .hero__headline { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; }
+    .hero__sub { font-size: 1rem; color: var(--dim); max-width: 480px; margin: 0 auto; }
+    .hoofd { max-width: var(--max); margin: 0 auto; padding: 40px 40px; display: grid; grid-template-columns: 240px 1fr; gap: 40px; }
+    .sidebar { flex-shrink: 0; }
+    .sidebar__sectie { margin-bottom: 32px; }
+    .sidebar__titel { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; color: var(--tekst); }
+    .sidebar__links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .sidebar__links a { font-size: 0.88rem; color: var(--dim); transition: color 0.15s; }
+    .sidebar__links a:hover { color: var(--accent); }
+    .prijs-range { display: flex; gap: 8px; margin-top: 8px; }
+    .prijs-range input { width: 80px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.82rem; }
+    .prijs-range button { background: var(--tekst); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 0.82rem; cursor: pointer; }
+    .rating-filter { display: flex; flex-direction: column; gap: 8px; }
+    .rating-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; cursor: pointer; }
+    .rating-item input { cursor: pointer; }
+    .producten__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .producten__count { font-size: 0.88rem; color: var(--dim); }
+    .sort-select { padding: 7px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.85rem; cursor: pointer; }
+    .producten__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .product-card { cursor: pointer; }
+    .product-card__beeld { aspect-ratio: 1/1; background: var(--bg-alt); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #bbb; margin-bottom: 10px; position: relative; overflow: hidden; transition: transform 0.2s; }
+    .product-card:hover .product-card__beeld { transform: scale(1.02); }
+    .product-card__fav { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; opacity: 0; transition: opacity 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .product-card:hover .product-card__fav { opacity: 1; }
+    .product-card__badge { position: absolute; top: 8px; left: 8px; background: var(--accent); color: white; font-size: 0.65rem; font-weight: 700; padding: 2px 7px; border-radius: 3px; }
+    .product-card__naam { font-size: 0.88rem; font-weight: 500; line-height: 1.35; margin-bottom: 4px; color: var(--tekst); }
+    .product-card__shop { font-size: 0.78rem; color: var(--dim); margin-bottom: 6px; }
+    .product-card__rating { display: flex; align-items: center; gap: 4px; font-size: 0.78rem; color: var(--dim); margin-bottom: 6px; }
+    .product-card__rating span { color: var(--ster); }
+    .product-card__prijs { font-size: 0.95rem; font-weight: 700; }
+    .product-card__prijs-oud { font-size: 0.82rem; color: var(--dim); text-decoration: line-through; margin-left: 6px; }
+    .banner { background: var(--accent); color: white; padding: 56px 40px; text-align: center; margin-top: 60px; }
+    .banner h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .banner p { font-size: 0.95rem; opacity: 0.85; max-width: 440px; margin: 0 auto 28px; }
+    .btn-wit { background: white; color: var(--accent); padding: 11px 28px; border-radius: var(--radius); font-size: 0.9rem; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-wit:hover { opacity: 0.9; }
+    .footer { background: var(--bg-alt); border-top: 1px solid var(--border); padding: 56px 40px 32px; }
+    .footer__top { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+    .footer__logo { font-size: 1.2rem; font-weight: 800; color: var(--accent); margin-bottom: 10px; }
+    .footer__tekst { font-size: 0.84rem; color: var(--dim); line-height: 1.6; max-width: 200px; }
+    .footer__kolom-titel { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.84rem; color: var(--dim); transition: color 0.15s; }
+    .footer__links a:hover { color: var(--tekst); }
+    .footer__bottom { max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--dim); }
+    .footer__socials { display: flex; gap: 16px; }
+    .footer__socials a { color: var(--dim); transition: color 0.15s; font-size: 0.8rem; }
+    .footer__socials a:hover { color: var(--tekst); }
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: white; z-index: 200; flex-direction: column; padding: 80px 32px 40px; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu a { font-size: 1.4rem; font-weight: 600; padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .mobiel-menu__sluiten { position: absolute; top: 20px; right: 28px; font-size: 1.4rem; cursor: pointer; color: var(--dim); }
+    @media (max-width: 1024px) {
+      .hoofd { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .producten__grid { grid-template-columns: repeat(3, 1fr); }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .topbalk { display: none; }
+      .navbar { padding: 0 20px; flex-wrap: wrap; height: auto; padding: 12px 20px; gap: 12px; }
+      .navbar__zoek { order: 3; width: 100%; max-width: 100%; }
+      .navbar__acties { display: none; }
+      .navbar__hamburger { display: flex; }
+      .cat-nav { padding: 0 20px; }
+      .hero { padding: 40px 20px; }
+      .hoofd { padding: 24px 20px; }
+      .producten__grid { grid-template-columns: repeat(2, 1fr); }
+      .banner { padding: 48px 20px; }
+      .footer { padding: 40px 20px 24px; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+      .footer__bottom { flex-direction: column; gap: 12px; }
+    }
+    @media (max-width: 480px) {
+      .producten__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .footer__top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbalk">
+    <span>{{TOPBALK_LINKS}}</span>
+    <span>{{TOPBALK_RECHTS}}</span>
+  </div>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <div class="navbar__zoek">
+      <input type="text" placeholder="Zoek naar alles..." />
+      <button>Zoeken</button>
+    </div>
+    <div class="navbar__acties">
+      <a href="#">Inloggen</a>
+      <a href="#">Registreren</a>
+      <a href="#" class="btn-accent">Verkopen</a>
+      <a href="#">🛒</a>
+    </div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="cat-nav">
+    <a href="#" class="actief">{{CATEGORIE_1}}</a>
+    <a href="#">{{CATEGORIE_2}}</a>
+    <a href="#">{{CATEGORIE_3}}</a>
+    <a href="#">{{CATEGORIE_4}}</a>
+    <a href="#">{{CATEGORIE_5}}</a>
+    <a href="#">{{CATEGORIE_6}}</a>
+  </div>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">{{CATEGORIE_1}}</a>
+    <a href="#" onclick="menuToggle()">{{CATEGORIE_2}}</a>
+    <a href="#" onclick="menuToggle()">Inloggen</a>
+    <a href="#" onclick="menuToggle()">Verkopen</a>
+  </div>
+  <section class="hero">
+    <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+  </section>
+  <div class="hoofd">
+    <aside class="sidebar">
+      <div class="sidebar__sectie">
+        <div class="sidebar__titel">Categorieën</div>
+        <ul class="sidebar__links">
+          <li><a href="#">{{CATEGORIE_1}}</a></li>
+          <li><a href="#">{{CATEGORIE_2}}</a></li>
+          <li><a href="#">{{CATEGORIE_3}}</a></li>
+          <li><a href="#">{{CATEGORIE_4}}</a></li>
+          <li><a href="#">{{CATEGORIE_5}}</a></li>
+        </ul>
+      </div>
+      <div class="sidebar__sectie">
+        <div class="sidebar__titel">Prijs</div>
+        <div class="prijs-range">
+          <input type="text" placeholder="Min" />
+          <input type="text" placeholder="Max" />
+          <button>→</button>
+        </div>
+      </div>
+      <div class="sidebar__sectie">
+        <div class="sidebar__titel">Beoordeling</div>
+        <div class="rating-filter">
+          <label class="rating-item"><input type="radio" name="rating" /> ★★★★★ (5)</label>
+          <label class="rating-item"><input type="radio" name="rating" /> ★★★★☆ en hoger</label>
+          <label class="rating-item"><input type="radio" name="rating" /> ★★★☆☆ en hoger</label>
+        </div>
+      </div>
+      <div class="sidebar__sectie">
+        <div class="sidebar__titel">Verzending</div>
+        <ul class="sidebar__links">
+          <li><a href="#">Gratis verzending</a></li>
+          <li><a href="#">Vandaag verstuurd</a></li>
+          <li><a href="#">Lokale verkoper</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main>
+      <div class="producten__header">
+        <span class="producten__count">{{PRODUCT_COUNT}} resultaten</span>
+        <select class="sort-select">
+          <option>Meest relevant</option>
+          <option>Prijs: laag naar hoog</option>
+          <option>Prijs: hoog naar laag</option>
+          <option>Beste beoordeling</option>
+          <option>Nieuwste</option>
+        </select>
+      </div>
+      <div class="producten__grid">
+        <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge">{{PRODUCT_1_BADGE}}</span><span class="product-card__fav">♡</span>[ afbeelding ]</div><div class="product-card__naam">{{PRODUCT_1_NAAM}}</div><div class="product-card__shop">{{PRODUCT_1_SHOP}}</div><div class="product-card__rating"><span>★★★★★</span> {{PRODUCT_1_RATING}} ({{PRODUCT_1_REVIEWS}})</div><div><span class="product-card__prijs">{{PRODUCT_1_PRIJS}}</span></div></div>
+        <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afbeelding ]</div><div class="product-card__naam">{{PRODUCT_2_NAAM}}</div><div class="product-card__shop">{{PRODUCT_2_SHOP}}</div><div class="product-card__rating"><span>★★★★★</span> {{PRODUCT_2_RATING}} ({{PRODUCT_2_REVIEWS}})</div><div><span class="product-card__prijs">{{PRODUCT_2_PRIJS}}</span><span class="product-card__prijs-oud">{{PRODUCT_2_PRIJS_OUD}}</span></div></div>
+        <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afbeelding ]</div><div class="product-card__naam">{{PRODUCT_3_NAAM}}</div><div class="product-card__shop">{{PRODUCT_3_SHOP}}</div><div class="product-card__rating"><span>★★★★☆</span> {{PRODUCT_3_RATING}} ({{PRODUCT_3_REVIEWS}})</div><div><span class="product-card__prijs">{{PRODUCT_3_PRIJS}}</span></div></div>
+        <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge">{{PRODUCT_4_BADGE}}</span><span class="product-card__fav">♡</span>[ afbeelding ]</div><div class="product-card__naam">{{PRODUCT_4_NAAM}}</div><div class="product-card__shop">{{PRODUCT_4_SHOP}}</div><div class="product-card__rating"><span>★★★★★</span> {{PRODUCT_4_RATING}} ({{PRODUCT_4_REVIEWS}})</div><div><span class="product-card__prijs">{{PRODUCT_4_PRIJS}}</span></div></div>
+        <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afbeelding ]</div><div class="product-card__naam">{{PRODUCT_5_NAAM}}</div><div class="product-card__shop">{{PRODUCT_5_SHOP}}</div><div class="product-card__rating"><span>★★★★☆</span> {{PRODUCT_5_RATING}} ({{PRODUCT_5_REVIEWS}})</div><div><span class="product-card__prijs">{{PRODUCT_5_PRIJS}}</span></div></div>
+        <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afbeelding ]</div><div class="product-card__naam">{{PRODUCT_6_NAAM}}</div><div class="product-card__shop">{{PRODUCT_6_SHOP}}</div><div class="product-card__rating"><span>★★★★★</span> {{PRODUCT_6_RATING}} ({{PRODUCT_6_REVIEWS}})</div><div><span class="product-card__prijs">{{PRODUCT_6_PRIJS}}</span><span class="product-card__prijs-oud">{{PRODUCT_6_PRIJS_OUD}}</span></div></div>
+        <div class="product-card"><div class="product-card__beeld"><span class="product-card__fav">♡</span>[ afbeelding ]</div><div class="product-card__naam">{{PRODUCT_7_NAAM}}</div><div class="product-card__shop">{{PRODUCT_7_SHOP}}</div><div class="product-card__rating"><span>★★★★★</span> {{PRODUCT_7_RATING}} ({{PRODUCT_7_REVIEWS}})</div><div><span class="product-card__prijs">{{PRODUCT_7_PRIJS}}</span></div></div>
+        <div class="product-card"><div class="product-card__beeld"><span class="product-card__badge">{{PRODUCT_8_BADGE}}</span><span class="product-card__fav">♡</span>[ afbeelding ]</div><div class="product-card__naam">{{PRODUCT_8_NAAM}}</div><div class="product-card__shop">{{PRODUCT_8_SHOP}}</div><div class="product-card__rating"><span>★★★★☆</span> {{PRODUCT_8_RATING}} ({{PRODUCT_8_REVIEWS}})</div><div><span class="product-card__prijs">{{PRODUCT_8_PRIJS}}</span></div></div>
+      </div>
+    </main>
+  </div>
+  <section class="banner">
+    <h2>{{BANNER_HEADLINE}}</h2>
+    <p>{{BANNER_SUB}}</p>
+    <a href="#" class="btn-wit">{{BANNER_CTA}}</a>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_BESCHRIJVING}}</p></div>
+      <div><div class="footer__kolom-titel">Kopen</div><ul class="footer__links"><li><a href="#">Geschenkideeën</a></li><li><a href="#">{{CATEGORIE_1}}</a></li><li><a href="#">{{CATEGORIE_2}}</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Verkopen</div><ul class="footer__links"><li><a href="#">Begin een winkel</a></li><li><a href="#">Verkopershandboek</a></li><li><a href="#">Community</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Help</div><ul class="footer__links"><li><a href="#">Helpcentrum</a></li><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+      <div class="footer__socials"><a href="#">Instagram</a><a href="#">Pinterest</a><a href="#">Facebook</a></div>
+    </div>
+  </footer>
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click', menuToggle);
+    document.getElementById('jaar').textContent = new Date().getFullYear();
+    const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}),{threshold:0.08});
+    document.querySelectorAll('.product-card').forEach(el => { el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el); });
+  </script>
+</body>
+</html>
