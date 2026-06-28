@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#fff;--tekst:#333;--dim:#888;--accent:#d44;--border:#f0f0f0;--max:640px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:Georgia,"Times New Roman",serif;line-height:1.7;overflow-x:hidden;font-size:18px}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .header{max-width:var(--max);margin:0 auto;padding:40px 24px 0}
+    .header__logo{font-size:1rem;font-weight:700;color:var(--tekst);font-family:-apple-system,sans-serif;margin-bottom:4px}
+    .header__tagline{font-size:0.82rem;color:var(--dim);font-family:-apple-system,sans-serif}
+    .header__nav{display:flex;gap:16px;margin-top:12px}
+    .header__nav a{font-size:0.82rem;color:var(--dim);font-family:-apple-system,sans-serif;transition:color 0.15s}
+    .header__nav a:hover{color:var(--tekst)}
+    .divider{max-width:var(--max);margin:20px auto 0 auto;padding:0 24px;border-top:1px solid var(--border)}
+    .featured-post{max-width:var(--max);margin:40px auto 0;padding:0 24px}
+    .featured-post__datum{font-size:0.8rem;color:var(--dim);font-family:-apple-system,sans-serif;margin-bottom:8px}
+    .featured-post__titel{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;line-height:1.25;margin-bottom:14px;letter-spacing:-0.01em}
+    .featured-post__titel a{color:var(--tekst);text-decoration:none}
+    .featured-post__titel a:hover{color:var(--accent)}
+    .featured-post__tekst{font-size:1rem;color:#555;line-height:1.8;margin-bottom:14px}
+    .lees-verder{font-size:0.85rem;font-family:-apple-system,sans-serif;color:var(--accent);font-weight:600}
+    .posts-lijst{max-width:var(--max);margin:40px auto 0;padding:0 24px}
+    .posts-sectie-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--dim);font-family:-apple-system,sans-serif;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    .post-rij{padding:16px 0;border-bottom:1px solid var(--border)}
+    .post-rij__datum{font-size:0.75rem;color:var(--dim);font-family:-apple-system,sans-serif;margin-bottom:4px}
+    .post-rij__titel{font-size:1.05rem;font-weight:700;line-height:1.3;margin-bottom:6px}
+    .post-rij__titel a{color:var(--tekst);text-decoration:none}
+    .post-rij__titel a:hover{color:var(--accent)}
+    .post-rij__tekst{font-size:0.9rem;color:#666;line-height:1.65}
+    .tag-sectie{max-width:var(--max);margin:36px auto 0;padding:0 24px}
+    .tag-sectie__label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--dim);font-family:-apple-system,sans-serif;margin-bottom:12px}
+    .tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-size:0.8rem;color:var(--accent);font-family:-apple-system,sans-serif;text-decoration:underline;cursor:pointer}
+    .nieuwsbrief{max-width:var(--max);margin:48px auto 0;padding:0 24px}
+    .nieuwsbrief__box{background:#f9f9f7;border:1px solid var(--border);padding:28px;border-left:3px solid var(--accent)}
+    .nieuwsbrief__titel{font-size:1.1rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.01em}
+    .nieuwsbrief__sub{font-size:0.88rem;color:#666;margin-bottom:16px;line-height:1.65;font-family:-apple-system,sans-serif}
+    .nw-form{display:flex;gap:0;max-width:100%}
+    .nw-form input{flex:1;padding:10px 14px;border:1px solid var(--border);border-right:none;font-size:0.88rem;outline:none;font-family:-apple-system,sans-serif}
+    .nw-form button{background:var(--accent);color:#fff;border:none;padding:10px 18px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:-apple-system,sans-serif}
+    .archief{max-width:var(--max);margin:48px auto 0;padding:0 24px}
+    .archief__jaar{margin-bottom:24px}
+    .archief__jaar-label{font-size:0.85rem;font-weight:700;color:var(--dim);font-family:-apple-system,sans-serif;margin-bottom:8px}
+    .archief__items{display:flex;flex-direction:column;gap:6px}
+    .archief-item{display:flex;gap:16px;align-items:baseline}
+    .archief-item__datum{font-size:0.78rem;color:var(--dim);font-family:-apple-system,sans-serif;flex-shrink:0;width:60px}
+    .archief-item__titel{font-size:0.92rem;color:var(--tekst);line-height:1.4}
+    .archief-item__titel:hover{color:var(--accent)}
+    .footer{max-width:var(--max);margin:48px auto 0;padding:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:0.78rem;color:var(--dim);font-family:-apple-system,sans-serif;flex-wrap:wrap;gap:10px}
+    @media(max-width:480px){.nw-form{flex-direction:column}.nw-form input{border-right:1px solid var(--border);border-bottom:none}.footer{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header__logo">{{BEDRIJFSNAAM}}</div>
+    <div class="header__tagline">{{TAGLINE}}</div>
+    <nav class="header__nav">
+      <a href="#">Archief</a>
+      <a href="#">Over</a>
+      <a href="#">Contact</a>
+      <a href="#">RSS</a>
+    </nav>
+  </div>
+  <div class="divider"></div>
+  <div class="featured-post">
+    <div class="featured-post__datum">{{FEATURED_DATUM}}</div>
+    <h1 class="featured-post__titel"><a href="#">{{FEATURED_TITEL}}</a></h1>
+    <p class="featured-post__tekst">{{FEATURED_TEKST}}</p>
+    <a href="#" class="lees-verder">Lees verder →</a>
+  </div>
+  <div class="posts-lijst">
+    <div class="posts-sectie-label">Recente posts</div>
+    <div class="post-rij"><div class="post-rij__datum">{{P1_DATUM}}</div><div class="post-rij__titel"><a href="#">{{P1_TITEL}}</a></div><div class="post-rij__tekst">{{P1_TEKST}}</div></div>
+    <div class="post-rij"><div class="post-rij__datum">{{P2_DATUM}}</div><div class="post-rij__titel"><a href="#">{{P2_TITEL}}</a></div><div class="post-rij__tekst">{{P2_TEKST}}</div></div>
+    <div class="post-rij"><div class="post-rij__datum">{{P3_DATUM}}</div><div class="post-rij__titel"><a href="#">{{P3_TITEL}}</a></div><div class="post-rij__tekst">{{P3_TEKST}}</div></div>
+    <div class="post-rij"><div class="post-rij__datum">{{P4_DATUM}}</div><div class="post-rij__titel"><a href="#">{{P4_TITEL}}</a></div><div class="post-rij__tekst">{{P4_TEKST}}</div></div>
+    <div class="post-rij"><div class="post-rij__datum">{{P5_DATUM}}</div><div class="post-rij__titel"><a href="#">{{P5_TITEL}}</a></div><div class="post-rij__tekst">{{P5_TEKST}}</div></div>
+    <div class="post-rij"><div class="post-rij__datum">{{P6_DATUM}}</div><div class="post-rij__titel"><a href="#">{{P6_TITEL}}</a></div><div class="post-rij__tekst">{{P6_TEKST}}</div></div>
+    <div class="post-rij"><div class="post-rij__datum">{{P7_DATUM}}</div><div class="post-rij__titel"><a href="#">{{P7_TITEL}}</a></div><div class="post-rij__tekst">{{P7_TEKST}}</div></div>
+  </div>
+  <div class="tag-sectie">
+    <div class="tag-sectie__label">Categorieën</div>
+    <div class="tags">
+      <a href="#" class="tag">{{TAG_1}}</a>
+      <a href="#" class="tag">{{TAG_2}}</a>
+      <a href="#" class="tag">{{TAG_3}}</a>
+      <a href="#" class="tag">{{TAG_4}}</a>
+      <a href="#" class="tag">{{TAG_5}}</a>
+    </div>
+  </div>
+  <div class="nieuwsbrief">
+    <div class="nieuwsbrief__box">
+      <div class="nieuwsbrief__titel">{{NW_TITEL}}</div>
+      <div class="nieuwsbrief__sub">{{NW_SUB}}</div>
+      <div class="nw-form">
+        <input type="email" placeholder="jouw@email.nl" />
+        <button>Abonneren</button>
+      </div>
+    </div>
+  </div>
+  <div class="archief">
+    <div class="posts-sectie-label">Archief</div>
+    <div class="archief__jaar">
+      <div class="archief__jaar-label">{{JAAR_1}}</div>
+      <div class="archief__items">
+        <div class="archief-item"><span class="archief-item__datum">{{AR1_DATUM}}</span><a href="#" class="archief-item__titel">{{AR1_TITEL}}</a></div>
+        <div class="archief-item"><span class="archief-item__datum">{{AR2_DATUM}}</span><a href="#" class="archief-item__titel">{{AR2_TITEL}}</a></div>
+        <div class="archief-item"><span class="archief-item__datum">{{AR3_DATUM}}</span><a href="#" class="archief-item__titel">{{AR3_TITEL}}</a></div>
+        <div class="archief-item"><span class="archief-item__datum">{{AR4_DATUM}}</span><a href="#" class="archief-item__titel">{{AR4_TITEL}}</a></div>
+      </div>
+    </div>
+    <div class="archief__jaar">
+      <div class="archief__jaar-label">{{JAAR_2}}</div>
+      <div class="archief__items">
+        <div class="archief-item"><span class="archief-item__datum">{{AR5_DATUM}}</span><a href="#" class="archief-item__titel">{{AR5_TITEL}}</a></div>
+        <div class="archief-item"><span class="archief-item__datum">{{AR6_DATUM}}</span><a href="#" class="archief-item__titel">{{AR6_TITEL}}</a></div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+    <span>{{FOOTER_TAGLINE}}</span>
+  </footer>
+  <script>document.getElementById('jaar').textContent=new Date().getFullYear()</script>
+</body>
+</html>
