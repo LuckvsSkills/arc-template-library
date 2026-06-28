@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}} — API Documentatie</title>
+  <style>
+    :root {
+      --bg: #ffffff; --bg-alt: #f6f9fc; --bg-code: #0d1117; --tekst: #1a1a2e;
+      --dim: #6b7280; --accent: #635bff; --accent-dark: #4b44d4; --border: #e5e7eb;
+      --groen: #00875a; --rood: #de350b; --oranje: #ff8b00; --blauw: #0052cc;
+      --nav-breedte: 260px; --top: 56px; --radius: 6px; --max: 900px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tekst); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code { font-family: "SF Mono", "Fira Code", "Consolas", monospace; font-size: 0.88em; }
+
+    /* TOPBAR */
+    .topbar { position: sticky; top: 0; z-index: 100; height: var(--top); background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+    .topbar__logo { font-size: 1rem; font-weight: 700; color: var(--tekst); display: flex; align-items: center; gap: 8px; }
+    .topbar__logo-badge { background: var(--accent); color: white; font-size: 0.65rem; font-weight: 700; padding: 2px 7px; border-radius: 3px; }
+    .topbar__zoek { display: flex; align-items: center; gap: 8px; background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 7px 14px; font-size: 0.85rem; color: var(--dim); cursor: text; flex: 1; max-width: 320px; margin: 0 32px; }
+    .topbar__nav { display: flex; gap: 20px; align-items: center; }
+    .topbar__nav a { font-size: 0.85rem; color: var(--dim); font-weight: 500; }
+    .topbar__nav a:hover { color: var(--tekst); text-decoration: none; }
+    .btn-docs { background: var(--accent); color: white; padding: 7px 16px; border-radius: var(--radius); font-size: 0.82rem; font-weight: 600; border: none; cursor: pointer; }
+    .hamburger-btn { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+    .hamburger-btn span { display: block; width: 18px; height: 1.5px; background: var(--dim); }
+
+    /* LAYOUT */
+    .layout { display: flex; flex: 1; }
+
+    /* SIDEBAR */
+    .sidebar { width: var(--nav-breedte); border-right: 1px solid var(--border); position: sticky; top: var(--top); height: calc(100vh - var(--top)); overflow-y: auto; padding: 20px 0; flex-shrink: 0; }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .nav-sectie { margin-bottom: 24px; }
+    .nav-sectie-label { padding: 0 20px 8px; font-size: 0.68rem; font-weight: 700; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; }
+    .nav-link { display: flex; align-items: center; gap: 8px; padding: 6px 20px; font-size: 0.85rem; color: var(--dim); cursor: pointer; transition: all 0.15s; border-left: 2px solid transparent; }
+    .nav-link:hover { color: var(--tekst); background: var(--bg-alt); text-decoration: none; }
+    .nav-link.actief { color: var(--accent); border-left-color: var(--accent); background: rgba(99,91,255,0.04); font-weight: 600; }
+    .nav-link__method { font-size: 0.65rem; font-weight: 700; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
+    .method-get { background: rgba(0,135,90,0.1); color: var(--groen); }
+    .method-post { background: rgba(0,82,204,0.1); color: var(--blauw); }
+    .method-put { background: rgba(255,139,0,0.1); color: var(--oranje); }
+    .method-del { background: rgba(222,53,11,0.1); color: var(--rood); }
+
+    /* CONTENT */
+    .content { flex: 1; max-width: var(--max); margin: 0 auto; padding: 48px 40px; min-width: 0; }
+    .docs-sectie { margin-bottom: 64px; padding-bottom: 64px; border-bottom: 1px solid var(--border); }
+    .docs-sectie:last-child { border-bottom: none; }
+    .docs-h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .docs-h2 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; margin: 40px 0 12px; }
+    .docs-h3 { font-size: 1rem; font-weight: 700; margin: 28px 0 8px; }
+    .docs-p { font-size: 0.92rem; color: #374151; line-height: 1.75; margin-bottom: 16px; }
+    .docs-p code { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; color: var(--accent); }
+    .endpoint-blok { background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin: 20px 0; display: flex; align-items: center; gap: 12px; }
+    .endpoint-method { font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; flex-shrink: 0; }
+    .endpoint-url { font-family: "SF Mono", monospace; font-size: 0.9rem; color: var(--tekst); }
+    .code-blok { background: var(--bg-code); border-radius: var(--radius); margin: 16px 0; overflow: hidden; }
+    .code-blok__header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 1px solid #21262d; }
+    .code-talen { display: flex; gap: 0; }
+    .code-taal { padding: 4px 12px; font-size: 0.75rem; color: #8b949e; cursor: pointer; transition: color 0.15s; border-bottom: 2px solid transparent; }
+    .code-taal.actief { color: #e6edf3; border-bottom-color: var(--accent); }
+    .code-kopieer { font-size: 0.75rem; color: #8b949e; cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: all 0.15s; border: 1px solid #30363d; background: transparent; }
+    .code-kopieer:hover { color: #e6edf3; border-color: #8b949e; }
+    .code-inhoud { padding: 20px; overflow-x: auto; }
+    .code-inhoud pre { font-family: "SF Mono", "Fira Code", monospace; font-size: 0.82rem; line-height: 1.7; color: #e6edf3; }
+    .kw { color: #ff7b72; } .str { color: #a5d6ff; } .num { color: #79c0ff; }
+    .com { color: #8b949e; } .key { color: #7ee787; } .fn { color: #d2a8ff; }
+    .param-tabel { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.85rem; }
+    .param-tabel th { padding: 10px 14px; text-align: left; font-size: 0.72rem; font-weight: 700; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); background: var(--bg-alt); }
+    .param-tabel td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .param-tabel tr:last-child td { border-bottom: none; }
+    .param-naam { font-family: monospace; font-size: 0.88rem; color: var(--tekst); font-weight: 600; }
+    .param-type { font-family: monospace; font-size: 0.78rem; color: var(--accent); }
+    .param-vereist { font-size: 0.7rem; font-weight: 700; color: var(--rood); background: rgba(222,53,11,0.08); padding: 2px 6px; border-radius: 3px; }
+    .param-optioneel { font-size: 0.7rem; color: var(--dim); background: var(--bg-alt); padding: 2px 6px; border-radius: 3px; }
+    .param-desc { color: var(--dim); font-size: 0.85rem; line-height: 1.5; }
+    .response-blok { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 16px 0; }
+    .response-header { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--bg-alt); border-bottom: 1px solid var(--border); }
+    .response-status { font-size: 0.78rem; font-weight: 700; padding: 2px 8px; border-radius: 3px; }
+    .status-200 { background: rgba(0,135,90,0.1); color: var(--groen); }
+    .status-400 { background: rgba(255,139,0,0.1); color: var(--oranje); }
+    .status-401 { background: rgba(222,53,11,0.1); color: var(--rood); }
+    .alert-blok { border-left: 3px solid; padding: 14px 16px; border-radius: 0 var(--radius) var(--radius) 0; margin: 16px 0; font-size: 0.88rem; }
+    .alert-info { border-color: var(--blauw); background: rgba(0,82,204,0.05); color: #003884; }
+    .alert-warn { border-color: var(--oranje); background: rgba(255,139,0,0.05); color: #7a4900; }
+
+    /* RECHTER KOLOM (code voorbeelden naast tekst op groot scherm) */
+    .content-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+
+    /* FOOTER */
+    .footer { border-top: 1px solid var(--border); padding: 32px 24px; display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--dim); }
+    .footer__links { display: flex; gap: 20px; }
+    .footer__links a { color: var(--dim); }
+    .footer__links a:hover { color: var(--tekst); }
+
+    /* MOBIEL */
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: white; z-index: 200; flex-direction: column; padding: 70px 24px 40px; overflow-y: auto; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu .nav-link { font-size: 1rem; padding: 10px 0; border-left: none; border-bottom: 1px solid var(--border); }
+    .mobiel-menu__sluiten { position: absolute; top: 16px; right: 20px; font-size: 1.4rem; cursor: pointer; color: var(--dim); }
+
+    @media (max-width: 1024px) {
+      .content-split { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .topbar__zoek, .topbar__nav { display: none; }
+      .hamburger-btn { display: flex; }
+      .content { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar__logo">{{BEDRIJFSNAAM}} <span class="topbar__logo-badge">API</span></div>
+    <div class="topbar__zoek">🔍 Zoek in documentatie...</div>
+    <nav class="topbar__nav">
+      <a href="#">Gids</a>
+      <a href="#">Referentie</a>
+      <a href="#">SDK's</a>
+      <a href="#">Changelog</a>
+      <button class="btn-docs">Dashboard →</button>
+    </nav>
+    <div class="hamburger-btn" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </div>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <div class="nav-sectie-label">Aan de slag</div>
+    <a href="#intro" class="nav-link actief" onclick="menuToggle()">Introductie</a>
+    <a href="#auth" class="nav-link" onclick="menuToggle()">Authenticatie</a>
+    <div class="nav-sectie-label" style="margin-top:16px;">{{API_SECTIE_1}}</div>
+    <a href="#endpoint1" class="nav-link" onclick="menuToggle()"><span class="nav-link__method method-get">GET</span>{{ENDPOINT_1_NAAM}}</a>
+    <a href="#endpoint2" class="nav-link" onclick="menuToggle()"><span class="nav-link__method method-post">POST</span>{{ENDPOINT_2_NAAM}}</a>
+  </div>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="nav-sectie">
+        <div class="nav-sectie-label">Aan de slag</div>
+        <a href="#intro" class="nav-link actief">Introductie</a>
+        <a href="#auth" class="nav-link">Authenticatie</a>
+        <a href="#errors" class="nav-link">Foutafhandeling</a>
+        <a href="#rate-limits" class="nav-link">Rate limits</a>
+      </div>
+      <div class="nav-sectie">
+        <div class="nav-sectie-label">{{API_SECTIE_1}}</div>
+        <a href="#endpoint1" class="nav-link"><span class="nav-link__method method-get">GET</span>{{ENDPOINT_1_NAAM}}</a>
+        <a href="#endpoint2" class="nav-link"><span class="nav-link__method method-post">POST</span>{{ENDPOINT_2_NAAM}}</a>
+        <a href="#endpoint3" class="nav-link"><span class="nav-link__method method-put">PUT</span>{{ENDPOINT_3_NAAM}}</a>
+        <a href="#endpoint4" class="nav-link"><span class="nav-link__method method-del">DEL</span>{{ENDPOINT_4_NAAM}}</a>
+      </div>
+      <div class="nav-sectie">
+        <div class="nav-sectie-label">{{API_SECTIE_2}}</div>
+        <a href="#endpoint5" class="nav-link"><span class="nav-link__method method-get">GET</span>{{ENDPOINT_5_NAAM}}</a>
+        <a href="#endpoint6" class="nav-link"><span class="nav-link__method method-post">POST</span>{{ENDPOINT_6_NAAM}}</a>
+      </div>
+      <div class="nav-sectie">
+        <div class="nav-sectie-label">Webhooks</div>
+        <a href="#webhooks" class="nav-link">Overzicht</a>
+        <a href="#webhook-events" class="nav-link">Events</a>
+      </div>
+    </aside>
+    <main class="content">
+      <div class="docs-sectie" id="intro">
+        <h1 class="docs-h1">{{DOCS_TITEL}}</h1>
+        <p class="docs-p">{{DOCS_INTRO_1}}</p>
+        <p class="docs-p">{{DOCS_INTRO_2}}</p>
+        <div class="alert-blok alert-info">{{DOCS_INFO_ALERT}}</div>
+        <h2 class="docs-h2">Base URL</h2>
+        <div class="code-blok">
+          <div class="code-blok__header">
+            <div class="code-talen"><span class="code-taal actief">HTTP</span></div>
+            <button class="code-kopieer">Kopieer</button>
+          </div>
+          <div class="code-inhoud"><pre>{{BASE_URL}}</pre></div>
+        </div>
+        <h2 class="docs-h2">Snelstart</h2>
+        <p class="docs-p">Maak je eerste API-aanroep in minder dan 5 minuten:</p>
+        <div class="code-blok">
+          <div class="code-blok__header">
+            <div class="code-talen">
+              <span class="code-taal actief">cURL</span>
+              <span class="code-taal">Python</span>
+              <span class="code-taal">Node.js</span>
+            </div>
+            <button class="code-kopieer">Kopieer</button>
+          </div>
+          <div class="code-inhoud"><pre><span class="kw">curl</span> -X GET \
+  <span class="str">"{{BASE_URL}}/{{ENDPOINT_1_PAD}}"</span> \
+  -H <span class="str">"Authorization: Bearer {{API_KEY_PLACEHOLDER}}"</span> \
+  -H <span class="str">"Content-Type: application/json"</span></pre></div>
+        </div>
+      </div>
+      <div class="docs-sectie" id="auth">
+        <h2 class="docs-h1">Authenticatie</h2>
+        <p class="docs-p">{{AUTH_INTRO}}</p>
+        <div class="alert-blok alert-warn">{{AUTH_WARN}}</div>
+        <h3 class="docs-h3">API Key meesturen</h3>
+        <p class="docs-p">Stuur je API key mee als <code>Bearer</code> token in de <code>Authorization</code> header:</p>
+        <div class="code-blok">
+          <div class="code-blok__header">
+            <div class="code-talen"><span class="code-taal actief">HTTP Header</span></div>
+            <button class="code-kopieer">Kopieer</button>
+          </div>
+          <div class="code-inhoud"><pre>Authorization: Bearer <span class="str">{{API_KEY_PLACEHOLDER}}</span></pre></div>
+        </div>
+      </div>
+      <div class="docs-sectie" id="endpoint1">
+        <h2 class="docs-h1">{{ENDPOINT_1_NAAM}}</h2>
+        <p class="docs-p">{{ENDPOINT_1_BESCHRIJVING}}</p>
+        <div class="endpoint-blok">
+          <span class="endpoint-method method-get">GET</span>
+          <span class="endpoint-url">{{BASE_URL}}/{{ENDPOINT_1_PAD}}</span>
+        </div>
+        <h3 class="docs-h3">Parameters</h3>
+        <table class="param-tabel">
+          <thead><tr><th>Parameter</th><th>Type</th><th>Vereist</th><th>Beschrijving</th></tr></thead>
+          <tbody>
+            <tr><td><span class="param-naam">{{PARAM_1_NAAM}}</span></td><td><span class="param-type">{{PARAM_1_TYPE}}</span></td><td><span class="param-vereist">Vereist</span></td><td class="param-desc">{{PARAM_1_DESC}}</td></tr>
+            <tr><td><span class="param-naam">{{PARAM_2_NAAM}}</span></td><td><span class="param-type">{{PARAM_2_TYPE}}</span></td><td><span class="param-optioneel">Optioneel</span></td><td class="param-desc">{{PARAM_2_DESC}}</td></tr>
+            <tr><td><span class="param-naam">{{PARAM_3_NAAM}}</span></td><td><span class="param-type">{{PARAM_3_TYPE}}</span></td><td><span class="param-optioneel">Optioneel</span></td><td class="param-desc">{{PARAM_3_DESC}}</td></tr>
+          </tbody>
+        </table>
+        <h3 class="docs-h3">Voorbeeld aanroep</h3>
+        <div class="code-blok">
+          <div class="code-blok__header">
+            <div class="code-talen"><span class="code-taal actief">cURL</span><span class="code-taal">Python</span><span class="code-taal">Node.js</span></div>
+            <button class="code-kopieer">Kopieer</button>
+          </div>
+          <div class="code-inhoud"><pre><span class="kw">curl</span> -X GET \
+  <span class="str">"{{BASE_URL}}/{{ENDPOINT_1_PAD}}?{{PARAM_1_NAAM}}={{PARAM_1_VOORBEELD}}"</span> \
+  -H <span class="str">"Authorization: Bearer {{API_KEY_PLACEHOLDER}}"</span></pre></div>
+        </div>
+        <h3 class="docs-h3">Response</h3>
+        <div class="response-blok">
+          <div class="response-header"><span class="response-status status-200">200 OK</span><span style="font-size:0.8rem;color:var(--dim);">application/json</span></div>
+          <div class="code-blok" style="margin:0;border-radius:0;">
+            <div class="code-inhoud"><pre>{
+  <span class="key">"data"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="str">"{{RESPONSE_ID}}"</span>,
+      <span class="key">"{{RESPONSE_VELD_1}}"</span>: <span class="str">"{{RESPONSE_WAARDE_1}}"</span>,
+      <span class="key">"{{RESPONSE_VELD_2}}"</span>: <span class="num">{{RESPONSE_WAARDE_2}}</span>,
+      <span class="key">"created_at"</span>: <span class="str">"{{RESPONSE_DATUM}}"</span>
+    }
+  ],
+  <span class="key">"meta"</span>: {
+    <span class="key">"total"</span>: <span class="num">{{RESPONSE_TOTAL}}</span>,
+    <span class="key">"page"</span>: <span class="num">1</span>,
+    <span class="key">"per_page"</span>: <span class="num">20</span>
+  }
+}</pre></div>
+          </div>
+        </div>
+        <div class="response-blok" style="margin-top:8px;">
+          <div class="response-header"><span class="response-status status-401">401 Unauthorized</span></div>
+          <div class="code-blok" style="margin:0;border-radius:0;">
+            <div class="code-inhoud"><pre>{ <span class="key">"error"</span>: <span class="str">"invalid_api_key"</span>, <span class="key">"message"</span>: <span class="str">"Ongeldige of verlopen API key"</span> }</pre></div>
+          </div>
+        </div>
+      </div>
+      <div class="docs-sectie" id="endpoint2">
+        <h2 class="docs-h1">{{ENDPOINT_2_NAAM}}</h2>
+        <p class="docs-p">{{ENDPOINT_2_BESCHRIJVING}}</p>
+        <div class="endpoint-blok">
+          <span class="endpoint-method method-post">POST</span>
+          <span class="endpoint-url">{{BASE_URL}}/{{ENDPOINT_2_PAD}}</span>
+        </div>
+        <h3 class="docs-h3">Request body</h3>
+        <table class="param-tabel">
+          <thead><tr><th>Veld</th><th>Type</th><th>Vereist</th><th>Beschrijving</th></tr></thead>
+          <tbody>
+            <tr><td><span class="param-naam">{{BODY_1_NAAM}}</span></td><td><span class="param-type">string</span></td><td><span class="param-vereist">Vereist</span></td><td class="param-desc">{{BODY_1_DESC}}</td></tr>
+            <tr><td><span class="param-naam">{{BODY_2_NAAM}}</span></td><td><span class="param-type">string</span></td><td><span class="param-vereist">Vereist</span></td><td class="param-desc">{{BODY_2_DESC}}</td></tr>
+            <tr><td><span class="param-naam">{{BODY_3_NAAM}}</span></td><td><span class="param-type">object</span></td><td><span class="param-optioneel">Optioneel</span></td><td class="param-desc">{{BODY_3_DESC}}</td></tr>
+          </tbody>
+        </table>
+        <div class="code-blok">
+          <div class="code-blok__header">
+            <div class="code-talen"><span class="code-taal actief">cURL</span><span class="code-taal">Python</span></div>
+            <button class="code-kopieer">Kopieer</button>
+          </div>
+          <div class="code-inhoud"><pre><span class="kw">curl</span> -X POST \
+  <span class="str">"{{BASE_URL}}/{{ENDPOINT_2_PAD}}"</span> \
+  -H <span class="str">"Authorization: Bearer {{API_KEY_PLACEHOLDER}}"</span> \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -d '{
+    <span class="key">"{{BODY_1_NAAM}}"</span>: <span class="str">"{{BODY_1_VOORBEELD}}"</span>,
+    <span class="key">"{{BODY_2_NAAM}}"</span>: <span class="str">"{{BODY_2_VOORBEELD}}"</span>
+  }'</pre></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="footer">
+    <span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span>
+    <div class="footer__links">
+      <a href="#">Status</a>
+      <a href="#">Changelog</a>
+      <a href="#">Privacy</a>
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click', menuToggle);
+    document.getElementById('jaar').textContent = new Date().getFullYear();
+    document.querySelectorAll('.code-taal').forEach(t => {
+      t.addEventListener('click', () => {
+        t.closest('.code-talen').querySelectorAll('.code-taal').forEach(x => x.classList.remove('actief'));
+        t.classList.add('actief');
+      });
+    });
+    document.querySelectorAll('.code-kopieer').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pre = btn.closest('.code-blok').querySelector('pre');
+        navigator.clipboard.writeText(pre.innerText).then(() => { btn.textContent = 'Gekopieerd!'; setTimeout(() => btn.textContent = 'Kopieer', 2000); });
+      });
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => { document.querySelectorAll('.nav-link').forEach(x => x.classList.remove('actief')); link.classList.add('actief'); });
+    });
+  </script>
+</body>
+</html>
