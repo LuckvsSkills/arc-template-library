@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{NAAM}} — {{FUNCTIE}}</title>
+  <style>
+    :root {
+      --bg: #0a192f; --bg-alt: #112240; --bg-card: #1e3a5f; --tekst: #ccd6f6;
+      --dim: #8892b0; --accent: #64ffda; --accent-dim: rgba(100,255,218,0.1); --border: #1e3a5f;
+      --nav-breedte: 280px; --max: 900px; --radius: 4px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tekst); font-family: "SF Mono", "Fira Code", "Consolas", monospace; line-height: 1.6; overflow-x: hidden; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* LAYOUT */
+    .layout { display: flex; min-height: 100vh; max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+    /* SIDEBAR */
+    .sidebar { width: var(--nav-breedte); position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 96px 0; flex-shrink: 0; }
+    .sidebar__intro { }
+    .sidebar__naam { font-size: 2.4rem; font-weight: 700; color: var(--tekst); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px; font-family: -apple-system, sans-serif; }
+    .sidebar__functie { font-size: 1rem; font-weight: 600; color: var(--tekst); margin-bottom: 16px; font-family: -apple-system, sans-serif; }
+    .sidebar__tagline { font-size: 0.85rem; color: var(--dim); max-width: 220px; line-height: 1.7; margin-bottom: 40px; }
+    .sidebar__nav { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .sidebar__nav-item { display: flex; align-items: center; gap: 12px; padding: 6px 0; cursor: pointer; }
+    .sidebar__nav-item:hover .nav-line { width: 48px; background: var(--tekst); }
+    .sidebar__nav-item:hover .nav-label { color: var(--tekst); }
+    .sidebar__nav-item.actief .nav-line { width: 48px; background: var(--accent); }
+    .sidebar__nav-item.actief .nav-label { color: var(--accent); }
+    .nav-line { width: 24px; height: 1px; background: var(--dim); transition: all 0.2s; }
+    .nav-label { font-size: 0.72rem; font-weight: 600; color: var(--dim); letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+    .sidebar__socials { display: flex; gap: 16px; }
+    .sidebar__socials a { color: var(--dim); font-size: 0.8rem; transition: color 0.15s; }
+    .sidebar__socials a:hover { color: var(--accent); text-decoration: none; }
+
+    /* MAIN */
+    .main { flex: 1; padding: 96px 0 96px 80px; }
+
+    /* OVER */
+    .sectie { margin-bottom: 96px; }
+    .sectie__label { font-size: 0.72rem; font-weight: 600; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .sectie__label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .over__tekst { font-size: 0.92rem; color: var(--dim); line-height: 1.8; margin-bottom: 16px; font-family: -apple-system, sans-serif; }
+    .over__tekst a { color: var(--accent); }
+    .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 16px; margin-top: 20px; }
+    .skill-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--dim); }
+    .skill-item::before { content: '▹'; color: var(--accent); font-size: 0.7rem; }
+
+    /* ERVARING */
+    .ervaring-item { display: grid; grid-template-columns: 120px 1fr; gap: 24px; margin-bottom: 40px; }
+    .ervaring__periode { font-size: 0.72rem; color: var(--dim); letter-spacing: 0.06em; text-transform: uppercase; padding-top: 2px; line-height: 1.5; }
+    .ervaring__body { }
+    .ervaring__titel { font-size: 0.95rem; font-weight: 600; color: var(--tekst); margin-bottom: 4px; font-family: -apple-system, sans-serif; }
+    .ervaring__bedrijf { font-size: 0.85rem; color: var(--accent); margin-bottom: 10px; }
+    .ervaring__desc { font-size: 0.85rem; color: var(--dim); line-height: 1.75; margin-bottom: 12px; font-family: -apple-system, sans-serif; }
+    .tech-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tech-tag { background: var(--accent-dim); color: var(--accent); font-size: 0.72rem; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+
+    /* PROJECTEN */
+    .project-card { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 6px; padding: 28px; margin-bottom: 16px; transition: all 0.2s; cursor: pointer; position: relative; }
+    .project-card:hover { background: var(--bg-card); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .project-card__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+    .project-card__icon { font-size: 1.4rem; }
+    .project-card__links { display: flex; gap: 12px; }
+    .project-card__link { color: var(--dim); font-size: 0.85rem; transition: color 0.15s; }
+    .project-card__link:hover { color: var(--accent); text-decoration: none; }
+    .project-card__naam { font-size: 1rem; font-weight: 600; color: var(--tekst); margin-bottom: 8px; font-family: -apple-system, sans-serif; }
+    .project-card__desc { font-size: 0.85rem; color: var(--dim); line-height: 1.7; margin-bottom: 16px; font-family: -apple-system, sans-serif; }
+
+    /* CONTACT */
+    .contact__tekst { font-size: 0.92rem; color: var(--dim); max-width: 480px; line-height: 1.8; margin-bottom: 36px; font-family: -apple-system, sans-serif; }
+    .btn-accent { display: inline-block; border: 1px solid var(--accent); color: var(--accent); padding: 16px 36px; font-size: 0.88rem; font-weight: 600; border-radius: var(--radius); transition: all 0.2s; font-family: "SF Mono", monospace; }
+    .btn-accent:hover { background: var(--accent-dim); text-decoration: none; }
+
+    /* HAMBURGER */
+    .hamburger-btn { display: none; position: fixed; top: 20px; right: 20px; z-index: 200; flex-direction: column; gap: 5px; cursor: pointer; background: var(--bg-alt); padding: 10px; border-radius: var(--radius); border: 1px solid var(--border); }
+    .hamburger-btn span { display: block; width: 20px; height: 1.5px; background: var(--accent); }
+    .mobiel-menu { display: none; position: fixed; inset: 0; background: var(--bg-alt); z-index: 199; flex-direction: column; align-items: center; justify-content: center; gap: 32px; }
+    .mobiel-menu.open { display: flex; }
+    .mobiel-menu a { font-size: 1.2rem; color: var(--tekst); font-family: -apple-system, sans-serif; font-weight: 600; }
+
+    @media (max-width: 1024px) {
+      .layout { padding: 0 24px; }
+      .sidebar { width: 220px; }
+      .main { padding-left: 48px; }
+    }
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; padding: 0; }
+      .sidebar { position: static; width: 100%; height: auto; padding: 64px 24px 32px; }
+      .sidebar__nav { display: none; }
+      .sidebar__tagline { max-width: 100%; }
+      .main { padding: 32px 24px 64px; }
+      .hamburger-btn { display: flex; }
+      .ervaring-item { grid-template-columns: 1fr; gap: 4px; }
+      .ervaring__periode { font-size: 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hamburger-btn" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  <div class="mobiel-menu" id="mobielmenu">
+    <a href="#over" onclick="menuToggle()">Over</a>
+    <a href="#ervaring" onclick="menuToggle()">Ervaring</a>
+    <a href="#projecten" onclick="menuToggle()">Projecten</a>
+    <a href="#contact" onclick="menuToggle()">Contact</a>
+  </div>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar__intro">
+        <div class="sidebar__naam">{{NAAM}}</div>
+        <div class="sidebar__functie">{{FUNCTIE}}</div>
+        <p class="sidebar__tagline">{{TAGLINE}}</p>
+        <ul class="sidebar__nav">
+          <li class="sidebar__nav-item actief" onclick="scrollTo('over')"><div class="nav-line"></div><span class="nav-label">Over</span></li>
+          <li class="sidebar__nav-item" onclick="scrollTo('ervaring')"><div class="nav-line"></div><span class="nav-label">Ervaring</span></li>
+          <li class="sidebar__nav-item" onclick="scrollTo('projecten')"><div class="nav-line"></div><span class="nav-label">Projecten</span></li>
+          <li class="sidebar__nav-item" onclick="scrollTo('contact')"><div class="nav-line"></div><span class="nav-label">Contact</span></li>
+        </ul>
+      </div>
+      <div class="sidebar__socials">
+        <a href="#">GitHub</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Twitter</a>
+        <a href="#">{{EMAIL}}</a>
+      </div>
+    </aside>
+    <main class="main">
+      <section class="sectie" id="over">
+        <div class="sectie__label">Over</div>
+        <p class="over__tekst">{{OVER_TEKST_1}}</p>
+        <p class="over__tekst">{{OVER_TEKST_2}}</p>
+        <p class="over__tekst">{{OVER_TEKST_3}}</p>
+        <div class="skills-grid">
+          <div class="skill-item">{{SKILL_1}}</div>
+          <div class="skill-item">{{SKILL_2}}</div>
+          <div class="skill-item">{{SKILL_3}}</div>
+          <div class="skill-item">{{SKILL_4}}</div>
+          <div class="skill-item">{{SKILL_5}}</div>
+          <div class="skill-item">{{SKILL_6}}</div>
+          <div class="skill-item">{{SKILL_7}}</div>
+          <div class="skill-item">{{SKILL_8}}</div>
+        </div>
+      </section>
+      <section class="sectie" id="ervaring">
+        <div class="sectie__label">Ervaring</div>
+        <div class="ervaring-item">
+          <div class="ervaring__periode">{{ERV_1_PERIODE}}</div>
+          <div class="ervaring__body">
+            <div class="ervaring__titel">{{ERV_1_TITEL}}</div>
+            <div class="ervaring__bedrijf">{{ERV_1_BEDRIJF}}</div>
+            <p class="ervaring__desc">{{ERV_1_DESC}}</p>
+            <div class="tech-tags"><span class="tech-tag">{{ERV_1_T1}}</span><span class="tech-tag">{{ERV_1_T2}}</span><span class="tech-tag">{{ERV_1_T3}}</span></div>
+          </div>
+        </div>
+        <div class="ervaring-item">
+          <div class="ervaring__periode">{{ERV_2_PERIODE}}</div>
+          <div class="ervaring__body">
+            <div class="ervaring__titel">{{ERV_2_TITEL}}</div>
+            <div class="ervaring__bedrijf">{{ERV_2_BEDRIJF}}</div>
+            <p class="ervaring__desc">{{ERV_2_DESC}}</p>
+            <div class="tech-tags"><span class="tech-tag">{{ERV_2_T1}}</span><span class="tech-tag">{{ERV_2_T2}}</span><span class="tech-tag">{{ERV_2_T3}}</span></div>
+          </div>
+        </div>
+        <div class="ervaring-item">
+          <div class="ervaring__periode">{{ERV_3_PERIODE}}</div>
+          <div class="ervaring__body">
+            <div class="ervaring__titel">{{ERV_3_TITEL}}</div>
+            <div class="ervaring__bedrijf">{{ERV_3_BEDRIJF}}</div>
+            <p class="ervaring__desc">{{ERV_3_DESC}}</p>
+            <div class="tech-tags"><span class="tech-tag">{{ERV_3_T1}}</span><span class="tech-tag">{{ERV_3_T2}}</span></div>
+          </div>
+        </div>
+      </section>
+      <section class="sectie" id="projecten">
+        <div class="sectie__label">Projecten</div>
+        <div class="project-card">
+          <div class="project-card__header"><div class="project-card__icon">📁</div><div class="project-card__links"><a href="#" class="project-card__link">GitHub ↗</a><a href="#" class="project-card__link">Live ↗</a></div></div>
+          <div class="project-card__naam">{{P1_NAAM}}</div>
+          <p class="project-card__desc">{{P1_DESC}}</p>
+          <div class="tech-tags"><span class="tech-tag">{{P1_T1}}</span><span class="tech-tag">{{P1_T2}}</span><span class="tech-tag">{{P1_T3}}</span></div>
+        </div>
+        <div class="project-card">
+          <div class="project-card__header"><div class="project-card__icon">📁</div><div class="project-card__links"><a href="#" class="project-card__link">GitHub ↗</a><a href="#" class="project-card__link">Live ↗</a></div></div>
+          <div class="project-card__naam">{{P2_NAAM}}</div>
+          <p class="project-card__desc">{{P2_DESC}}</p>
+          <div class="tech-tags"><span class="tech-tag">{{P2_T1}}</span><span class="tech-tag">{{P2_T2}}</span><span class="tech-tag">{{P2_T3}}</span></div>
+        </div>
+        <div class="project-card">
+          <div class="project-card__header"><div class="project-card__icon">📁</div><div class="project-card__links"><a href="#" class="project-card__link">GitHub ↗</a></div></div>
+          <div class="project-card__naam">{{P3_NAAM}}</div>
+          <p class="project-card__desc">{{P3_DESC}}</p>
+          <div class="tech-tags"><span class="tech-tag">{{P3_T1}}</span><span class="tech-tag">{{P3_T2}}</span></div>
+        </div>
+      </section>
+      <section class="sectie" id="contact">
+        <div class="sectie__label">Contact</div>
+        <h2 style="font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-0.04em;color:var(--tekst);margin-bottom:20px;font-family:-apple-system,sans-serif;">{{CONTACT_HEADLINE}}</h2>
+        <p class="contact__tekst">{{CONTACT_TEKST}}</p>
+        <a href="mailto:{{EMAIL}}" class="btn-accent">{{CONTACT_CTA}}</a>
+      </section>
+    </main>
+  </div>
+  <script>
+    function menuToggle() { document.getElementById('mobielmenu').classList.toggle('open'); }
+    document.getElementById('hamburgerBtn').addEventListener('click', menuToggle);
+    function scrollTo(id) {
+      document.getElementById(id).scrollIntoView({behavior:'smooth'});
+      document.querySelectorAll('.sidebar__nav-item').forEach(x => x.classList.remove('actief'));
+      event.currentTarget.classList.add('actief');
+    }
+    const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)';}}),{threshold:0.08});
+    document.querySelectorAll('.project-card,.ervaring-item').forEach(el => { el.style.opacity='0';el.style.transform='translateY(14px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el); });
+  </script>
+</body>
+</html>
