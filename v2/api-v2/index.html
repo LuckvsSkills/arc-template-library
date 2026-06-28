@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}} Docs</title>
+  <style>
+    :root{
+      --bg:#fff;--bg-alt:#f6f8fa;--bg-card:#f6f8fa;--tekst:#1f2328;--dim:#636c76;
+      --accent:#0969da;--accent-light:#ddf4ff;--border:#d0d7de;
+      --groen:#1a7f37;--rood:#cf222e;--oranje:#9a6700;
+      --nav-b:260px;--top:60px;--radius:6px;--max:900px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:16px;line-height:1.5;overflow-x:hidden}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    code,pre{font-family:"SFMono-Regular","Consolas","Liberation Mono","Menlo",monospace}
+    .topbar{height:var(--top);background:#24292f;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100}
+    .topbar__logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:0.92rem;font-weight:600}
+    .topbar__logo-icon{width:32px;height:32px;background:rgba(255,255,255,0.1);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1rem}
+    .topbar__zoek{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:6px;padding:6px 12px;color:rgba(255,255,255,0.6);font-size:0.82rem;cursor:text;flex:1;max-width:400px;margin:0 32px}
+    .topbar__zoek kbd{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:1px 6px;font-size:0.7rem;margin-left:auto}
+    .topbar__nav{display:flex;gap:16px;align-items:center}
+    .topbar__nav a{font-size:0.82rem;color:rgba(255,255,255,0.7);transition:color 0.15s}
+    .topbar__nav a:hover{color:#fff;text-decoration:none}
+    .topbar__nav a.actief{color:#fff;font-weight:600}
+    .hamburger-btn{display:none;flex-direction:column;gap:4px;cursor:pointer;margin-left:8px}
+    .hamburger-btn span{display:block;width:18px;height:1.5px;background:rgba(255,255,255,0.7)}
+    .versie-balk{background:var(--bg-alt);border-bottom:1px solid var(--border);padding:8px 24px;display:flex;align-items:center;gap:16px}
+    .versie-select{display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--dim)}
+    .versie-select select{border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:0.82rem;background:#fff;cursor:pointer;outline:none}
+    .versie-badge{font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:999px}
+    .badge-stable{background:#dafbe1;color:var(--groen)}
+    .badge-beta{background:#fff8c5;color:var(--oranje)}
+    .layout{display:flex;min-height:calc(100vh - var(--top) - 36px)}
+    .sidebar{width:var(--nav-b);border-right:1px solid var(--border);position:sticky;top:calc(var(--top) + 36px);height:calc(100vh - var(--top) - 36px);overflow-y:auto;padding:16px 0;flex-shrink:0}
+    .sidebar::-webkit-scrollbar{width:3px}
+    .sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+    .nav-groep{margin-bottom:20px}
+    .nav-groep-label{font-size:0.72rem;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;padding:4px 16px 6px}
+    .nav-link{display:flex;align-items:center;gap:6px;padding:5px 16px;font-size:0.85rem;color:var(--dim);cursor:pointer;transition:color 0.15s;border-left:2px solid transparent}
+    .nav-link:hover{color:var(--tekst);text-decoration:none}
+    .nav-link.actief{color:var(--accent);border-left-color:var(--accent);font-weight:600;background:rgba(9,105,218,0.04)}
+    .nav-link__badge{font-size:0.62rem;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:auto}
+    .nav-sub{padding-left:12px}
+    .nav-sub .nav-link{font-size:0.82rem;padding:4px 16px}
+    .content{flex:1;max-width:var(--max);padding:40px 40px 80px;min-width:0}
+    .content-header{padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:32px}
+    .breadcrumb{font-size:0.82rem;color:var(--dim);margin-bottom:12px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+    .breadcrumb a{color:var(--accent)}
+    .breadcrumb-sep{color:var(--border)}
+    .docs-h1{font-size:2rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:10px;color:var(--tekst)}
+    .docs-lead{font-size:1rem;color:var(--dim);line-height:1.7}
+    .docs-h2{font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;margin:36px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    .docs-h3{font-size:1rem;font-weight:600;margin:24px 0 8px}
+    .docs-p{font-size:0.92rem;color:#1f2328;line-height:1.75;margin-bottom:14px}
+    .docs-p code{background:var(--bg-alt);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:0.85em;color:#cf222e}
+    .note{border:1px solid var(--border);border-left:4px solid;border-radius:0 var(--radius) var(--radius) 0;padding:14px 16px;margin:16px 0;font-size:0.88rem;line-height:1.6}
+    .note-info{border-left-color:var(--accent);background:rgba(9,105,218,0.04)}
+    .note-warn{border-left-color:var(--oranje);background:#fff8c5}
+    .note-danger{border-left-color:var(--rood);background:#fff0ee}
+    .note strong{font-weight:700}
+    .endpoint{background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:16px 0;display:flex;align-items:center;gap:12px;font-family:monospace}
+    .method{font-size:0.75rem;font-weight:700;padding:3px 8px;border-radius:4px}
+    .m-get{background:#dafbe1;color:var(--groen)}
+    .m-post{background:var(--accent-light);color:var(--accent)}
+    .m-put{background:#fff8c5;color:var(--oranje)}
+    .m-del{background:#fff0ee;color:var(--rood)}
+    .endpoint-url{font-size:0.9rem;color:var(--tekst)}
+    .code-block{background:#0d1117;border-radius:var(--radius);margin:16px 0;overflow:hidden}
+    .code-block__header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid #21262d}
+    .code-tabs{display:flex;gap:0}
+    .code-tab{padding:4px 12px;font-size:0.75rem;color:#8b949e;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s}
+    .code-tab.actief{color:#e6edf3;border-bottom-color:var(--accent)}
+    .copy-btn{font-size:0.72rem;color:#8b949e;cursor:pointer;padding:3px 8px;border:1px solid #30363d;border-radius:4px;background:transparent;transition:all 0.15s}
+    .copy-btn:hover{color:#e6edf3;border-color:#8b949e}
+    .code-body{padding:18px;overflow-x:auto}
+    .code-body pre{font-size:0.82rem;line-height:1.7;color:#e6edf3}
+    .kw{color:#ff7b72}.str{color:#a5d6ff}.num{color:#79c0ff}.com{color:#8b949e}.key{color:#7ee787}.fn{color:#d2a8ff}
+    .params-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.85rem}
+    .params-table th{padding:8px 14px;text-align:left;font-size:0.7rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.06em;border-bottom:2px solid var(--border);background:var(--bg-alt)}
+    .params-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+    .params-table tr:last-child td{border-bottom:none}
+    .param-name{font-family:monospace;font-size:0.85rem;font-weight:600;color:#cf222e}
+    .param-type{font-family:monospace;font-size:0.78rem;color:var(--accent)}
+    .param-req{font-size:0.68rem;font-weight:700;color:var(--rood);background:#fff0ee;padding:2px 6px;border-radius:3px}
+    .param-opt{font-size:0.68rem;color:var(--dim);background:var(--bg-alt);padding:2px 6px;border-radius:3px}
+    .response-blok{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:14px 0}
+    .response-header{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--bg-alt);border-bottom:1px solid var(--border)}
+    .status-pill{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:999px}
+    .s-200{background:#dafbe1;color:var(--groen)}
+    .s-400{background:#fff8c5;color:var(--oranje)}
+    .s-401{background:#fff0ee;color:var(--rood)}
+    .page-nav{display:flex;justify-content:space-between;padding-top:28px;border-top:1px solid var(--border);margin-top:48px}
+    .page-nav a{font-size:0.85rem;color:var(--accent);display:flex;align-items:center;gap:6px}
+    .toc{width:220px;flex-shrink:0;padding:40px 16px;position:sticky;top:calc(var(--top) + 36px);height:calc(100vh - var(--top) - 36px);overflow-y:auto;border-left:1px solid var(--border)}
+    .toc__label{font-size:0.72rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px}
+    .toc__link{display:block;font-size:0.82rem;color:var(--dim);padding:4px 0;transition:color 0.15s;cursor:pointer}
+    .toc__link:hover{color:var(--tekst);text-decoration:none}
+    .toc__link.actief{color:var(--accent);font-weight:600}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:#24292f;z-index:200;flex-direction:column;padding:72px 20px 40px;overflow-y:auto}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu .nav-link{color:rgba(255,255,255,0.7);border-left-color:transparent;padding:8px 0}
+    .mobiel-menu .nav-link:hover{color:#fff}
+    .mobiel-menu .nav-groep-label{color:rgba(255,255,255,0.4);padding:8px 0 4px}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:rgba(255,255,255,0.5)}
+    @media(max-width:1100px){.toc{display:none}}
+    @media(max-width:768px){.sidebar{display:none}.hamburger-btn{display:flex}.topbar__zoek{display:none}.topbar__nav{display:none}.content{padding:24px 16px 60px}.versie-balk{padding:8px 16px}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar__logo"><div class="topbar__logo-icon">{{LOGO_ICON}}</div>{{BEDRIJFSNAAM}} Docs</div>
+    <div class="topbar__zoek">🔍 Zoeken in docs... <kbd>⌘K</kbd></div>
+    <nav class="topbar__nav">
+      <a href="#" class="actief">Documentatie</a>
+      <a href="#">API Referentie</a>
+      <a href="#">Guides</a>
+      <a href="#">Changelog</a>
+      <a href="#" style="background:var(--accent);color:#fff;padding:5px 12px;border-radius:6px;font-weight:600">Dashboard →</a>
+    </nav>
+    <div class="hamburger-btn" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </div>
+  <div class="versie-balk">
+    <div class="versie-select">Versie: <select><option>{{VERSIE_HUIDIG}}</option><option>{{VERSIE_VORIG}}</option></select></div>
+    <span class="versie-badge badge-stable">Stabiel</span>
+    <span style="font-size:0.8rem;color:var(--dim);margin-left:8px">Laatst bijgewerkt: {{LAATSTE_UPDATE}}</span>
+  </div>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <div class="nav-groep">
+      <div class="nav-groep-label">Aan de slag</div>
+      <div class="nav-link actief" onclick="menuToggle()">Introductie</div>
+      <div class="nav-link" onclick="menuToggle()">Authenticatie</div>
+      <div class="nav-link" onclick="menuToggle()">Snelstart</div>
+    </div>
+    <div class="nav-groep">
+      <div class="nav-groep-label">{{API_SECTIE_1}}</div>
+      <div class="nav-link" onclick="menuToggle()">{{EP_1_NAAM}}</div>
+      <div class="nav-link" onclick="menuToggle()">{{EP_2_NAAM}}</div>
+    </div>
+  </div>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="nav-groep">
+        <div class="nav-groep-label">Aan de slag</div>
+        <a href="#intro" class="nav-link actief">Introductie</a>
+        <a href="#auth" class="nav-link">Authenticatie</a>
+        <a href="#snelstart" class="nav-link">Snelstart</a>
+        <a href="#errors" class="nav-link">Foutafhandeling</a>
+        <a href="#rate-limits" class="nav-link">Rate limits</a>
+      </div>
+      <div class="nav-groep">
+        <div class="nav-groep-label">{{API_SECTIE_1}}</div>
+        <a href="#ep1" class="nav-link"><span class="nav-link__badge m-get">GET</span>{{EP_1_NAAM}}</a>
+        <a href="#ep2" class="nav-link"><span class="nav-link__badge m-post">POST</span>{{EP_2_NAAM}}</a>
+        <a href="#ep3" class="nav-link"><span class="nav-link__badge m-put">PUT</span>{{EP_3_NAAM}}</a>
+        <a href="#ep4" class="nav-link"><span class="nav-link__badge m-del">DEL</span>{{EP_4_NAAM}}</a>
+      </div>
+      <div class="nav-groep">
+        <div class="nav-groep-label">{{API_SECTIE_2}}</div>
+        <a href="#ep5" class="nav-link"><span class="nav-link__badge m-get">GET</span>{{EP_5_NAAM}}</a>
+        <a href="#ep6" class="nav-link"><span class="nav-link__badge m-post">POST</span>{{EP_6_NAAM}}</a>
+      </div>
+      <div class="nav-groep">
+        <div class="nav-groep-label">Webhooks & SDK's</div>
+        <a href="#webhooks" class="nav-link">Webhooks</a>
+        <a href="#sdks" class="nav-link">SDK's <span class="nav-link__badge badge-stable">5</span></a>
+      </div>
+    </aside>
+    <main class="content">
+      <div class="content-header">
+        <div class="breadcrumb">
+          <a href="#">Docs</a><span class="breadcrumb-sep">/</span>
+          <a href="#">{{API_SECTIE_1}}</a><span class="breadcrumb-sep">/</span>
+          <span>Introductie</span>
+        </div>
+        <h1 class="docs-h1" id="intro">{{DOCS_TITEL}}</h1>
+        <p class="docs-lead">{{DOCS_INTRO}}</p>
+      </div>
+      <div class="note note-info"><strong>ℹ️ Info:</strong> {{INFO_NOTE}}</div>
+      <h2 class="docs-h2">Base URL</h2>
+      <div class="code-block">
+        <div class="code-block__header"><div class="code-tabs"><span class="code-tab actief">HTTP</span></div><button class="copy-btn">Kopieer</button></div>
+        <div class="code-body"><pre>{{BASE_URL}}</pre></div>
+      </div>
+      <h2 class="docs-h2" id="auth">Authenticatie</h2>
+      <p class="docs-p">{{AUTH_INTRO}}</p>
+      <div class="note note-warn"><strong>⚠️ Let op:</strong> {{WARN_NOTE}}</div>
+      <div class="code-block">
+        <div class="code-block__header">
+          <div class="code-tabs"><span class="code-tab actief">cURL</span><span class="code-tab">Python</span><span class="code-tab">Node.js</span><span class="code-tab">PHP</span></div>
+          <button class="copy-btn">Kopieer</button>
+        </div>
+        <div class="code-body"><pre><span class="kw">curl</span> -X GET \
+  <span class="str">"{{BASE_URL}}/{{EP_1_PAD}}"</span> \
+  -H <span class="str">"Authorization: Bearer {{API_KEY}}"</span> \
+  -H <span class="str">"Content-Type: application/json"</span></pre></div>
+      </div>
+      <h2 class="docs-h2" id="ep1">{{EP_1_NAAM}}</h2>
+      <p class="docs-p">{{EP_1_DESC}}</p>
+      <div class="endpoint"><span class="method m-get">GET</span><span class="endpoint-url">{{BASE_URL}}/{{EP_1_PAD}}</span></div>
+      <h3 class="docs-h3">Query parameters</h3>
+      <table class="params-table">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Vereist</th><th>Beschrijving</th></tr></thead>
+        <tbody>
+          <tr><td><span class="param-name">{{P1_NAAM}}</span></td><td><span class="param-type">string</span></td><td><span class="param-req">Vereist</span></td><td style="font-size:0.83rem;color:var(--dim)">{{P1_DESC}}</td></tr>
+          <tr><td><span class="param-name">{{P2_NAAM}}</span></td><td><span class="param-type">integer</span></td><td><span class="param-opt">Optioneel</span></td><td style="font-size:0.83rem;color:var(--dim)">{{P2_DESC}}</td></tr>
+          <tr><td><span class="param-name">{{P3_NAAM}}</span></td><td><span class="param-type">string</span></td><td><span class="param-opt">Optioneel</span></td><td style="font-size:0.83rem;color:var(--dim)">{{P3_DESC}}</td></tr>
+        </tbody>
+      </table>
+      <h3 class="docs-h3">Reactie</h3>
+      <div class="response-blok">
+        <div class="response-header"><span class="status-pill s-200">200 OK</span><span style="font-size:0.78rem;color:var(--dim)">application/json</span></div>
+        <div class="code-block" style="margin:0;border-radius:0">
+          <div class="code-body"><pre>{
+  <span class="key">"data"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="str">"{{RESP_ID}}"</span>,
+      <span class="key">"{{RESP_V1}}"</span>: <span class="str">"{{RESP_W1}}"</span>,
+      <span class="key">"{{RESP_V2}}"</span>: <span class="num">{{RESP_W2}}</span>,
+      <span class="key">"created_at"</span>: <span class="str">"{{RESP_DATUM}}"</span>
+    }
+  ],
+  <span class="key">"total"</span>: <span class="num">{{RESP_TOTAL}}</span>,
+  <span class="key">"page"</span>: <span class="num">1</span>
+}</pre></div>
+        </div>
+      </div>
+      <div class="response-blok" style="margin-top:8px">
+        <div class="response-header"><span class="status-pill s-401">401 Unauthorized</span></div>
+        <div class="code-block" style="margin:0;border-radius:0">
+          <div class="code-body"><pre>{ <span class="key">"error"</span>: <span class="str">"{{ERR_CODE}}"</span>, <span class="key">"message"</span>: <span class="str">"{{ERR_MSG}}"</span> }</pre></div>
+        </div>
+      </div>
+      <h2 class="docs-h2" id="ep2">{{EP_2_NAAM}}</h2>
+      <p class="docs-p">{{EP_2_DESC}}</p>
+      <div class="endpoint"><span class="method m-post">POST</span><span class="endpoint-url">{{BASE_URL}}/{{EP_2_PAD}}</span></div>
+      <h3 class="docs-h3">Request body</h3>
+      <table class="params-table">
+        <thead><tr><th>Veld</th><th>Type</th><th>Vereist</th><th>Beschrijving</th></tr></thead>
+        <tbody>
+          <tr><td><span class="param-name">{{B1_NAAM}}</span></td><td><span class="param-type">string</span></td><td><span class="param-req">Vereist</span></td><td style="font-size:0.83rem;color:var(--dim)">{{B1_DESC}}</td></tr>
+          <tr><td><span class="param-name">{{B2_NAAM}}</span></td><td><span class="param-type">string</span></td><td><span class="param-req">Vereist</span></td><td style="font-size:0.83rem;color:var(--dim)">{{B2_DESC}}</td></tr>
+          <tr><td><span class="param-name">{{B3_NAAM}}</span></td><td><span class="param-type">object</span></td><td><span class="param-opt">Optioneel</span></td><td style="font-size:0.83rem;color:var(--dim)">{{B3_DESC}}</td></tr>
+        </tbody>
+      </table>
+      <div class="code-block">
+        <div class="code-block__header"><div class="code-tabs"><span class="code-tab actief">cURL</span><span class="code-tab">Python</span><span class="code-tab">Node.js</span></div><button class="copy-btn">Kopieer</button></div>
+        <div class="code-body"><pre><span class="kw">curl</span> -X POST \
+  <span class="str">"{{BASE_URL}}/{{EP_2_PAD}}"</span> \
+  -H <span class="str">"Authorization: Bearer {{API_KEY}}"</span> \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -d '{
+    <span class="key">"{{B1_NAAM}}"</span>: <span class="str">"{{B1_VOORBEELD}}"</span>,
+    <span class="key">"{{B2_NAAM}}"</span>: <span class="str">"{{B2_VOORBEELD}}"</span>
+  }'</pre></div>
+      </div>
+      <div class="page-nav">
+        <a href="#">← {{VORIGE_PAGINA}}</a>
+        <a href="#">{{VOLGENDE_PAGINA}} →</a>
+      </div>
+    </main>
+    <aside class="toc">
+      <div class="toc__label">Op deze pagina</div>
+      <a href="#intro" class="toc__link actief">Introductie</a>
+      <a href="#auth" class="toc__link">Authenticatie</a>
+      <a href="#ep1" class="toc__link">{{EP_1_NAAM}}</a>
+      <a href="#ep2" class="toc__link">{{EP_2_NAAM}}</a>
+    </aside>
+  </div>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.querySelectorAll('.code-tab').forEach(t=>t.addEventListener('click',()=>{t.closest('.code-tabs').querySelectorAll('.code-tab').forEach(x=>x.classList.remove('actief'));t.classList.add('actief')}));
+    document.querySelectorAll('.copy-btn').forEach(btn=>btn.addEventListener('click',()=>{const pre=btn.closest('.code-block').querySelector('pre');if(pre){navigator.clipboard.writeText(pre.innerText).then(()=>{btn.textContent='Gekopieerd!';setTimeout(()=>btn.textContent='Kopieer',2000)})}}));
+    document.querySelectorAll('.nav-link').forEach(l=>l.addEventListener('click',()=>{document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('actief'));l.classList.add('actief')}));
+    document.querySelectorAll('.toc__link').forEach(l=>l.addEventListener('click',()=>{document.querySelectorAll('.toc__link').forEach(x=>x.classList.remove('actief'));l.classList.add('actief')}));
+  </script>
+</body>
+</html>
