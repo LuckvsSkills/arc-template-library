@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#fff;--bg-alt:#f7f7f7;--tekst:#172b4d;--dim:#6b778c;--accent:#fcb400;--accent-2:#2d7ff9;--accent-3:#f82b60;--accent-4:#20c933;--border:#e0e0e0;--nav:60px;--max:1180px;--radius:8px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+    .navbar__logo{font-size:1.1rem;font-weight:900;color:var(--tekst);display:flex;align-items:center;gap:8px}
+    .navbar__logo-icon{width:28px;height:28px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:900;color:var(--tekst)}
+    .navbar__links{display:flex;gap:20px;list-style:none}
+    .navbar__links a{font-size:0.85rem;color:var(--dim);transition:color 0.15s}
+    .navbar__links a:hover{color:var(--tekst)}
+    .navbar__cta{display:flex;gap:8px}
+    .btn-geel{background:var(--accent);color:var(--tekst);padding:8px 18px;border-radius:var(--radius);font-size:0.85rem;font-weight:800;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-geel:hover{opacity:0.88}
+    .btn-ghost{border:1px solid var(--border);color:var(--tekst);padding:7px 14px;border-radius:var(--radius);font-size:0.85rem;background:#fff;cursor:pointer;transition:all 0.15s}
+    .btn-ghost:hover{border-color:var(--tekst)}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer}
+    .navbar__hamburger span{display:block;width:20px;height:2px;background:var(--tekst)}
+    .hero{padding:80px 32px 0;max-width:var(--max);margin:0 auto;text-align:center}
+    .hero__eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(252,180,0,0.1);border:1px solid rgba(252,180,0,0.3);border-radius:999px;padding:5px 16px;font-size:0.75rem;font-weight:700;color:#b07a00;margin-bottom:24px}
+    .hero__headline{font-size:clamp(2.4rem,5.5vw,4.6rem);font-weight:900;letter-spacing:-0.05em;line-height:1.04;margin-bottom:18px}
+    .hero__headline .h-geel{color:var(--accent)}
+    .hero__headline .h-blauw{color:var(--accent-2)}
+    .hero__headline .h-rood{color:var(--accent-3)}
+    .hero__headline .h-groen{color:var(--accent-4)}
+    .hero__sub{font-size:1rem;color:var(--dim);max-width:520px;margin:0 auto 36px;line-height:1.75}
+    .hero__knoppen{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+    .hero__knoppen .btn-geel{padding:12px 28px;font-size:0.95rem}
+    .hero__note{font-size:0.78rem;color:var(--dim);margin-bottom:56px}
+    .hero__app{max-width:100%;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 12px 48px rgba(23,43,77,0.12);overflow:hidden;margin-bottom:0}
+    .app-toolbar{background:#f9f9f9;border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:10px}
+    .toolbar-dots{display:flex;gap:6px}
+    .toolbar-dot{width:10px;height:10px;border-radius:50%}
+    .toolbar-naam{font-size:0.78rem;font-weight:600;color:var(--dim);margin-left:8px;flex:1}
+    .toolbar-knoppen{display:flex;gap:6px}
+    .toolbar-knop{padding:4px 10px;border:1px solid var(--border);border-radius:4px;font-size:0.68rem;font-weight:600;color:var(--dim);cursor:pointer;background:#fff}
+    .app-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 16px}
+    .app-tab{padding:8px 12px;font-size:0.75rem;font-weight:600;color:var(--dim);border-bottom:2px solid transparent;cursor:pointer}
+    .app-tab.actief{color:var(--accent-2);border-bottom-color:var(--accent-2)}
+    .app-tabel{width:100%;border-collapse:collapse}
+    .app-tabel th{padding:8px 12px;text-align:left;font-size:0.65rem;font-weight:700;color:var(--dim);border-bottom:1px solid var(--border);border-right:1px solid var(--border);background:#f9f9f9;white-space:nowrap}
+    .app-tabel td{padding:8px 12px;font-size:0.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border);white-space:nowrap}
+    .app-tabel tr:hover td{background:#f9f9f9}
+    .veld-tag{display:inline-block;padding:2px 8px;border-radius:3px;font-size:0.65rem;font-weight:700}
+    .veld-geel{background:#fff0a0;color:#7a5a00}
+    .veld-blauw{background:#d0eaff;color:#0050a0}
+    .veld-rood{background:#ffd0e0;color:#a00030}
+    .veld-groen{background:#d0f5dc;color:#006020}
+    .veld-grijs{background:#f0f0f0;color:#606060}
+    .voortgang{height:8px;background:var(--border);border-radius:4px;overflow:hidden;min-width:80px}
+    .voortgang-fill{height:100%;border-radius:4px}
+    .logo-strip{background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 32px}
+    .logo-strip__inner{max-width:var(--max);margin:0 auto;text-align:center}
+    .logo-strip__label{font-size:0.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:18px}
+    .logo-strip__logos{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
+    .logo-i{font-size:0.82rem;font-weight:700;color:#ccc}
+    .use-cases{max-width:var(--max);margin:80px auto;padding:0 32px}
+    .use-cases__intro{text-align:center;margin-bottom:56px}
+    .sectie-chip{display:inline-block;background:rgba(252,180,0,0.1);color:#7a5a00;font-size:0.7rem;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px}
+    .sectie-titel{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-0.04em;line-height:1.1;margin-bottom:12px}
+    .sectie-sub{font-size:0.92rem;color:var(--dim);max-width:460px;margin:0 auto;line-height:1.7}
+    .use-case-tabs{display:flex;justify-content:center;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+    .uc-tab{padding:8px 16px;border:1.5px solid var(--border);border-radius:999px;font-size:0.82rem;font-weight:600;cursor:pointer;color:var(--dim);transition:all 0.15s;background:#fff}
+    .uc-tab.actief{background:var(--tekst);color:#fff;border-color:var(--tekst)}
+    .uc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .uc-card{background:var(--bg-alt);border-radius:12px;padding:24px;cursor:pointer;transition:all 0.2s;border:1.5px solid transparent}
+    .uc-card:hover{border-color:var(--accent);background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+    .uc-card__icon{font-size:2rem;margin-bottom:12px}
+    .uc-card__naam{font-size:0.92rem;font-weight:700;margin-bottom:6px}
+    .uc-card__tekst{font-size:0.82rem;color:var(--dim);line-height:1.65}
+    .views-sectie{background:var(--bg-alt);border-top:1px solid var(--border);padding:72px 32px}
+    .views-sectie__inner{max-width:var(--max);margin:0 auto}
+    .views-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
+    .view-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:all 0.2s}
+    .view-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.08)}
+    .view-card__icon{font-size:2rem;margin-bottom:12px}
+    .view-card__naam{font-size:0.88rem;font-weight:700;margin-bottom:6px}
+    .view-card__tekst{font-size:0.75rem;color:var(--dim);line-height:1.5}
+    .prijzen{max-width:var(--max);margin:80px auto;padding:0 32px}
+    .prijzen__intro{text-align:center;margin-bottom:48px}
+    .prijzen__toggle{display:flex;align-items:center;gap:12px;justify-content:center;margin-top:20px;margin-bottom:40px;font-size:0.82rem;color:var(--dim)}
+    .toggle{width:40px;height:22px;background:var(--accent);border-radius:999px;position:relative;cursor:pointer;flex-shrink:0}
+    .toggle::after{content:'';position:absolute;top:3px;right:3px;width:16px;height:16px;background:#fff;border-radius:50%}
+    .prijzen__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .prijs-card{border:1.5px solid var(--border);border-radius:12px;padding:24px;background:#fff;position:relative}
+    .prijs-card--featured{border-color:var(--accent-2);background:rgba(45,127,249,0.03)}
+    .prijs-card__badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--accent-2);color:#fff;font-size:0.65rem;font-weight:700;padding:2px 10px;border-radius:999px;white-space:nowrap}
+    .prijs-card__naam{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--dim);margin-bottom:8px}
+    .prijs-card__prijs{font-size:2.2rem;font-weight:800;letter-spacing:-0.04em;margin-bottom:4px}
+    .prijs-card__periode{font-size:0.75rem;color:var(--dim);margin-bottom:18px}
+    .prijs-card__features{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:22px}
+    .prijs-card__features li{font-size:0.78rem;color:var(--dim);display:flex;align-items:center;gap:7px}
+    .prijs-card__features li::before{content:'✓';color:var(--accent-4);font-weight:800;font-size:0.68rem}
+    .cta{background:var(--accent);color:var(--tekst);padding:80px 32px;text-align:center}
+    .cta h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-0.05em;margin-bottom:12px}
+    .cta p{font-size:0.92rem;opacity:0.75;max-width:400px;margin:0 auto 28px;line-height:1.7}
+    .btn-donker{background:var(--tekst);color:#fff;padding:12px 28px;border-radius:var(--radius);font-size:0.92rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-donker:hover{opacity:0.85}
+    .footer{border-top:1px solid var(--border);padding:48px 32px 24px}
+    .footer__top{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+    .footer__logo{font-size:0.88rem;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+    .footer__tekst{font-size:0.78rem;color:var(--dim);line-height:1.6;max-width:180px}
+    .footer__kolom-titel{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+    .footer__links{list-style:none;display:flex;flex-direction:column;gap:7px}
+    .footer__links a{font-size:0.78rem;color:var(--dim);transition:color 0.15s}
+    .footer__links a:hover{color:var(--tekst)}
+    .footer__bottom{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border);font-size:0.72rem;color:var(--dim)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:#fff;z-index:200;flex-direction:column;padding:72px 24px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.3rem;font-weight:700;padding:14px 0;border-bottom:1px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1024px){.prijzen__grid{grid-template-columns:repeat(2,1fr)}.views-grid{grid-template-columns:repeat(2,1fr)}.footer__top{grid-template-columns:1fr 1fr}}
+    @media(max-width:768px){.navbar{padding:0 16px}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hero{padding:56px 16px 0}.use-cases{padding:0 16px;margin:56px auto}.views-sectie{padding:56px 16px}.uc-grid{grid-template-columns:1fr 1fr}.prijzen{padding:0 16px;margin:56px auto}.prijzen__grid{grid-template-columns:1fr;max-width:360px;margin-left:auto;margin-right:auto}.cta{padding:56px 16px}.footer{padding:40px 16px 24px}.footer__top{grid-template-columns:1fr 1fr}.footer__bottom{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.uc-grid{grid-template-columns:1fr}.views-grid{grid-template-columns:1fr 1fr}.footer__top{grid-template-columns:1fr}.hero__knoppen{flex-direction:column;align-items:center}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo"><div class="navbar__logo-icon">{{LOGO_L}}</div>{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links"><li><a href="#use-cases">Oplossingen</a></li><li><a href="#views">Features</a></li><li><a href="#prijzen">Prijzen</a></li><li><a href="#">Templates</a></li></ul>
+    <div class="navbar__cta"><button class="btn-ghost">Inloggen</button><button class="btn-geel">Gratis proberen</button></div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#use-cases" onclick="menuToggle()">Oplossingen</a><a href="#views" onclick="menuToggle()">Features</a><a href="#prijzen" onclick="menuToggle()">Prijzen</a>
+  </div>
+  <section class="hero">
+    <div class="hero__eyebrow">{{HERO_EYEBROW}}</div>
+    <h1 class="hero__headline">{{HERO_H1}}<br><span class="h-geel">{{HERO_H2}}</span> <span class="h-blauw">{{HERO_H3}}</span><br><span class="h-rood">{{HERO_H4}}</span> <span class="h-groen">{{HERO_H5}}</span></h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__knoppen"><button class="btn-geel">{{CTA_PRIMAIR}}</button><button class="btn-ghost">{{CTA_SECUNDAIR}} →</button></div>
+    <p class="hero__note">{{HERO_NOTE}}</p>
+    <div class="hero__app">
+      <div class="app-toolbar"><div class="toolbar-dots"><div class="toolbar-dot" style="background:#ff5f57"></div><div class="toolbar-dot" style="background:#ffbd2e"></div><div class="toolbar-dot" style="background:#28c840"></div></div><div class="toolbar-naam">{{APP_NAAM}} — {{APP_TABEL}}</div><div class="toolbar-knoppen"><div class="toolbar-knop">+ Veld</div><div class="toolbar-knop">Filteren</div><div class="toolbar-knop">Groeperen</div></div></div>
+      <div class="app-tabs"><div class="app-tab actief">Grid</div><div class="app-tab">Galerie</div><div class="app-tab">Kanban</div><div class="app-tab">Kalender</div></div>
+      <div style="overflow-x:auto">
+        <table class="app-tabel">
+          <thead><tr><th style="width:24px"></th><th>{{KOP_1}}</th><th>{{KOP_2}}</th><th>{{KOP_3}}</th><th>{{KOP_4}}</th><th>{{KOP_5}}</th><th>Voortgang</th></tr></thead>
+          <tbody>
+            <tr><td style="color:#aaa;font-size:0.7rem;text-align:center">1</td><td style="font-weight:600">{{R1_K1}}</td><td><span class="veld-tag veld-geel">{{R1_K2}}</span></td><td>{{R1_K3}}</td><td><span class="veld-tag veld-blauw">{{R1_K4}}</span></td><td>{{R1_K5}}</td><td><div class="voortgang"><div class="voortgang-fill" style="width:{{R1_PCT}}%;background:var(--accent-4)"></div></div></td></tr>
+            <tr><td style="color:#aaa;font-size:0.7rem;text-align:center">2</td><td style="font-weight:600">{{R2_K1}}</td><td><span class="veld-tag veld-blauw">{{R2_K2}}</span></td><td>{{R2_K3}}</td><td><span class="veld-tag veld-groen">{{R2_K4}}</span></td><td>{{R2_K5}}</td><td><div class="voortgang"><div class="voortgang-fill" style="width:{{R2_PCT}}%;background:var(--accent-2)"></div></div></td></tr>
+            <tr><td style="color:#aaa;font-size:0.7rem;text-align:center">3</td><td style="font-weight:600">{{R3_K1}}</td><td><span class="veld-tag veld-rood">{{R3_K2}}</span></td><td>{{R3_K3}}</td><td><span class="veld-tag veld-geel">{{R3_K4}}</span></td><td>{{R3_K5}}</td><td><div class="voortgang"><div class="voortgang-fill" style="width:{{R3_PCT}}%;background:var(--accent-3)"></div></div></td></tr>
+            <tr><td style="color:#aaa;font-size:0.7rem;text-align:center">4</td><td style="font-weight:600">{{R4_K1}}</td><td><span class="veld-tag veld-groen">{{R4_K2}}</span></td><td>{{R4_K3}}</td><td><span class="veld-tag veld-grijs">{{R4_K4}}</span></td><td>{{R4_K5}}</td><td><div class="voortgang"><div class="voortgang-fill" style="width:{{R4_PCT}}%;background:var(--accent)"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <div class="logo-strip"><div class="logo-strip__inner"><div class="logo-strip__label">{{LOGO_LABEL}}</div><div class="logo-strip__logos"><span class="logo-i">{{K1}}</span><span class="logo-i">{{K2}}</span><span class="logo-i">{{K3}}</span><span class="logo-i">{{K4}}</span><span class="logo-i">{{K5}}</span></div></div></div>
+  <section class="use-cases" id="use-cases">
+    <div class="use-cases__intro"><div class="sectie-chip">Oplossingen</div><h2 class="sectie-titel">{{UC_TITEL}}</h2><p class="sectie-sub">{{UC_SUB}}</p></div>
+    <div class="use-case-tabs"><span class="uc-tab actief" onclick="ucTabKlik(this)">Alles</span><span class="uc-tab" onclick="ucTabKlik(this)">{{UC_TAB_1}}</span><span class="uc-tab" onclick="ucTabKlik(this)">{{UC_TAB_2}}</span><span class="uc-tab" onclick="ucTabKlik(this)">{{UC_TAB_3}}</span></div>
+    <div class="uc-grid">
+      <div class="uc-card"><div class="uc-card__icon">{{UC1_ICON}}</div><div class="uc-card__naam">{{UC1_NAAM}}</div><p class="uc-card__tekst">{{UC1_TEKST}}</p></div>
+      <div class="uc-card"><div class="uc-card__icon">{{UC2_ICON}}</div><div class="uc-card__naam">{{UC2_NAAM}}</div><p class="uc-card__tekst">{{UC2_TEKST}}</p></div>
+      <div class="uc-card"><div class="uc-card__icon">{{UC3_ICON}}</div><div class="uc-card__naam">{{UC3_NAAM}}</div><p class="uc-card__tekst">{{UC3_TEKST}}</p></div>
+      <div class="uc-card"><div class="uc-card__icon">{{UC4_ICON}}</div><div class="uc-card__naam">{{UC4_NAAM}}</div><p class="uc-card__tekst">{{UC4_TEKST}}</p></div>
+      <div class="uc-card"><div class="uc-card__icon">{{UC5_ICON}}</div><div class="uc-card__naam">{{UC5_NAAM}}</div><p class="uc-card__tekst">{{UC5_TEKST}}</p></div>
+      <div class="uc-card"><div class="uc-card__icon">{{UC6_ICON}}</div><div class="uc-card__naam">{{UC6_NAAM}}</div><p class="uc-card__tekst">{{UC6_TEKST}}</p></div>
+    </div>
+  </section>
+  <section class="views-sectie" id="views">
+    <div class="views-sectie__inner">
+      <div style="text-align:center"><div class="sectie-chip">Views</div><h2 class="sectie-titel">{{VIEWS_TITEL}}</h2><p class="sectie-sub" style="margin:0 auto">{{VIEWS_SUB}}</p></div>
+      <div class="views-grid">
+        <div class="view-card"><div class="view-card__icon">{{V1_ICON}}</div><div class="view-card__naam">{{V1_NAAM}}</div><p class="view-card__tekst">{{V1_TEKST}}</p></div>
+        <div class="view-card"><div class="view-card__icon">{{V2_ICON}}</div><div class="view-card__naam">{{V2_NAAM}}</div><p class="view-card__tekst">{{V2_TEKST}}</p></div>
+        <div class="view-card"><div class="view-card__icon">{{V3_ICON}}</div><div class="view-card__naam">{{V3_NAAM}}</div><p class="view-card__tekst">{{V3_TEKST}}</p></div>
+        <div class="view-card"><div class="view-card__icon">{{V4_ICON}}</div><div class="view-card__naam">{{V4_NAAM}}</div><p class="view-card__tekst">{{V4_TEKST}}</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="prijzen" id="prijzen">
+    <div class="prijzen__intro"><div class="sectie-chip">Prijzen</div><h2 class="sectie-titel">{{P_TITEL}}</h2></div>
+    <div class="prijzen__toggle"><span>Maandelijks</span><div class="toggle"></div><span>Jaarlijks <span style="background:rgba(252,180,0,0.15);color:#7a5a00;font-size:0.7rem;font-weight:700;padding:2px 7px;border-radius:999px">-20%</span></span></div>
+    <div class="prijzen__grid">
+      <div class="prijs-card"><div class="prijs-card__naam">{{P1_NAAM}}</div><div class="prijs-card__prijs">{{P1_PRIJS}}</div><div class="prijs-card__periode">{{P1_PERIODE}}</div><ul class="prijs-card__features"><li>{{P1_F1}}</li><li>{{P1_F2}}</li><li>{{P1_F3}}</li></ul><button class="btn-ghost" style="width:100%;padding:9px">{{P1_CTA}}</button></div>
+      <div class="prijs-card prijs-card--featured"><span class="prijs-card__badge">{{P2_BADGE}}</span><div class="prijs-card__naam">{{P2_NAAM}}</div><div class="prijs-card__prijs">{{P2_PRIJS}}</div><div class="prijs-card__periode">{{P2_PERIODE}}</div><ul class="prijs-card__features"><li>{{P2_F1}}</li><li>{{P2_F2}}</li><li>{{P2_F3}}</li><li>{{P2_F4}}</li></ul><button class="btn-geel" style="width:100%;padding:9px">{{P2_CTA}}</button></div>
+      <div class="prijs-card"><div class="prijs-card__naam">{{P3_NAAM}}</div><div class="prijs-card__prijs">{{P3_PRIJS}}</div><div class="prijs-card__periode">{{P3_PERIODE}}</div><ul class="prijs-card__features"><li>{{P3_F1}}</li><li>{{P3_F2}}</li><li>{{P3_F3}}</li><li>{{P3_F4}}</li></ul><button class="btn-ghost" style="width:100%;padding:9px">{{P3_CTA}}</button></div>
+      <div class="prijs-card"><div class="prijs-card__naam">{{P4_NAAM}}</div><div class="prijs-card__prijs">{{P4_PRIJS}}</div><div class="prijs-card__periode">{{P4_PERIODE}}</div><ul class="prijs-card__features"><li>{{P4_F1}}</li><li>{{P4_F2}}</li><li>{{P4_F3}}</li><li>{{P4_F4}}</li></ul><button class="btn-ghost" style="width:100%;padding:9px">{{P4_CTA}}</button></div>
+    </div>
+  </section>
+  <section class="cta"><h2>{{CTA_H}}</h2><p>{{CTA_P}}</p><button class="btn-donker">{{CTA_BTN}}</button></section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo"><div class="navbar__logo-icon" style="width:22px;height:22px;font-size:0.65rem">{{LOGO_L}}</div>{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_TEKST}}</p></div>
+      <div><div class="footer__kolom-titel">Product</div><ul class="footer__links"><li><a href="#">Features</a></li><li><a href="#">Templates</a></li><li><a href="#">Prijzen</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Blog</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Juridisch</div><ul class="footer__links"><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span><span>{{FOOTER_TAGLINE}}</span></div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    function ucTabKlik(el){document.querySelectorAll('.uc-tab').forEach(x=>x.classList.remove('actief'));el.classList.add('actief')}
+    document.querySelectorAll('.app-tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.app-tab').forEach(x=>x.classList.remove('actief'));t.classList.add('actief')}));
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.08});
+    document.querySelectorAll('.uc-card,.view-card,.prijs-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(12px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
