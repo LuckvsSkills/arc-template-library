@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#fafaf8;--bg-wit:#fff;--tekst:#1a1a1a;--dim:#6b6b6b;--accent:#2c5f8a;--accent-2:#e8734a;--border:#e8e8e4;--nav:64px;--max:1180px;--content:720px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6;overflow-x:hidden}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:var(--bg-wit);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+    .navbar__logo{display:flex;align-items:center;gap:10px}
+    .navbar__logo-icon{width:32px;height:32px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:#fff}
+    .navbar__logo-naam{font-size:0.92rem;font-weight:700;color:var(--tekst)}
+    .navbar__links{display:flex;gap:20px;list-style:none}
+    .navbar__links a{font-size:0.82rem;color:var(--dim);font-weight:500;transition:color 0.15s}
+    .navbar__links a:hover{color:var(--tekst)}
+    .navbar__cta{display:flex;gap:8px}
+    .btn-accent{background:var(--accent);color:#fff;padding:8px 18px;border-radius:6px;font-size:0.82rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-accent:hover{opacity:0.88}
+    .btn-ghost{border:1px solid var(--border);color:var(--tekst);padding:7px 14px;border-radius:6px;font-size:0.82rem;background:var(--bg-wit);cursor:pointer}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer}
+    .navbar__hamburger span{display:block;width:20px;height:2px;background:var(--tekst)}
+    .hero{max-width:var(--max);margin:0 auto;padding:56px 40px 40px;display:grid;grid-template-columns:var(--content) 1fr;gap:56px;align-items:start}
+    .hero__featured{}
+    .hero__cat{font-size:0.68rem;font-weight:700;color:var(--accent-2);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
+    .hero__titel{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:14px;color:var(--tekst)}
+    .hero__excerpt{font-size:0.95rem;color:var(--dim);line-height:1.75;margin-bottom:18px}
+    .auteur-rij{display:flex;align-items:center;gap:10px}
+    .auteur-avatar{width:32px;height:32px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:var(--dim);flex-shrink:0}
+    .auteur-naam{font-size:0.82rem;font-weight:600;color:var(--tekst)}
+    .auteur-meta{font-size:0.75rem;color:var(--dim)}
+    .hero__beeld{aspect-ratio:16/9;background:var(--border);border-radius:8px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;color:#bbb}
+    .hero__sidebar{}
+    .sidebar-sectie{margin-bottom:32px}
+    .sidebar-label{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:var(--dim);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--tekst)}
+    .mini-post{padding:12px 0;border-bottom:1px solid var(--border)}
+    .mini-post:last-child{border-bottom:none}
+    .mini-post__cat{font-size:0.62rem;font-weight:700;color:var(--accent-2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+    .mini-post__titel{font-size:0.85rem;font-weight:700;color:var(--tekst);line-height:1.35;margin-bottom:5px}
+    .mini-post__titel a{color:var(--tekst)}
+    .mini-post__titel a:hover{color:var(--accent)}
+    .mini-post__meta{font-size:0.72rem;color:var(--dim)}
+    .topics-chips{display:flex;flex-wrap:wrap;gap:6px}
+    .topic-chip{padding:5px 12px;border:1px solid var(--border);border-radius:999px;font-size:0.75rem;font-weight:500;color:var(--dim);cursor:pointer;transition:all 0.15s;background:var(--bg-wit)}
+    .topic-chip:hover{border-color:var(--accent);color:var(--accent)}
+    .hoofd{max-width:var(--max);margin:0 auto;padding:0 40px 64px;display:grid;grid-template-columns:var(--content) 1fr;gap:56px}
+    .sectie-label{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:var(--dim);margin-bottom:20px;padding-bottom:8px;border-bottom:2px solid var(--tekst)}
+    .artikel-lijst{display:flex;flex-direction:column;gap:0}
+    .artikel-item{display:grid;grid-template-columns:1fr 120px;gap:20px;padding:24px 0;border-bottom:1px solid var(--border);align-items:start}
+    .artikel-item:first-child{border-top:1px solid var(--border)}
+    .artikel-item__cat{font-size:0.62rem;font-weight:700;color:var(--accent-2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
+    .artikel-item__titel{font-size:1rem;font-weight:700;line-height:1.35;margin-bottom:6px;letter-spacing:-0.01em}
+    .artikel-item__titel a{color:var(--tekst)}
+    .artikel-item__titel a:hover{color:var(--accent)}
+    .artikel-item__excerpt{font-size:0.82rem;color:var(--dim);line-height:1.65;margin-bottom:10px}
+    .artikel-item__meta{display:flex;align-items:center;gap:8px;font-size:0.72rem;color:var(--dim)}
+    .artikel-item__beeld{aspect-ratio:1/1;background:var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.68rem;color:#bbb}
+    .label-rij{display:flex;align-items:center;gap:6px}
+    .leestijd{background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:1px 6px;font-size:0.65rem;font-weight:600;color:var(--dim)}
+    .sidebar{}
+    .nieuwsbrief-box{background:var(--accent);color:#fff;padding:24px;border-radius:8px;margin-bottom:24px}
+    .nw-box__titel{font-size:0.95rem;font-weight:700;margin-bottom:6px}
+    .nw-box__sub{font-size:0.78rem;opacity:0.85;margin-bottom:16px;line-height:1.55}
+    .nw-box__input{width:100%;padding:9px 12px;border:none;border-radius:4px;font-size:0.82rem;margin-bottom:8px;outline:none}
+    .nw-box__btn{width:100%;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:8px;border-radius:4px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:background 0.15s}
+    .nw-box__btn:hover{background:rgba(255,255,255,0.25)}
+    .populaire-posts{background:var(--bg-wit);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:24px}
+    .pop-header{padding:12px 16px;border-bottom:1px solid var(--border);font-size:0.78rem;font-weight:700}
+    .pop-item{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s}
+    .pop-item:last-child{border-bottom:none}
+    .pop-item:hover{background:var(--bg)}
+    .pop-item__nummer{font-size:1.2rem;font-weight:900;color:var(--border);flex-shrink:0;line-height:1}
+    .pop-item__titel{font-size:0.82rem;font-weight:600;line-height:1.35;color:var(--tekst)}
+    .pop-item__reads{font-size:0.7rem;color:var(--dim);margin-top:4px}
+    .auteurs-sectie{background:var(--bg-wit);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+    .auteurs-header{padding:12px 16px;border-bottom:1px solid var(--border);font-size:0.78rem;font-weight:700}
+    .auteur-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border)}
+    .auteur-item:last-child{border-bottom:none}
+    .auteur-item__avatar{width:36px;height:36px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;color:var(--dim);flex-shrink:0}
+    .auteur-item__naam{font-size:0.82rem;font-weight:700}
+    .auteur-item__rol{font-size:0.72rem;color:var(--dim)}
+    .auteur-item__posts{font-size:0.68rem;color:var(--accent);font-weight:600;margin-left:auto}
+    .footer{background:var(--tekst);color:#fff;padding:48px 40px 24px}
+    .footer__top{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+    .footer__logo{font-size:0.88rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+    .footer__logo-icon{width:24px;height:24px;background:var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.58rem;font-weight:700;color:#fff}
+    .footer__tekst{font-size:0.78rem;color:rgba(255,255,255,0.5);line-height:1.6;max-width:180px}
+    .footer__kolom-titel{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:10px}
+    .footer__links{list-style:none;display:flex;flex-direction:column;gap:7px}
+    .footer__links a{font-size:0.78rem;color:rgba(255,255,255,0.55);transition:color 0.15s}
+    .footer__links a:hover{color:#fff}
+    .footer__bottom{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;padding-top:18px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:rgba(255,255,255,0.3)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:var(--bg-wit);z-index:200;flex-direction:column;padding:72px 24px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.3rem;font-weight:700;padding:14px 0;border-bottom:1px solid var(--border);color:var(--tekst)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1100px){.hero{grid-template-columns:1fr}.hero__sidebar{display:none}.hoofd{grid-template-columns:1fr}.sidebar{display:none}}
+    @media(max-width:768px){.navbar{padding:0 16px}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hero{padding:36px 16px 24px}.hoofd{padding:0 16px 48px}.artikel-item{grid-template-columns:1fr}.artikel-item__beeld{display:none}.footer{padding:40px 16px 24px}.footer__top{grid-template-columns:1fr 1fr}.footer__bottom{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.footer__top{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo"><div class="navbar__logo-icon">{{LOGO_L}}</div><span class="navbar__logo-naam">{{BEDRIJFSNAAM}}</span></div>
+    <ul class="navbar__links"><li><a href="#">{{NAV_1}}</a></li><li><a href="#">{{NAV_2}}</a></li><li><a href="#">{{NAV_3}}</a></li><li><a href="#">Over ons</a></li></ul>
+    <div class="navbar__cta"><button class="btn-ghost">Inloggen</button><button class="btn-accent">Abonneren</button></div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">{{NAV_1}}</a><a href="#" onclick="menuToggle()">{{NAV_2}}</a><a href="#" onclick="menuToggle()">Abonneren</a>
+  </div>
+  <div class="hero">
+    <div class="hero__featured">
+      <div class="hero__cat">{{FEATURED_CAT}}</div>
+      <div class="hero__beeld">[ cover afbeelding ]</div>
+      <h1 class="hero__titel">{{FEATURED_TITEL}}</h1>
+      <p class="hero__excerpt">{{FEATURED_EXCERPT}}</p>
+      <div class="auteur-rij"><div class="auteur-avatar">{{FEATURED_A_INT}}</div><div><div class="auteur-naam">{{FEATURED_AUTEUR}}</div><div class="auteur-meta">{{FEATURED_DATUM}} · {{FEATURED_LEESTIJD}} min lezen</div></div></div>
+    </div>
+    <div class="hero__sidebar">
+      <div class="sidebar-sectie">
+        <div class="sidebar-label">Trending</div>
+        <div class="mini-post"><div class="mini-post__cat">{{MP1_CAT}}</div><div class="mini-post__titel"><a href="#">{{MP1_TITEL}}</a></div><div class="mini-post__meta">{{MP1_AUTEUR}} · {{MP1_DATUM}}</div></div>
+        <div class="mini-post"><div class="mini-post__cat">{{MP2_CAT}}</div><div class="mini-post__titel"><a href="#">{{MP2_TITEL}}</a></div><div class="mini-post__meta">{{MP2_AUTEUR}} · {{MP2_DATUM}}</div></div>
+        <div class="mini-post"><div class="mini-post__cat">{{MP3_CAT}}</div><div class="mini-post__titel"><a href="#">{{MP3_TITEL}}</a></div><div class="mini-post__meta">{{MP3_AUTEUR}} · {{MP3_DATUM}}</div></div>
+      </div>
+      <div class="sidebar-sectie">
+        <div class="sidebar-label">Topics</div>
+        <div class="topics-chips"><span class="topic-chip">{{T1}}</span><span class="topic-chip">{{T2}}</span><span class="topic-chip">{{T3}}</span><span class="topic-chip">{{T4}}</span><span class="topic-chip">{{T5}}</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="hoofd">
+    <div>
+      <div class="sectie-label">Recente artikelen</div>
+      <div class="artikel-lijst">
+        <div class="artikel-item"><div><div class="artikel-item__cat">{{A1_CAT}}</div><div class="artikel-item__titel"><a href="#">{{A1_TITEL}}</a></div><p class="artikel-item__excerpt">{{A1_EXCERPT}}</p><div class="artikel-item__meta"><div class="auteur-avatar" style="width:22px;height:22px;font-size:0.55rem">{{A1_INT}}</div><span>{{A1_AUTEUR}}</span><span>·</span><span>{{A1_DATUM}}</span><span class="leestijd">{{A1_LEES}} min</span></div></div><div class="artikel-item__beeld">[ afb ]</div></div>
+        <div class="artikel-item"><div><div class="artikel-item__cat">{{A2_CAT}}</div><div class="artikel-item__titel"><a href="#">{{A2_TITEL}}</a></div><p class="artikel-item__excerpt">{{A2_EXCERPT}}</p><div class="artikel-item__meta"><div class="auteur-avatar" style="width:22px;height:22px;font-size:0.55rem">{{A2_INT}}</div><span>{{A2_AUTEUR}}</span><span>·</span><span>{{A2_DATUM}}</span><span class="leestijd">{{A2_LEES}} min</span></div></div><div class="artikel-item__beeld">[ afb ]</div></div>
+        <div class="artikel-item"><div><div class="artikel-item__cat">{{A3_CAT}}</div><div class="artikel-item__titel"><a href="#">{{A3_TITEL}}</a></div><p class="artikel-item__excerpt">{{A3_EXCERPT}}</p><div class="artikel-item__meta"><div class="auteur-avatar" style="width:22px;height:22px;font-size:0.55rem">{{A3_INT}}</div><span>{{A3_AUTEUR}}</span><span>·</span><span>{{A3_DATUM}}</span><span class="leestijd">{{A3_LEES}} min</span></div></div><div class="artikel-item__beeld">[ afb ]</div></div>
+        <div class="artikel-item"><div><div class="artikel-item__cat">{{A4_CAT}}</div><div class="artikel-item__titel"><a href="#">{{A4_TITEL}}</a></div><p class="artikel-item__excerpt">{{A4_EXCERPT}}</p><div class="artikel-item__meta"><div class="auteur-avatar" style="width:22px;height:22px;font-size:0.55rem">{{A4_INT}}</div><span>{{A4_AUTEUR}}</span><span>·</span><span>{{A4_DATUM}}</span><span class="leestijd">{{A4_LEES}} min</span></div></div><div class="artikel-item__beeld">[ afb ]</div></div>
+        <div class="artikel-item"><div><div class="artikel-item__cat">{{A5_CAT}}</div><div class="artikel-item__titel"><a href="#">{{A5_TITEL}}</a></div><p class="artikel-item__excerpt">{{A5_EXCERPT}}</p><div class="artikel-item__meta"><div class="auteur-avatar" style="width:22px;height:22px;font-size:0.55rem">{{A5_INT}}</div><span>{{A5_AUTEUR}}</span><span>·</span><span>{{A5_DATUM}}</span><span class="leestijd">{{A5_LEES}} min</span></div></div><div class="artikel-item__beeld">[ afb ]</div></div>
+        <div class="artikel-item"><div><div class="artikel-item__cat">{{A6_CAT}}</div><div class="artikel-item__titel"><a href="#">{{A6_TITEL}}</a></div><p class="artikel-item__excerpt">{{A6_EXCERPT}}</p><div class="artikel-item__meta"><div class="auteur-avatar" style="width:22px;height:22px;font-size:0.55rem">{{A6_INT}}</div><span>{{A6_AUTEUR}}</span><span>·</span><span>{{A6_DATUM}}</span><span class="leestijd">{{A6_LEES}} min</span></div></div><div class="artikel-item__beeld">[ afb ]</div></div>
+      </div>
+    </div>
+    <aside class="sidebar">
+      <div class="nieuwsbrief-box">
+        <div class="nw-box__titel">{{NW_TITEL}}</div>
+        <div class="nw-box__sub">{{NW_SUB}}</div>
+        <input class="nw-box__input" type="email" placeholder="jouw@email.nl" />
+        <button class="nw-box__btn">{{NW_BTN}}</button>
+      </div>
+      <div class="populaire-posts">
+        <div class="pop-header">Meest gelezen</div>
+        <div class="pop-item"><div class="pop-item__nummer">1</div><div><div class="pop-item__titel">{{POP1_TITEL}}</div><div class="pop-item__reads">{{POP1_READS}} lezers</div></div></div>
+        <div class="pop-item"><div class="pop-item__nummer">2</div><div><div class="pop-item__titel">{{POP2_TITEL}}</div><div class="pop-item__reads">{{POP2_READS}} lezers</div></div></div>
+        <div class="pop-item"><div class="pop-item__nummer">3</div><div><div class="pop-item__titel">{{POP3_TITEL}}</div><div class="pop-item__reads">{{POP3_READS}} lezers</div></div></div>
+        <div class="pop-item"><div class="pop-item__nummer">4</div><div><div class="pop-item__titel">{{POP4_TITEL}}</div><div class="pop-item__reads">{{POP4_READS}} lezers</div></div></div>
+      </div>
+      <div class="auteurs-sectie" style="margin-top:20px">
+        <div class="auteurs-header">Schrijvers</div>
+        <div class="auteur-item"><div class="auteur-item__avatar">{{AU1_INT}}</div><div><div class="auteur-item__naam">{{AU1_NAAM}}</div><div class="auteur-item__rol">{{AU1_ROL}}</div></div><div class="auteur-item__posts">{{AU1_POSTS}} posts</div></div>
+        <div class="auteur-item"><div class="auteur-item__avatar">{{AU2_INT}}</div><div><div class="auteur-item__naam">{{AU2_NAAM}}</div><div class="auteur-item__rol">{{AU2_ROL}}</div></div><div class="auteur-item__posts">{{AU2_POSTS}} posts</div></div>
+        <div class="auteur-item"><div class="auteur-item__avatar">{{AU3_INT}}</div><div><div class="auteur-item__naam">{{AU3_NAAM}}</div><div class="auteur-item__rol">{{AU3_ROL}}</div></div><div class="auteur-item__posts">{{AU3_POSTS}} posts</div></div>
+      </div>
+    </aside>
+  </div>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo"><div class="footer__logo-icon">{{LOGO_L}}</div>{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_TEKST}}</p></div>
+      <div><div class="footer__kolom-titel">Topics</div><ul class="footer__links"><li><a href="#">{{T1}}</a></li><li><a href="#">{{T2}}</a></li><li><a href="#">{{T3}}</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Schrijf voor ons</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Juridisch</div><ul class="footer__links"><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span><span>{{FOOTER_TAGLINE}}</span></div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.06});
+    document.querySelectorAll('.artikel-item').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(8px)';el.style.transition='opacity 0.35s ease,transform 0.35s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
