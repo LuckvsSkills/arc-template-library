@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#f8f9fb;--bg-wit:#fff;--tekst:#0a0f1e;--dim:#5e6e8a;--accent:#1a56db;--accent-light:#eff6ff;--border:#dde3ef;--groen:#057a55;--rood:#c81e1e;--goud:#e3a008;--nav:64px;--max:1280px;--radius:8px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:var(--bg-wit);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:0 32px}
+    .navbar__logo{font-size:1rem;font-weight:900;color:var(--tekst);flex-shrink:0;display:flex;align-items:center;gap:8px}
+    .navbar__logo-icon{width:28px;height:28px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#fff}
+    .navbar__zoek{flex:1;max-width:480px;display:flex;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);align-items:center;padding:0 12px;gap:8px}
+    .navbar__zoek input{flex:1;padding:9px 0;border:none;outline:none;font-size:0.85rem;background:transparent}
+    .navbar__links{display:flex;gap:18px;list-style:none;margin-left:auto}
+    .navbar__links a{font-size:0.82rem;color:var(--dim);font-weight:500;transition:color 0.15s}
+    .navbar__links a:hover{color:var(--tekst)}
+    .navbar__cta{display:flex;gap:8px}
+    .btn-accent{background:var(--accent);color:#fff;padding:8px 16px;border-radius:var(--radius);font-size:0.82rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-accent:hover{opacity:0.88}
+    .btn-ghost{border:1px solid var(--border);color:var(--tekst);padding:7px 12px;border-radius:var(--radius);font-size:0.82rem;background:var(--bg-wit);cursor:pointer}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;margin-left:8px}
+    .navbar__hamburger span{display:block;width:18px;height:1.5px;background:var(--tekst)}
+    .hero{background:linear-gradient(135deg,#0a0f1e 0%,#1a2544 100%);color:#fff;padding:56px 32px;text-align:center}
+    .hero__chip{display:inline-block;background:rgba(26,86,219,0.3);border:1px solid rgba(26,86,219,0.5);border-radius:999px;padding:4px 14px;font-size:0.72rem;font-weight:700;color:#93c5fd;margin-bottom:18px;letter-spacing:0.06em;text-transform:uppercase}
+    .hero__headline{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-0.04em;margin-bottom:10px}
+    .hero__sub{font-size:0.92rem;color:rgba(255,255,255,0.65);max-width:500px;margin:0 auto 28px;line-height:1.7}
+    .hero__zoek{display:flex;max-width:640px;margin:0 auto;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+    .hero__zoek input{flex:1;padding:14px 18px;border:none;outline:none;font-size:0.92rem;color:var(--tekst)}
+    .hero__zoek select{padding:0 12px;border:none;border-left:1px solid var(--border);background:#f8f9fb;font-size:0.82rem;color:var(--dim);cursor:pointer;outline:none}
+    .hero__zoek button{background:var(--accent);color:#fff;border:none;padding:0 24px;font-size:0.88rem;font-weight:700;cursor:pointer}
+    .hero__stats{display:flex;justify-content:center;gap:40px;margin-top:32px;flex-wrap:wrap}
+    .hero-stat__n{font-size:1.4rem;font-weight:800;display:block}
+    .hero-stat__l{font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em}
+    .hoofd{max-width:var(--max);margin:0 auto;padding:28px 32px 64px;display:grid;grid-template-columns:260px 1fr;gap:24px}
+    .filter-panel{background:var(--bg-wit);border:1px solid var(--border);border-radius:var(--radius);padding:16px;height:fit-content}
+    .filter-groep{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+    .filter-groep:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+    .filter-groep__titel{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--dim);margin-bottom:10px}
+    .filter-optie{display:flex;align-items:center;justify-content:space-between;padding:5px 0;cursor:pointer}
+    .filter-optie__left{display:flex;align-items:center;gap:7px;font-size:0.82rem}
+    .filter-optie input{accent-color:var(--accent);cursor:pointer}
+    .filter-count{font-size:0.7rem;color:var(--dim)}
+    .ster-filter{display:flex;align-items:center;gap:6px;padding:5px 0;cursor:pointer;font-size:0.82rem}
+    .sterren-s{color:var(--goud);font-size:0.78rem}
+    .feed{}
+    .feed-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .resultaten-count{font-size:0.85rem;color:var(--dim)}
+    .sort-knoppen{display:flex;gap:0;background:var(--bg-wit);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+    .sort-knop{padding:7px 12px;font-size:0.75rem;font-weight:600;color:var(--dim);cursor:pointer;border:none;background:transparent;transition:all 0.15s}
+    .sort-knop.actief{background:var(--accent);color:#fff}
+    .software-lijst{display:flex;flex-direction:column;gap:12px}
+    .software-card{background:var(--bg-wit);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:grid;grid-template-columns:56px 1fr auto;gap:16px;align-items:start;transition:box-shadow 0.2s}
+    .software-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.07)}
+    .software-card__logo{width:56px;height:56px;border-radius:10px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+    .software-card__body{}
+    .software-card__header{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
+    .software-card__naam{font-size:0.95rem;font-weight:700}
+    .analyst-badge{font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;text-transform:uppercase;letter-spacing:0.06em}
+    .badge-leader{background:#fef9c3;color:#854d0e}
+    .badge-challenger{background:#f0fdf4;color:#166534}
+    .badge-niche{background:#f0f4ff;color:#1e3a8a}
+    .software-card__kategorie{font-size:0.72rem;color:var(--dim);margin-bottom:6px}
+    .rating-blok{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .rating-sterren{color:var(--goud);font-size:0.82rem}
+    .rating-getal{font-size:0.82rem;font-weight:700}
+    .rating-count{font-size:0.72rem;color:var(--dim)}
+    .software-card__desc{font-size:0.82rem;color:var(--dim);line-height:1.6;margin-bottom:10px}
+    .software-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+    .feature-chip{font-size:0.65rem;padding:2px 8px;background:var(--accent-light);color:var(--accent);border-radius:3px;font-weight:600}
+    .score-bars{display:flex;flex-direction:column;gap:5px}
+    .score-bar{display:flex;align-items:center;gap:7px}
+    .score-bar__label{font-size:0.62rem;color:var(--dim);width:80px;flex-shrink:0}
+    .score-bar__track{flex:1;height:4px;background:var(--border);border-radius:2px}
+    .score-bar__fill{height:100%;border-radius:2px;background:var(--accent)}
+    .score-bar__val{font-size:0.62rem;font-weight:700;width:24px;text-align:right}
+    .software-card__acties{display:flex;flex-direction:column;gap:6px;align-items:flex-end;min-width:120px}
+    .software-card__prijs{font-size:0.82rem;font-weight:700;text-align:right}
+    .software-card__prijs-sub{font-size:0.68rem;color:var(--dim);text-align:right;margin-bottom:6px}
+    .btn-demo{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity 0.2s;width:100%}
+    .btn-demo:hover{opacity:0.88}
+    .btn-info{background:var(--bg);color:var(--tekst);border:1px solid var(--border);border-radius:6px;padding:6px 14px;font-size:0.78rem;font-weight:500;cursor:pointer;white-space:nowrap;width:100%}
+    .btn-info:hover{border-color:var(--tekst)}
+    .compare-balk{position:fixed;bottom:0;left:0;right:0;background:var(--tekst);color:#fff;padding:12px 32px;display:flex;justify-content:space-between;align-items:center;z-index:80;transform:translateY(100%);transition:transform 0.3s}
+    .compare-balk.open{transform:translateY(0)}
+    .compare-balk__info{font-size:0.85rem;font-weight:600}
+    .footer-balk{background:var(--bg-wit);border-top:1px solid var(--border);padding:20px 32px;display:flex;justify-content:space-between;font-size:0.75rem;color:var(--dim);flex-wrap:wrap;gap:8px}
+    .footer-balk a{color:var(--dim);margin-right:14px}
+    .footer-balk a:hover{color:var(--tekst)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:var(--bg-wit);z-index:200;flex-direction:column;padding:72px 20px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.2rem;font-weight:600;padding:14px 0;border-bottom:1px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1100px){.software-card{grid-template-columns:48px 1fr}.software-card__acties{display:none}}
+    @media(max-width:900px){.hoofd{grid-template-columns:1fr}.filter-panel{display:none}}
+    @media(max-width:768px){.navbar{padding:0 16px}.navbar__zoek{display:none}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hero{padding:40px 16px}.hoofd{padding:16px 16px 48px}.footer-balk{padding:16px}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo"><div class="navbar__logo-icon">{{LOGO_L}}</div>{{BEDRIJFSNAAM}}</div>
+    <div class="navbar__zoek">🔍 <input type="text" placeholder="Zoek software..." /></div>
+    <ul class="navbar__links"><li><a href="#">Categorieën</a></li><li><a href="#">Vergelijken</a></li><li><a href="#">Reviews</a></li><li><a href="#">Rapporten</a></li></ul>
+    <div class="navbar__cta"><button class="btn-ghost">Inloggen</button><button class="btn-accent">Demo aanvragen</button></div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">Categorieën</a><a href="#" onclick="menuToggle()">Vergelijken</a><a href="#" onclick="menuToggle()">Inloggen</a>
+  </div>
+  <section class="hero">
+    <div class="hero__chip">{{HERO_CHIP}}</div>
+    <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__zoek">
+      <input type="text" placeholder="Zoek software of categorie..." />
+      <select><option>{{CAT_1}}</option><option>{{CAT_2}}</option><option>{{CAT_3}}</option></select>
+      <button>Zoeken</button>
+    </div>
+    <div class="hero__stats">
+      <div><span class="hero-stat__n">{{STAT_1}}</span><span class="hero-stat__l">{{STAT_1_L}}</span></div>
+      <div><span class="hero-stat__n">{{STAT_2}}</span><span class="hero-stat__l">{{STAT_2_L}}</span></div>
+      <div><span class="hero-stat__n">{{STAT_3}}</span><span class="hero-stat__l">{{STAT_3_L}}</span></div>
+    </div>
+  </section>
+  <div class="hoofd">
+    <aside class="filter-panel">
+      <div class="filter-groep">
+        <div class="filter-groep__titel">Analyst rating</div>
+        <div class="ster-filter"><input type="radio" name="rat" checked /><span class="sterren-s">★★★★★</span> 4.5+</div>
+        <div class="ster-filter"><input type="radio" name="rat" /><span class="sterren-s">★★★★☆</span> 4.0+</div>
+        <div class="ster-filter"><input type="radio" name="rat" /><span class="sterren-s">★★★☆☆</span> 3.0+</div>
+      </div>
+      <div class="filter-groep">
+        <div class="filter-groep__titel">Bedrijfsgrootte</div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />KMO (1-50)</div><span class="filter-count">{{F_KMO}}</span></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" checked />Middelgroot</div><span class="filter-count">{{F_MID}}</span></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />Enterprise</div><span class="filter-count">{{F_ENT}}</span></div>
+      </div>
+      <div class="filter-groep">
+        <div class="filter-groep__titel">Implementatie</div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" checked />Cloud SaaS</div><span class="filter-count">{{F_CLOUD}}</span></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />On-premise</div><span class="filter-count">{{F_ONPREM}}</span></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />Hybride</div><span class="filter-count">{{F_HYB}}</span></div>
+      </div>
+      <div class="filter-groep">
+        <div class="filter-groep__titel">Prijsmodel</div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />Gratis proefperiode</div></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" checked />Abonnement</div></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />Per gebruiker</div></div>
+        <div class="filter-optie"><div class="filter-optie__left"><input type="checkbox" />Op maat</div></div>
+      </div>
+    </aside>
+    <div class="feed">
+      <div class="feed-header">
+        <span class="resultaten-count">{{RESULTATEN_COUNT}} oplossingen gevonden</span>
+        <div class="sort-knoppen"><button class="sort-knop actief" onclick="sortKlik(this)">Beste match</button><button class="sort-knop" onclick="sortKlik(this)">Hoogste score</button><button class="sort-knop" onclick="sortKlik(this)">Meest beoordeeld</button></div>
+      </div>
+      <div class="software-lijst">
+        <div class="software-card">
+          <div class="software-card__logo">{{S1_LOGO}}</div>
+          <div class="software-card__body">
+            <div class="software-card__header"><span class="software-card__naam">{{S1_NAAM}}</span><span class="analyst-badge badge-leader">Market Leader</span></div>
+            <div class="software-card__kategorie">{{S1_CAT}}</div>
+            <div class="rating-blok"><span class="rating-sterren">★★★★★</span><span class="rating-getal">{{S1_RATING}}</span><span class="rating-count">({{S1_REVIEWS}} reviews)</span></div>
+            <p class="software-card__desc">{{S1_DESC}}</p>
+            <div class="software-features"><span class="feature-chip">{{S1_F1}}</span><span class="feature-chip">{{S1_F2}}</span><span class="feature-chip">{{S1_F3}}</span></div>
+            <div class="score-bars">
+              <div class="score-bar"><span class="score-bar__label">Gebruiksgemak</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S1_SC1}}%"></div></div><span class="score-bar__val">{{S1_SC1}}</span></div>
+              <div class="score-bar"><span class="score-bar__label">Ondersteuning</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S1_SC2}}%"></div></div><span class="score-bar__val">{{S1_SC2}}</span></div>
+              <div class="score-bar"><span class="score-bar__label">ROI</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S1_SC3}}%"></div></div><span class="score-bar__val">{{S1_SC3}}</span></div>
+            </div>
+          </div>
+          <div class="software-card__acties"><div class="software-card__prijs">{{S1_PRIJS}}</div><div class="software-card__prijs-sub">{{S1_PRIJS_SUB}}</div><button class="btn-demo">Demo aanvragen</button><button class="btn-info">Meer info</button><label style="font-size:0.65rem;color:var(--dim);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)" onchange="compareUpdate()"> Vergelijken</label></div>
+        </div>
+        <div class="software-card">
+          <div class="software-card__logo">{{S2_LOGO}}</div>
+          <div class="software-card__body">
+            <div class="software-card__header"><span class="software-card__naam">{{S2_NAAM}}</span><span class="analyst-badge badge-challenger">Challenger</span></div>
+            <div class="software-card__kategorie">{{S2_CAT}}</div>
+            <div class="rating-blok"><span class="rating-sterren">★★★★☆</span><span class="rating-getal">{{S2_RATING}}</span><span class="rating-count">({{S2_REVIEWS}} reviews)</span></div>
+            <p class="software-card__desc">{{S2_DESC}}</p>
+            <div class="software-features"><span class="feature-chip">{{S2_F1}}</span><span class="feature-chip">{{S2_F2}}</span></div>
+            <div class="score-bars">
+              <div class="score-bar"><span class="score-bar__label">Gebruiksgemak</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S2_SC1}}%"></div></div><span class="score-bar__val">{{S2_SC1}}</span></div>
+              <div class="score-bar"><span class="score-bar__label">Ondersteuning</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S2_SC2}}%"></div></div><span class="score-bar__val">{{S2_SC2}}</span></div>
+              <div class="score-bar"><span class="score-bar__label">ROI</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S2_SC3}}%"></div></div><span class="score-bar__val">{{S2_SC3}}</span></div>
+            </div>
+          </div>
+          <div class="software-card__acties"><div class="software-card__prijs">{{S2_PRIJS}}</div><div class="software-card__prijs-sub">{{S2_PRIJS_SUB}}</div><button class="btn-demo">Demo aanvragen</button><button class="btn-info">Meer info</button><label style="font-size:0.65rem;color:var(--dim);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)" onchange="compareUpdate()"> Vergelijken</label></div>
+        </div>
+        <div class="software-card">
+          <div class="software-card__logo">{{S3_LOGO}}</div>
+          <div class="software-card__body">
+            <div class="software-card__header"><span class="software-card__naam">{{S3_NAAM}}</span><span class="analyst-badge badge-leader">Market Leader</span></div>
+            <div class="software-card__kategorie">{{S3_CAT}}</div>
+            <div class="rating-blok"><span class="rating-sterren">★★★★★</span><span class="rating-getal">{{S3_RATING}}</span><span class="rating-count">({{S3_REVIEWS}} reviews)</span></div>
+            <p class="software-card__desc">{{S3_DESC}}</p>
+            <div class="software-features"><span class="feature-chip">{{S3_F1}}</span><span class="feature-chip">{{S3_F2}}</span><span class="feature-chip">{{S3_F3}}</span></div>
+            <div class="score-bars">
+              <div class="score-bar"><span class="score-bar__label">Gebruiksgemak</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S3_SC1}}%"></div></div><span class="score-bar__val">{{S3_SC1}}</span></div>
+              <div class="score-bar"><span class="score-bar__label">Ondersteuning</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S3_SC2}}%"></div></div><span class="score-bar__val">{{S3_SC2}}</span></div>
+              <div class="score-bar"><span class="score-bar__label">ROI</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S3_SC3}}%"></div></div><span class="score-bar__val">{{S3_SC3}}</span></div>
+            </div>
+          </div>
+          <div class="software-card__acties"><div class="software-card__prijs">{{S3_PRIJS}}</div><div class="software-card__prijs-sub">{{S3_PRIJS_SUB}}</div><button class="btn-demo">Demo aanvragen</button><button class="btn-info">Meer info</button><label style="font-size:0.65rem;color:var(--dim);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)" onchange="compareUpdate()"> Vergelijken</label></div>
+        </div>
+        <div class="software-card">
+          <div class="software-card__logo">{{S4_LOGO}}</div>
+          <div class="software-card__body">
+            <div class="software-card__header"><span class="software-card__naam">{{S4_NAAM}}</span><span class="analyst-badge badge-niche">Niche Speler</span></div>
+            <div class="software-card__kategorie">{{S4_CAT}}</div>
+            <div class="rating-blok"><span class="rating-sterren">★★★★☆</span><span class="rating-getal">{{S4_RATING}}</span><span class="rating-count">({{S4_REVIEWS}} reviews)</span></div>
+            <p class="software-card__desc">{{S4_DESC}}</p>
+            <div class="software-features"><span class="feature-chip">{{S4_F1}}</span><span class="feature-chip">{{S4_F2}}</span></div>
+            <div class="score-bars">
+              <div class="score-bar"><span class="score-bar__label">Gebruiksgemak</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S4_SC1}}%"></div></div><span class="score-bar__val">{{S4_SC1}}</span></div>
+              <div class="score-bar"><span class="score-bar__label">Ondersteuning</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S4_SC2}}%"></div></div><span class="score-bar__val">{{S4_SC2}}</span></div>
+              <div class="score-bar"><span class="score-bar__label">ROI</span><div class="score-bar__track"><div class="score-bar__fill" style="width:{{S4_SC3}}%"></div></div><span class="score-bar__val">{{S4_SC3}}</span></div>
+            </div>
+          </div>
+          <div class="software-card__acties"><div class="software-card__prijs">{{S4_PRIJS}}</div><div class="software-card__prijs-sub">{{S4_PRIJS_SUB}}</div><button class="btn-demo">Demo aanvragen</button><button class="btn-info">Meer info</button><label style="font-size:0.65rem;color:var(--dim);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)" onchange="compareUpdate()"> Vergelijken</label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="compare-balk" id="compareBalk">
+    <div class="compare-balk__info">📊 <span id="compareCount">0</span> producten geselecteerd voor vergelijking</div>
+    <div style="display:flex;gap:10px"><button class="btn-accent" style="font-size:0.82rem">Vergelijk nu</button><button onclick="document.getElementById('compareBalk').classList.remove('open')" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:#fff;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:0.82rem">Annuleer</button></div>
+  </div>
+  <div class="footer-balk">
+    <div><a href="#">© <span id="jaar"></span> {{BEDRIJFSNAAM}}</a><a href="#">Privacy</a><a href="#">Voorwaarden</a><a href="#">Adverteren</a></div>
+    <span>{{FOOTER_TAGLINE}}</span>
+  </div>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    function sortKlik(el){document.querySelectorAll('.sort-knop').forEach(x=>x.classList.remove('actief'));el.classList.add('actief')}
+    function compareUpdate(){const n=document.querySelectorAll('input[type=checkbox]:checked').length;document.getElementById('compareCount').textContent=n;document.getElementById('compareBalk').classList.toggle('open',n>0)}
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.06});
+    document.querySelectorAll('.software-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(10px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
