@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#0c0c0c;--bg-alt:#111;--tekst:#fff;--dim:rgba(255,255,255,0.55);--accent:#ff6b35;--accent-2:#ffd700;--border:rgba(255,255,255,0.08);--nav:60px;--max:1100px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav);display:flex;align-items:center;justify-content:space-between;padding:0 40px;transition:background 0.3s}
+    .navbar.scrolled{background:rgba(12,12,12,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .navbar__logo{font-size:1.1rem;font-weight:800;letter-spacing:-0.02em}
+    .navbar__links{display:flex;gap:24px;list-style:none}
+    .navbar__links a{font-size:0.82rem;color:var(--dim);transition:color 0.15s}
+    .navbar__links a:hover{color:var(--tekst)}
+    .navbar__cta{display:flex;gap:10px}
+    .btn-prim{background:var(--tekst);color:var(--bg);padding:9px 20px;border-radius:6px;font-size:0.85rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-prim:hover{opacity:0.88}
+    .btn-sec{color:var(--dim);font-size:0.85rem;padding:8px 14px;background:transparent;border:none;cursor:pointer;transition:color 0.15s}
+    .btn-sec:hover{color:var(--tekst)}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer}
+    .navbar__hamburger span{display:block;width:20px;height:1.5px;background:#fff}
+    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 32px 80px;position:relative;overflow:hidden}
+    .hero__noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.4;pointer-events:none}
+    .hero__glow{position:absolute;width:800px;height:400px;background:radial-gradient(ellipse,rgba(255,107,53,0.08) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-60%);pointer-events:none}
+    .hero__badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);border-radius:999px;padding:5px 16px;font-size:0.72rem;font-weight:600;color:var(--accent-2);margin-bottom:32px;position:relative;z-index:1}
+    .hero__badge-dot{width:5px;height:5px;background:var(--accent-2);border-radius:50%}
+    .hero__headline{font-size:clamp(2.8rem,7vw,6.5rem);font-weight:800;letter-spacing:-0.06em;line-height:0.93;margin-bottom:24px;position:relative;z-index:1}
+    .hero__headline em{font-style:normal;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero__sub{font-size:1rem;color:var(--dim);max-width:460px;margin-bottom:44px;position:relative;z-index:1;line-height:1.8}
+    .hero__invite{display:flex;max-width:460px;margin:0 auto 16px;position:relative;z-index:1}
+    .invite-input{flex:1;padding:14px 18px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:#fff;font-size:0.88rem;outline:none;border-radius:8px 0 0 8px;transition:border-color 0.2s}
+    .invite-input:focus{border-color:rgba(255,107,53,0.5)}
+    .invite-input::placeholder{color:rgba(255,255,255,0.3)}
+    .invite-btn{background:var(--accent);color:#fff;border:none;padding:0 24px;font-size:0.88rem;font-weight:700;cursor:pointer;border-radius:0 8px 8px 0;transition:opacity 0.2s;white-space:nowrap}
+    .invite-btn:hover{opacity:0.88}
+    .hero__note{font-size:0.75rem;color:rgba(255,255,255,0.3);position:relative;z-index:1}
+    .hero__social-proof{display:flex;align-items:center;gap:14px;justify-content:center;margin-top:36px;position:relative;z-index:1}
+    .avatars{display:flex}
+    .avatar{width:28px;height:28px;border-radius:50%;border:2px solid var(--bg);margin-left:-8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700}
+    .avatar:first-child{margin-left:0}
+    .sp-tekst{font-size:0.78rem;color:var(--dim)}
+    .features{padding:96px 32px;max-width:var(--max);margin:0 auto}
+    .features__header{text-align:center;margin-bottom:72px}
+    .features__label{font-size:0.68rem;font-weight:700;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px}
+    .features__titel{font-size:clamp(2rem,4vw,3.4rem);font-weight:800;letter-spacing:-0.05em;line-height:1.05;margin-bottom:14px}
+    .features__sub{font-size:0.92rem;color:var(--dim);max-width:440px;margin:0 auto;line-height:1.8}
+    .features__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+    .feature{background:var(--bg);padding:32px;transition:background 0.2s}
+    .feature:hover{background:var(--bg-alt)}
+    .feature__nummer{font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.2);letter-spacing:0.1em;margin-bottom:16px}
+    .feature__titel{font-size:0.92rem;font-weight:700;margin-bottom:8px;color:var(--tekst)}
+    .feature__tekst{font-size:0.82rem;color:var(--dim);line-height:1.7}
+    .testimonials{padding:80px 32px;background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .testimonials__inner{max-width:var(--max);margin:0 auto}
+    .testimonials__label{text-align:center;font-size:0.68rem;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:48px}
+    .testimonials__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .t-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:24px;transition:border-color 0.2s}
+    .t-card:hover{border-color:rgba(255,255,255,0.2)}
+    .t-card__quote{font-size:0.88rem;color:rgba(255,255,255,0.75);line-height:1.75;margin-bottom:20px;font-style:italic}
+    .t-card__auteur{display:flex;align-items:center;gap:10px}
+    .t-card__avatar{width:32px;height:32px;border-radius:50%;background:rgba(255,107,53,0.2);border:1px solid rgba(255,107,53,0.3);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:var(--accent);flex-shrink:0}
+    .t-card__naam{font-size:0.82rem;font-weight:700}
+    .t-card__functie{font-size:0.72rem;color:var(--dim)}
+    .cta{padding:100px 32px;text-align:center}
+    .cta__pre{font-size:0.68rem;font-weight:700;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:20px}
+    .cta__titel{font-size:clamp(2.4rem,5vw,5rem);font-weight:800;letter-spacing:-0.06em;line-height:0.95;margin-bottom:18px}
+    .cta__sub{font-size:0.95rem;color:var(--dim);max-width:400px;margin:0 auto 40px;line-height:1.75}
+    .footer{border-top:1px solid var(--border);padding:40px 32px 24px}
+    .footer__top{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:32px}
+    .footer__logo{font-size:0.88rem;font-weight:800;margin-bottom:8px}
+    .footer__tekst{font-size:0.78rem;color:var(--dim);line-height:1.6;max-width:180px}
+    .footer__kolom-titel{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px}
+    .footer__links{list-style:none;display:flex;flex-direction:column;gap:7px}
+    .footer__links a{font-size:0.78rem;color:var(--dim);transition:color 0.15s}
+    .footer__links a:hover{color:var(--tekst)}
+    .footer__bottom{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border);font-size:0.72rem;color:rgba(255,255,255,0.25)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:var(--bg-alt);z-index:200;flex-direction:column;padding:72px 24px 40px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.4rem;font-weight:700;color:var(--tekst);padding:14px 0;border-bottom:1px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1024px){.features__grid{grid-template-columns:repeat(2,1fr)}.testimonials__grid{grid-template-columns:1fr 1fr}.footer__top{grid-template-columns:1fr 1fr}}
+    @media(max-width:768px){.navbar{padding:0 20px}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hero{padding:100px 20px 64px}.features{padding:56px 20px}.testimonials{padding:56px 20px}.testimonials__grid{grid-template-columns:1fr}.cta{padding:64px 20px}.footer{padding:36px 20px 20px}.footer__top{grid-template-columns:1fr 1fr}.footer__bottom{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.features__grid{grid-template-columns:1fr}.footer__top{grid-template-columns:1fr}.hero__invite{flex-direction:column}.invite-input{border-radius:8px}.invite-btn{border-radius:8px;padding:12px}}
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links"><li><a href="#features">Product</a></li><li><a href="#testimonials">Reviews</a></li><li><a href="#">Prijzen</a></li></ul>
+    <div class="navbar__cta"><button class="btn-sec">Inloggen</button><button class="btn-prim">Toegang aanvragen</button></div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#features" onclick="menuToggle()">Product</a><a href="#testimonials" onclick="menuToggle()">Reviews</a><a href="#" onclick="menuToggle()">Inloggen</a>
+  </div>
+  <section class="hero">
+    <div class="hero__noise"></div>
+    <div class="hero__glow"></div>
+    <div class="hero__badge"><div class="hero__badge-dot"></div>{{HERO_BADGE}}</div>
+    <h1 class="hero__headline">{{HERO_H1}}<br><em>{{HERO_H2}}</em></h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__invite">
+      <input class="invite-input" type="email" placeholder="werkmail@bedrijf.nl" />
+      <button class="invite-btn">{{CTA_BTN}}</button>
+    </div>
+    <p class="hero__note">{{HERO_NOTE}}</p>
+    <div class="hero__social-proof">
+      <div class="avatars"><div class="avatar">{{A1}}</div><div class="avatar">{{A2}}</div><div class="avatar">{{A3}}</div><div class="avatar">{{A4}}</div></div>
+      <span class="sp-tekst">{{SP_TEKST}}</span>
+    </div>
+  </section>
+  <section class="features" id="features">
+    <div class="features__header">
+      <div class="features__label">{{F_LABEL}}</div>
+      <h2 class="features__titel">{{F_TITEL}}</h2>
+      <p class="features__sub">{{F_SUB}}</p>
+    </div>
+    <div class="features__grid">
+      <div class="feature"><div class="feature__nummer">01</div><div class="feature__titel">{{F1_TITEL}}</div><p class="feature__tekst">{{F1_TEKST}}</p></div>
+      <div class="feature"><div class="feature__nummer">02</div><div class="feature__titel">{{F2_TITEL}}</div><p class="feature__tekst">{{F2_TEKST}}</p></div>
+      <div class="feature"><div class="feature__nummer">03</div><div class="feature__titel">{{F3_TITEL}}</div><p class="feature__tekst">{{F3_TEKST}}</p></div>
+      <div class="feature"><div class="feature__nummer">04</div><div class="feature__titel">{{F4_TITEL}}</div><p class="feature__tekst">{{F4_TEKST}}</p></div>
+      <div class="feature"><div class="feature__nummer">05</div><div class="feature__titel">{{F5_TITEL}}</div><p class="feature__tekst">{{F5_TEKST}}</p></div>
+      <div class="feature"><div class="feature__nummer">06</div><div class="feature__titel">{{F6_TITEL}}</div><p class="feature__tekst">{{F6_TEKST}}</p></div>
+    </div>
+  </section>
+  <section class="testimonials" id="testimonials">
+    <div class="testimonials__inner">
+      <div class="testimonials__label">{{T_LABEL}}</div>
+      <div class="testimonials__grid">
+        <div class="t-card"><p class="t-card__quote">"{{T1_QUOTE}}"</p><div class="t-card__auteur"><div class="t-card__avatar">{{T1_I}}</div><div><div class="t-card__naam">{{T1_NAAM}}</div><div class="t-card__functie">{{T1_FUNC}}</div></div></div></div>
+        <div class="t-card"><p class="t-card__quote">"{{T2_QUOTE}}"</p><div class="t-card__auteur"><div class="t-card__avatar">{{T2_I}}</div><div><div class="t-card__naam">{{T2_NAAM}}</div><div class="t-card__functie">{{T2_FUNC}}</div></div></div></div>
+        <div class="t-card"><p class="t-card__quote">"{{T3_QUOTE}}"</p><div class="t-card__auteur"><div class="t-card__avatar">{{T3_I}}</div><div><div class="t-card__naam">{{T3_NAAM}}</div><div class="t-card__functie">{{T3_FUNC}}</div></div></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="cta">
+    <div class="cta__pre">{{CTA_PRE}}</div>
+    <h2 class="cta__titel">{{CTA_TITEL}}</h2>
+    <p class="cta__sub">{{CTA_SUB}}</p>
+    <div class="hero__invite" style="position:static;margin:0 auto">
+      <input class="invite-input" type="email" placeholder="werkmail@bedrijf.nl" />
+      <button class="invite-btn">{{CTA_BTN}}</button>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_TEKST}}</p></div>
+      <div><div class="footer__kolom-titel">Product</div><ul class="footer__links"><li><a href="#">Features</a></li><li><a href="#">Beveiliging</a></li><li><a href="#">Prijzen</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Blog</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Juridisch</div><ul class="footer__links"><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span><span>{{FOOTER_TAGLINE}}</span></div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40));
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.08});
+    document.querySelectorAll('.feature,.t-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(14px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
