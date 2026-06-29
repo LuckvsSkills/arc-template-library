@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#fff;--bg-alt:#f6f7f8;--tekst:#1a1a1a;--dim:#6b7280;--accent:#da552f;--accent-light:#fff0ed;--border:#e5e7eb;--nav:56px;--max:1200px;--radius:10px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg-alt);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:0 24px}
+    .navbar__logo{font-size:1rem;font-weight:900;color:var(--accent);flex-shrink:0}
+    .navbar__zoek{flex:1;max-width:440px;display:flex;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);align-items:center;padding:0 12px;gap:8px}
+    .navbar__zoek input{flex:1;padding:8px 0;border:none;outline:none;font-size:0.85rem;background:transparent}
+    .navbar__links{display:flex;gap:16px;list-style:none;margin-left:auto}
+    .navbar__links a{font-size:0.82rem;color:var(--dim);font-weight:500;transition:color 0.15s}
+    .navbar__links a:hover{color:var(--tekst)}
+    .navbar__cta{display:flex;gap:8px}
+    .btn-accent{background:var(--accent);color:#fff;padding:7px 16px;border-radius:var(--radius);font-size:0.82rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-accent:hover{opacity:0.88}
+    .btn-ghost{border:1px solid var(--border);color:var(--tekst);padding:6px 12px;border-radius:var(--radius);font-size:0.82rem;background:#fff;cursor:pointer}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;margin-left:8px}
+    .navbar__hamburger span{display:block;width:18px;height:1.5px;background:var(--tekst)}
+    .hero{background:#fff;border-bottom:1px solid var(--border);padding:48px 24px;text-align:center}
+    .hero__headline{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.04em;margin-bottom:10px}
+    .hero__sub{font-size:0.95rem;color:var(--dim);max-width:480px;margin:0 auto 28px;line-height:1.7}
+    .hero__zoek-groot{display:flex;max-width:580px;margin:0 auto;background:#fff;border:2px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color 0.2s}
+    .hero__zoek-groot:focus-within{border-color:var(--accent)}
+    .hero__zoek-groot input{flex:1;padding:14px 18px;border:none;outline:none;font-size:0.95rem}
+    .hero__zoek-groot button{background:var(--accent);color:#fff;border:none;padding:0 22px;font-size:0.88rem;font-weight:700;cursor:pointer}
+    .hoofd{max-width:var(--max);margin:0 auto;padding:28px 24px 64px;display:grid;grid-template-columns:240px 1fr;gap:24px}
+    .sidebar{}
+    .sidebar__widget{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;overflow:hidden}
+    .sidebar__widget-header{padding:12px 16px;border-bottom:1px solid var(--border);font-size:0.82rem;font-weight:700}
+    .sidebar__widget-body{padding:8px}
+    .topic-link{display:flex;align-items:center;gap:10px;padding:8px 8px;border-radius:6px;cursor:pointer;transition:background 0.15s}
+    .topic-link:hover,.topic-link.actief{background:var(--accent-light)}
+    .topic-link.actief .topic-naam{color:var(--accent);font-weight:700}
+    .topic-icon{font-size:1.1rem;width:24px;text-align:center;flex-shrink:0}
+    .topic-naam{font-size:0.82rem;flex:1}
+    .topic-count{font-size:0.7rem;color:var(--dim)}
+    .feed{}
+    .feed-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .feed-titel{font-size:1rem;font-weight:700}
+    .sort-knoppen{display:flex;gap:0;background:#fff;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+    .sort-knop{padding:6px 12px;font-size:0.75rem;font-weight:600;color:var(--dim);cursor:pointer;border:none;background:transparent;transition:all 0.15s}
+    .sort-knop.actief{background:var(--accent);color:#fff}
+    .topic-sectie{margin-bottom:28px}
+    .topic-sectie__header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+    .topic-sectie__naam{display:flex;align-items:center;gap:8px;font-size:0.95rem;font-weight:700}
+    .topic-sectie__icon{font-size:1.1rem}
+    .topic-sectie__link{font-size:0.78rem;color:var(--accent);font-weight:600}
+    .item-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .item-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all 0.2s}
+    .item-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);transform:translateY(-2px)}
+    .item-card__logo{width:40px;height:40px;border-radius:9px;background:var(--bg-alt);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:10px}
+    .item-card__naam{font-size:0.88rem;font-weight:700;margin-bottom:3px}
+    .item-card__desc{font-size:0.75rem;color:var(--dim);line-height:1.5;margin-bottom:10px}
+    .item-card__footer{display:flex;justify-content:space-between;align-items:center}
+    .item-card__votes{display:flex;align-items:center;gap:4px;font-size:0.72rem;color:var(--dim)}
+    .item-card__tag{font-size:0.65rem;padding:2px 7px;border-radius:999px;background:var(--bg-alt);color:var(--dim);border:1px solid var(--border)}
+    .trending-lijst{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .trending-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s}
+    .trending-item:last-child{border-bottom:none}
+    .trending-item:hover{background:var(--bg-alt)}
+    .trending-item__rang{font-size:0.78rem;font-weight:700;color:var(--dim);width:18px;flex-shrink:0}
+    .trending-item__logo{width:36px;height:36px;border-radius:8px;background:var(--bg-alt);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+    .trending-item__info{flex:1;min-width:0}
+    .trending-item__naam{font-size:0.85rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .trending-item__desc{font-size:0.72rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .trending-item__votes{font-size:0.72rem;font-weight:700;color:var(--dim);flex-shrink:0}
+    .footer-balk{background:#fff;border-top:1px solid var(--border);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;color:var(--dim);flex-wrap:wrap;gap:8px}
+    .footer-balk a{color:var(--dim);margin-right:14px}
+    .footer-balk a:hover{color:var(--tekst)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:#fff;z-index:200;flex-direction:column;padding:72px 20px 40px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.2rem;font-weight:600;padding:14px 0;border-bottom:1px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1024px){.item-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:900px){.hoofd{grid-template-columns:1fr}.sidebar{display:none}}
+    @media(max-width:768px){.navbar__zoek{display:none}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hero{padding:36px 16px}.hoofd{padding:16px 16px 48px}.item-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:480px){.item-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <div class="navbar__zoek">🔍 <input type="text" placeholder="Zoek producten..." /></div>
+    <ul class="navbar__links"><li><a href="#">Producten</a></li><li><a href="#">Topics</a></li><li><a href="#">Collecties</a></li></ul>
+    <div class="navbar__cta"><button class="btn-ghost">Inloggen</button><button class="btn-accent">Indienen</button></div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">Producten</a><a href="#" onclick="menuToggle()">Topics</a><a href="#" onclick="menuToggle()">Inloggen</a>
+  </div>
+  <section class="hero">
+    <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+    <p class="hero__sub">{{HERO_SUB}}</p>
+    <div class="hero__zoek-groot"><input type="text" placeholder="Zoek producten, topics..." /><button>Zoeken</button></div>
+  </section>
+  <div class="hoofd">
+    <aside class="sidebar">
+      <div class="sidebar__widget">
+        <div class="sidebar__widget-header">Topics</div>
+        <div class="sidebar__widget-body">
+          <div class="topic-link actief" onclick="topicKlik(this)"><div class="topic-icon">{{T1_ICON}}</div><span class="topic-naam">{{T1_NAAM}}</span><span class="topic-count">{{T1_COUNT}}</span></div>
+          <div class="topic-link" onclick="topicKlik(this)"><div class="topic-icon">{{T2_ICON}}</div><span class="topic-naam">{{T2_NAAM}}</span><span class="topic-count">{{T2_COUNT}}</span></div>
+          <div class="topic-link" onclick="topicKlik(this)"><div class="topic-icon">{{T3_ICON}}</div><span class="topic-naam">{{T3_NAAM}}</span><span class="topic-count">{{T3_COUNT}}</span></div>
+          <div class="topic-link" onclick="topicKlik(this)"><div class="topic-icon">{{T4_ICON}}</div><span class="topic-naam">{{T4_NAAM}}</span><span class="topic-count">{{T4_COUNT}}</span></div>
+          <div class="topic-link" onclick="topicKlik(this)"><div class="topic-icon">{{T5_ICON}}</div><span class="topic-naam">{{T5_NAAM}}</span><span class="topic-count">{{T5_COUNT}}</span></div>
+          <div class="topic-link" onclick="topicKlik(this)"><div class="topic-icon">{{T6_ICON}}</div><span class="topic-naam">{{T6_NAAM}}</span><span class="topic-count">{{T6_COUNT}}</span></div>
+        </div>
+      </div>
+      <div class="sidebar__widget">
+        <div class="sidebar__widget-header">Trending vandaag</div>
+        <div class="trending-lijst">
+          <div class="trending-item"><div class="trending-item__rang">1</div><div class="trending-item__logo">{{TR1_LOGO}}</div><div class="trending-item__info"><div class="trending-item__naam">{{TR1_NAAM}}</div><div class="trending-item__desc">{{TR1_DESC}}</div></div><div class="trending-item__votes">▲ {{TR1_VOTES}}</div></div>
+          <div class="trending-item"><div class="trending-item__rang">2</div><div class="trending-item__logo">{{TR2_LOGO}}</div><div class="trending-item__info"><div class="trending-item__naam">{{TR2_NAAM}}</div><div class="trending-item__desc">{{TR2_DESC}}</div></div><div class="trending-item__votes">▲ {{TR2_VOTES}}</div></div>
+          <div class="trending-item"><div class="trending-item__rang">3</div><div class="trending-item__logo">{{TR3_LOGO}}</div><div class="trending-item__info"><div class="trending-item__naam">{{TR3_NAAM}}</div><div class="trending-item__desc">{{TR3_DESC}}</div></div><div class="trending-item__votes">▲ {{TR3_VOTES}}</div></div>
+          <div class="trending-item"><div class="trending-item__rang">4</div><div class="trending-item__logo">{{TR4_LOGO}}</div><div class="trending-item__info"><div class="trending-item__naam">{{TR4_NAAM}}</div><div class="trending-item__desc">{{TR4_DESC}}</div></div><div class="trending-item__votes">▲ {{TR4_VOTES}}</div></div>
+          <div class="trending-item"><div class="trending-item__rang">5</div><div class="trending-item__logo">{{TR5_LOGO}}</div><div class="trending-item__info"><div class="trending-item__naam">{{TR5_NAAM}}</div><div class="trending-item__desc">{{TR5_DESC}}</div></div><div class="trending-item__votes">▲ {{TR5_VOTES}}</div></div>
+        </div>
+      </div>
+    </aside>
+    <div class="feed">
+      <div class="feed-header">
+        <span class="feed-titel">{{FEED_TITEL}}</span>
+        <div class="sort-knoppen"><button class="sort-knop actief" onclick="sortKlik(this)">Trending</button><button class="sort-knop" onclick="sortKlik(this)">Nieuwste</button><button class="sort-knop" onclick="sortKlik(this)">Top</button></div>
+      </div>
+      <div class="topic-sectie">
+        <div class="topic-sectie__header"><div class="topic-sectie__naam"><span class="topic-sectie__icon">{{T1_ICON}}</span>{{T1_NAAM}}</div><a href="#" class="topic-sectie__link">Alles bekijken →</a></div>
+        <div class="item-grid">
+          <div class="item-card"><div class="item-card__logo">{{I1_LOGO}}</div><div class="item-card__naam">{{I1_NAAM}}</div><div class="item-card__desc">{{I1_DESC}}</div><div class="item-card__footer"><div class="item-card__votes">▲ {{I1_VOTES}}</div><span class="item-card__tag">{{T1_NAAM}}</span></div></div>
+          <div class="item-card"><div class="item-card__logo">{{I2_LOGO}}</div><div class="item-card__naam">{{I2_NAAM}}</div><div class="item-card__desc">{{I2_DESC}}</div><div class="item-card__footer"><div class="item-card__votes">▲ {{I2_VOTES}}</div><span class="item-card__tag">{{T1_NAAM}}</span></div></div>
+          <div class="item-card"><div class="item-card__logo">{{I3_LOGO}}</div><div class="item-card__naam">{{I3_NAAM}}</div><div class="item-card__desc">{{I3_DESC}}</div><div class="item-card__footer"><div class="item-card__votes">▲ {{I3_VOTES}}</div><span class="item-card__tag">{{T1_NAAM}}</span></div></div>
+        </div>
+      </div>
+      <div class="topic-sectie">
+        <div class="topic-sectie__header"><div class="topic-sectie__naam"><span class="topic-sectie__icon">{{T2_ICON}}</span>{{T2_NAAM}}</div><a href="#" class="topic-sectie__link">Alles bekijken →</a></div>
+        <div class="item-grid">
+          <div class="item-card"><div class="item-card__logo">{{I4_LOGO}}</div><div class="item-card__naam">{{I4_NAAM}}</div><div class="item-card__desc">{{I4_DESC}}</div><div class="item-card__footer"><div class="item-card__votes">▲ {{I4_VOTES}}</div><span class="item-card__tag">{{T2_NAAM}}</span></div></div>
+          <div class="item-card"><div class="item-card__logo">{{I5_LOGO}}</div><div class="item-card__naam">{{I5_NAAM}}</div><div class="item-card__desc">{{I5_DESC}}</div><div class="item-card__footer"><div class="item-card__votes">▲ {{I5_VOTES}}</div><span class="item-card__tag">{{T2_NAAM}}</span></div></div>
+          <div class="item-card"><div class="item-card__logo">{{I6_LOGO}}</div><div class="item-card__naam">{{I6_NAAM}}</div><div class="item-card__desc">{{I6_DESC}}</div><div class="item-card__footer"><div class="item-card__votes">▲ {{I6_VOTES}}</div><span class="item-card__tag">{{T2_NAAM}}</span></div></div>
+        </div>
+      </div>
+      <div class="topic-sectie">
+        <div class="topic-sectie__header"><div class="topic-sectie__naam"><span class="topic-sectie__icon">{{T3_ICON}}</span>{{T3_NAAM}}</div><a href="#" class="topic-sectie__link">Alles bekijken →</a></div>
+        <div class="item-grid">
+          <div class="item-card"><div class="item-card__logo">{{I7_LOGO}}</div><div class="item-card__naam">{{I7_NAAM}}</div><div class="item-card__desc">{{I7_DESC}}</div><div class="item-card__footer"><div class="item-card__votes">▲ {{I7_VOTES}}</div><span class="item-card__tag">{{T3_NAAM}}</span></div></div>
+          <div class="item-card"><div class="item-card__logo">{{I8_LOGO}}</div><div class="item-card__naam">{{I8_NAAM}}</div><div class="item-card__desc">{{I8_DESC}}</div><div class="item-card__footer"><div class="item-card__votes">▲ {{I8_VOTES}}</div><span class="item-card__tag">{{T3_NAAM}}</span></div></div>
+          <div class="item-card"><div class="item-card__logo">{{I9_LOGO}}</div><div class="item-card__naam">{{I9_NAAM}}</div><div class="item-card__desc">{{I9_DESC}}</div><div class="item-card__footer"><div class="item-card__votes">▲ {{I9_VOTES}}</div><span class="item-card__tag">{{T3_NAAM}}</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-balk">
+    <div><a href="#">© <span id="jaar"></span> {{BEDRIJFSNAAM}}</a><a href="#">Privacy</a><a href="#">Voorwaarden</a><a href="#">Over</a></div>
+    <span>{{FOOTER_TAGLINE}}</span>
+  </div>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    function topicKlik(el){document.querySelectorAll('.topic-link').forEach(x=>x.classList.remove('actief'));el.classList.add('actief')}
+    function sortKlik(el){document.querySelectorAll('.sort-knop').forEach(x=>x.classList.remove('actief'));el.classList.add('actief')}
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.06});
+    document.querySelectorAll('.item-card,.trending-item').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(10px)';el.style.transition='opacity 0.35s ease,transform 0.35s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
