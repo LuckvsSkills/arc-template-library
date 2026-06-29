@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#0f0f0f;--bg-alt:#181818;--bg-card:#222;--tekst:#fff;--dim:#999;--accent:#ff4438;--accent-light:rgba(255,68,56,0.1);--border:#2a2a2a;--goud:#c9a96e;--nav:64px;--max:1200px;--radius:8px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+    .navbar__logo{font-size:1.1rem;font-weight:900;letter-spacing:-0.02em;color:var(--tekst)}
+    .navbar__links{display:flex;gap:20px;list-style:none}
+    .navbar__links a{font-size:0.82rem;color:var(--dim);transition:color 0.15s}
+    .navbar__links a:hover{color:var(--tekst)}
+    .navbar__cta{display:flex;gap:10px}
+    .btn-accent{background:var(--accent);color:#fff;padding:8px 18px;border-radius:var(--radius);font-size:0.85rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-accent:hover{opacity:0.88}
+    .btn-ghost{border:1px solid var(--border);color:var(--tekst);padding:7px 14px;border-radius:var(--radius);font-size:0.85rem;background:transparent;cursor:pointer;transition:all 0.15s}
+    .btn-ghost:hover{border-color:var(--dim)}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer}
+    .navbar__hamburger span{display:block;width:20px;height:1.5px;background:#fff}
+    .hero{min-height:86vh;position:relative;display:flex;align-items:center;overflow:hidden}
+    .hero__bg{position:absolute;inset:0;background:linear-gradient(to right,rgba(15,15,15,0.97) 40%,rgba(15,15,15,0.5) 100%);z-index:1}
+    .hero__beeld{position:absolute;inset:0;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:#333}
+    .hero__content{position:relative;z-index:2;padding:0 40px;max-width:580px}
+    .hero__label{font-size:0.65rem;font-weight:700;color:var(--goud);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+    .hero__label::after{content:'';flex:0 0 32px;height:1px;background:var(--goud)}
+    .hero__headline{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:800;letter-spacing:-0.04em;line-height:1.06;margin-bottom:16px}
+    .hero__sub{font-size:0.92rem;color:var(--dim);max-width:400px;margin-bottom:32px;line-height:1.75}
+    .reserveer-widget{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px;max-width:420px}
+    .widget-titel{font-size:0.78rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px}
+    .widget-velden{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+    .widget-veld{background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;padding:10px 12px;cursor:pointer;transition:border-color 0.15s}
+    .widget-veld:hover{border-color:var(--dim)}
+    .widget-veld__label{font-size:0.6rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px}
+    .widget-veld__waarde{font-size:0.88rem;font-weight:600}
+    .widget-veld--full{grid-column:span 2}
+    .personen-knoppen{display:flex;gap:6px;flex-wrap:wrap}
+    .persoon-knop{padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:0.78rem;font-weight:600;cursor:pointer;background:transparent;color:var(--dim);transition:all 0.15s}
+    .persoon-knop:hover,.persoon-knop.actief{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .widget-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px;font-size:0.92rem;font-weight:700;cursor:pointer;transition:opacity 0.2s;margin-top:4px}
+    .widget-btn:hover{opacity:0.88}
+    .restaurants{max-width:var(--max);margin:64px auto;padding:0 32px}
+    .sectie-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+    .sectie-titel{font-size:1.05rem;font-weight:700}
+    .sectie-link{font-size:0.82rem;color:var(--accent);font-weight:600}
+    .filter-balk{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+    .filter-pill{padding:7px 16px;border:1px solid var(--border);border-radius:999px;font-size:0.78rem;font-weight:500;cursor:pointer;background:transparent;color:var(--dim);transition:all 0.15s}
+    .filter-pill:hover,.filter-pill.actief{background:var(--tekst);color:var(--bg);border-color:var(--tekst)}
+    .restaurant-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .restaurant-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.2s}
+    .restaurant-card:hover{border-color:var(--dim);transform:translateY(-3px)}
+    .restaurant-card__beeld{aspect-ratio:16/9;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;font-size:0.78rem;color:#444;position:relative}
+    .restaurant-card__badge{position:absolute;top:10px;left:10px;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:700;padding:3px 8px;border-radius:4px}
+    .restaurant-card__fav{position:absolute;top:10px;right:10px;width:28px;height:28px;background:rgba(0,0,0,0.6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;opacity:0;transition:opacity 0.2s}
+    .restaurant-card:hover .restaurant-card__fav{opacity:1}
+    .restaurant-card__body{padding:16px}
+    .restaurant-card__naam{font-size:1rem;font-weight:700;margin-bottom:4px}
+    .restaurant-card__meta{display:flex;gap:10px;font-size:0.75rem;color:var(--dim);margin-bottom:8px;flex-wrap:wrap}
+    .restaurant-card__dot{color:var(--border)}
+    .restaurant-card__rating{color:var(--goud);font-size:0.75rem;margin-bottom:10px;display:flex;align-items:center;gap:4px}
+    .restaurant-card__tijden{display:flex;gap:6px;flex-wrap:wrap}
+    .tijd-knop{padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:0.72rem;font-weight:600;cursor:pointer;color:var(--tekst);background:transparent;transition:all 0.15s}
+    .tijd-knop:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+    .tijd-knop.vol{color:var(--border);cursor:not-allowed}
+    .featured{background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:56px 32px}
+    .featured__inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+    .featured__label{font-size:0.65rem;font-weight:700;color:var(--goud);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:12px}
+    .featured__naam{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-0.04em;margin-bottom:10px}
+    .featured__meta{display:flex;gap:14px;font-size:0.78rem;color:var(--dim);margin-bottom:14px;flex-wrap:wrap}
+    .featured__desc{font-size:0.88rem;color:var(--dim);line-height:1.75;margin-bottom:20px}
+    .featured__beeld{background:var(--bg-card);border-radius:12px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:#444;border:1px solid var(--border)}
+    .voordelen{max-width:var(--max);margin:64px auto;padding:0 32px}
+    .voordelen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
+    .voordeel{text-align:center;padding:28px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px}
+    .voordeel__icon{font-size:2rem;margin-bottom:14px}
+    .voordeel__naam{font-size:0.92rem;font-weight:700;margin-bottom:8px}
+    .voordeel__tekst{font-size:0.82rem;color:var(--dim);line-height:1.65}
+    .cta{background:var(--accent);color:#fff;padding:72px 32px;text-align:center}
+    .cta h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-0.04em;margin-bottom:12px}
+    .cta p{font-size:0.92rem;opacity:0.85;max-width:400px;margin:0 auto 28px;line-height:1.7}
+    .btn-wit{background:#fff;color:var(--accent);padding:12px 28px;border-radius:var(--radius);font-size:0.92rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-wit:hover{opacity:0.9}
+    .footer{background:var(--bg-alt);border-top:1px solid var(--border);padding:48px 32px 24px}
+    .footer__top{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+    .footer__logo{font-size:0.92rem;font-weight:900;margin-bottom:10px}
+    .footer__tekst{font-size:0.78rem;color:var(--dim);line-height:1.6;max-width:180px}
+    .footer__kolom-titel{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+    .footer__links{list-style:none;display:flex;flex-direction:column;gap:7px}
+    .footer__links a{font-size:0.78rem;color:var(--dim);transition:color 0.15s}
+    .footer__links a:hover{color:var(--tekst)}
+    .footer__bottom{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border);font-size:0.72rem;color:var(--dim)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;flex-direction:column;padding:72px 24px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.3rem;font-weight:700;color:#fff;padding:14px 0;border-bottom:1px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1024px){.restaurant-grid{grid-template-columns:repeat(2,1fr)}.featured__inner{grid-template-columns:1fr}.voordelen-grid{grid-template-columns:1fr 1fr}.footer__top{grid-template-columns:1fr 1fr}}
+    @media(max-width:768px){.navbar{padding:0 16px}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hero{min-height:auto;padding:48px 0}.hero__content{padding:48px 20px}.restaurants{padding:0 16px;margin:48px auto}.featured{padding:48px 16px}.voordelen{padding:0 16px;margin:48px auto}.cta{padding:56px 16px}.footer{padding:40px 16px 24px}.footer__top{grid-template-columns:1fr 1fr}.footer__bottom{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.restaurant-grid{grid-template-columns:1fr}.voordelen-grid{grid-template-columns:1fr}.footer__top{grid-template-columns:1fr}.widget-velden{grid-template-columns:1fr}.widget-veld--full{grid-column:span 1}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+    <ul class="navbar__links"><li><a href="#restaurants">Restaurants</a></li><li><a href="#">{{NAV_1}}</a></li><li><a href="#">{{NAV_2}}</a></li></ul>
+    <div class="navbar__cta"><button class="btn-ghost">Inloggen</button><button class="btn-accent">Reserveren</button></div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#restaurants" onclick="menuToggle()">Restaurants</a><a href="#" onclick="menuToggle()">{{NAV_1}}</a><a href="#" onclick="menuToggle()">Inloggen</a>
+  </div>
+  <section class="hero">
+    <div class="hero__beeld">[ hero achtergrond ]</div>
+    <div class="hero__bg"></div>
+    <div class="hero__content">
+      <div class="hero__label">{{HERO_LABEL}}</div>
+      <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+      <p class="hero__sub">{{HERO_SUB}}</p>
+      <div class="reserveer-widget">
+        <div class="widget-titel">Tafel reserveren</div>
+        <div class="widget-velden">
+          <div class="widget-veld"><div class="widget-veld__label">Locatie</div><div class="widget-veld__waarde">{{LOCATIE}}</div></div>
+          <div class="widget-veld"><div class="widget-veld__label">Datum</div><div class="widget-veld__waarde">{{DEMO_DATUM}}</div></div>
+          <div class="widget-veld widget-veld--full"><div class="widget-veld__label">Personen</div><div class="personen-knoppen"><span class="persoon-knop">1</span><span class="persoon-knop">2</span><span class="persoon-knop actief" onclick="persoKlik(this)">3</span><span class="persoon-knop" onclick="persoKlik(this)">4</span><span class="persoon-knop" onclick="persoKlik(this)">5</span><span class="persoon-knop" onclick="persoKlik(this)">6+</span></div></div>
+        </div>
+        <button class="widget-btn">Beschikbaarheid zoeken</button>
+      </div>
+    </div>
+  </section>
+  <section class="restaurants" id="restaurants">
+    <div class="sectie-header"><span class="sectie-titel">{{REST_TITEL}}</span><a href="#" class="sectie-link">Alle restaurants →</a></div>
+    <div class="filter-balk">
+      <span class="filter-pill actief">Alles</span><span class="filter-pill">{{F1}}</span><span class="filter-pill">{{F2}}</span><span class="filter-pill">{{F3}}</span><span class="filter-pill">{{F4}}</span>
+    </div>
+    <div class="restaurant-grid">
+      <div class="restaurant-card"><div class="restaurant-card__beeld"><span class="restaurant-card__badge">{{R1_BADGE}}</span><span class="restaurant-card__fav">♡</span>[ afb ]</div><div class="restaurant-card__body"><div class="restaurant-card__naam">{{R1_NAAM}}</div><div class="restaurant-card__meta"><span>{{R1_KEUKEN}}</span><span class="restaurant-card__dot">·</span><span>{{R1_PRIJS}}</span><span class="restaurant-card__dot">·</span><span>{{R1_BUURT}}</span></div><div class="restaurant-card__rating">★★★★★ <span style="color:var(--dim);font-size:0.72rem">{{R1_RATING}} ({{R1_REVIEWS}})</span></div><div class="restaurant-card__tijden"><span class="tijd-knop" onclick="tijdKlik(this)">18:00</span><span class="tijd-knop" onclick="tijdKlik(this)">18:30</span><span class="tijd-knop vol">19:00</span><span class="tijd-knop" onclick="tijdKlik(this)">19:30</span><span class="tijd-knop" onclick="tijdKlik(this)">20:00</span></div></div></div>
+      <div class="restaurant-card"><div class="restaurant-card__beeld"><span class="restaurant-card__fav">♡</span>[ afb ]</div><div class="restaurant-card__body"><div class="restaurant-card__naam">{{R2_NAAM}}</div><div class="restaurant-card__meta"><span>{{R2_KEUKEN}}</span><span class="restaurant-card__dot">·</span><span>{{R2_PRIJS}}</span><span class="restaurant-card__dot">·</span><span>{{R2_BUURT}}</span></div><div class="restaurant-card__rating">★★★★☆ <span style="color:var(--dim);font-size:0.72rem">{{R2_RATING}} ({{R2_REVIEWS}})</span></div><div class="restaurant-card__tijden"><span class="tijd-knop vol">18:00</span><span class="tijd-knop" onclick="tijdKlik(this)">18:30</span><span class="tijd-knop" onclick="tijdKlik(this)">19:00</span><span class="tijd-knop vol">19:30</span><span class="tijd-knop" onclick="tijdKlik(this)">21:00</span></div></div></div>
+      <div class="restaurant-card"><div class="restaurant-card__beeld"><span class="restaurant-card__badge">{{R3_BADGE}}</span><span class="restaurant-card__fav">♡</span>[ afb ]</div><div class="restaurant-card__body"><div class="restaurant-card__naam">{{R3_NAAM}}</div><div class="restaurant-card__meta"><span>{{R3_KEUKEN}}</span><span class="restaurant-card__dot">·</span><span>{{R3_PRIJS}}</span><span class="restaurant-card__dot">·</span><span>{{R3_BUURT}}</span></div><div class="restaurant-card__rating">★★★★★ <span style="color:var(--dim);font-size:0.72rem">{{R3_RATING}} ({{R3_REVIEWS}})</span></div><div class="restaurant-card__tijden"><span class="tijd-knop" onclick="tijdKlik(this)">17:30</span><span class="tijd-knop" onclick="tijdKlik(this)">18:00</span><span class="tijd-knop vol">18:30</span><span class="tijd-knop" onclick="tijdKlik(this)">19:00</span><span class="tijd-knop" onclick="tijdKlik(this)">20:30</span></div></div></div>
+    </div>
+  </section>
+  <section class="featured">
+    <div class="featured__inner">
+      <div><div class="featured__label">{{FEATURED_LABEL}}</div><h2 class="featured__naam">{{FEATURED_NAAM}}</h2><div class="featured__meta"><span>{{FEATURED_KEUKEN}}</span><span>·</span><span>{{FEATURED_PRIJS}}</span><span>·</span><span>★ {{FEATURED_RATING}}</span></div><p class="featured__desc">{{FEATURED_DESC}}</p><button class="btn-accent">Reserveer tafel</button></div>
+      <div class="featured__beeld">[ restaurant foto ]</div>
+    </div>
+  </section>
+  <section class="voordelen">
+    <div class="sectie-titel" style="text-align:center;margin-bottom:8px">{{VOORDELEN_TITEL}}</div>
+    <p style="text-align:center;font-size:0.88rem;color:var(--dim);margin-bottom:32px">{{VOORDELEN_SUB}}</p>
+    <div class="voordelen-grid">
+      <div class="voordeel"><div class="voordeel__icon">{{V1_ICON}}</div><div class="voordeel__naam">{{V1_NAAM}}</div><p class="voordeel__tekst">{{V1_TEKST}}</p></div>
+      <div class="voordeel"><div class="voordeel__icon">{{V2_ICON}}</div><div class="voordeel__naam">{{V2_NAAM}}</div><p class="voordeel__tekst">{{V2_TEKST}}</p></div>
+      <div class="voordeel"><div class="voordeel__icon">{{V3_ICON}}</div><div class="voordeel__naam">{{V3_NAAM}}</div><p class="voordeel__tekst">{{V3_TEKST}}</p></div>
+    </div>
+  </section>
+  <section class="cta">
+    <h2>{{CTA_TITEL}}</h2><p>{{CTA_SUB}}</p><button class="btn-wit">{{CTA_BTN}}</button>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_TEKST}}</p></div>
+      <div><div class="footer__kolom-titel">Ontdekken</div><ul class="footer__links"><li><a href="#">{{F1}}</a></li><li><a href="#">{{F2}}</a></li><li><a href="#">Nieuw</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Bedrijf</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Voor restaurants</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Juridisch</div><ul class="footer__links"><li><a href="#">Privacy</a></li><li><a href="#">Voorwaarden</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span><span>{{FOOTER_TAGLINE}}</span></div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    function persoKlik(el){document.querySelectorAll('.persoon-knop').forEach(x=>x.classList.remove('actief'));el.classList.add('actief')}
+    function tijdKlik(el){if(el.classList.contains('vol'))return;el.closest('.restaurant-card__tijden').querySelectorAll('.tijd-knop').forEach(x=>x.classList.remove('actief'));el.classList.add('actief')}
+    document.querySelectorAll('.filter-pill').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.filter-pill').forEach(x=>x.classList.remove('actief'));t.classList.add('actief')}));
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.08});
+    document.querySelectorAll('.restaurant-card,.voordeel').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(12px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
