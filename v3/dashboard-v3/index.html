@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}} Dashboard</title>
+  <style>
+    :root{--bg:#f6f9fc;--bg-wit:#fff;--tekst:#0a2540;--dim:#425466;--accent:#635bff;--accent-light:#f0f0ff;--border:#e3e8ee;--groen:#09825d;--groen-bg:#d7f0e8;--rood:#c0143c;--rood-bg:#fce8ed;--oranje:#b7791f;--oranje-bg:#fef3c7;--nav-b:220px;--top:52px;--radius:8px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;line-height:1.5;display:flex;min-height:100vh;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .sidebar{width:var(--nav-b);background:var(--bg-wit);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:50;transition:transform 0.3s}
+    .sidebar__logo{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+    .sidebar__logo-icon{width:28px;height:28px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:#fff}
+    .sidebar__logo-naam{font-size:0.88rem;font-weight:700;color:var(--tekst)}
+    .sidebar__nav{flex:1;padding:8px;overflow-y:auto}
+    .nav-label{font-size:0.65rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;padding:10px 8px 4px}
+    .nav-item{display:flex;align-items:center;gap:8px;padding:7px 10px;font-size:0.82rem;color:var(--dim);cursor:pointer;border-radius:6px;transition:all 0.15s;margin-bottom:1px}
+    .nav-item:hover{background:var(--bg);color:var(--tekst)}
+    .nav-item.actief{background:var(--accent-light);color:var(--accent);font-weight:600}
+    .nav-item__icon{font-size:0.9rem;width:16px;text-align:center;flex-shrink:0}
+    .nav-item__badge{margin-left:auto;background:var(--accent);color:#fff;font-size:0.6rem;font-weight:700;padding:1px 5px;border-radius:999px}
+    .sidebar__bottom{padding:12px;border-top:1px solid var(--border)}
+    .sidebar__user{display:flex;align-items:center;gap:8px;padding:8px;border-radius:6px;cursor:pointer;transition:background 0.15s}
+    .sidebar__user:hover{background:var(--bg)}
+    .user-avatar{width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:700;color:#fff;flex-shrink:0}
+    .user-naam{font-size:0.78rem;font-weight:600}
+    .user-email{font-size:0.68rem;color:var(--dim)}
+    .main{margin-left:var(--nav-b);flex:1;display:flex;flex-direction:column;min-height:100vh}
+    .topbar{height:var(--top);background:var(--bg-wit);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:40}
+    .topbar__left{display:flex;align-items:center;gap:12px}
+    .hamburger{display:none;flex-direction:column;gap:3px;cursor:pointer}
+    .hamburger span{display:block;width:16px;height:1.5px;background:var(--dim)}
+    .topbar__titel{font-size:0.88rem;font-weight:700;color:var(--tekst)}
+    .topbar__right{display:flex;gap:8px;align-items:center}
+    .topbar__periode{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+    .periode-opt{padding:5px 10px;font-size:0.75rem;font-weight:500;cursor:pointer;color:var(--dim);background:transparent;border:none;transition:all 0.15s}
+    .periode-opt.actief{background:var(--bg-wit);color:var(--tekst);box-shadow:inset 0 0 0 1px var(--border)}
+    .btn-sm{padding:6px 12px;border-radius:6px;font-size:0.78rem;font-weight:600;cursor:pointer;border:none;transition:opacity 0.2s}
+    .btn-primair{background:var(--accent);color:#fff}
+    .btn-primair:hover{opacity:0.88}
+    .inhoud{padding:20px 24px;flex:1}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+    .kpi{background:var(--bg-wit);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+    .kpi__label{font-size:0.72rem;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+    .kpi__waarde{font-size:1.6rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:6px;font-variant-numeric:tabular-nums}
+    .kpi__trend{font-size:0.72rem;display:flex;align-items:center;gap:4px}
+    .trend-up{color:var(--groen)}
+    .trend-down{color:var(--rood)}
+    .kpi__spark{height:32px;display:flex;align-items:flex-end;gap:2px;margin-top:8px}
+    .spark-bar{flex:1;border-radius:2px 2px 0 0;min-height:4px;opacity:0.6;transition:opacity 0.2s}
+    .spark-bar:hover{opacity:1}
+    .charts-rij{display:grid;grid-template-columns:3fr 2fr;gap:14px;margin-bottom:18px}
+    .card{background:var(--bg-wit);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .card__header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border)}
+    .card__titel{font-size:0.85rem;font-weight:700}
+    .card__sub{font-size:0.72rem;color:var(--dim);margin-top:2px}
+    .card__acties{display:flex;gap:6px}
+    .card__btn{font-size:0.72rem;color:var(--dim);padding:4px 8px;border:1px solid var(--border);border-radius:4px;background:#fff;cursor:pointer;transition:all 0.15s}
+    .card__btn:hover{border-color:var(--tekst);color:var(--tekst)}
+    .card__body{padding:16px 18px}
+    .chart-wrap{height:160px;position:relative;background:var(--bg);border-radius:6px;overflow:hidden}
+    .chart-bars{display:flex;align-items:flex-end;height:100%;padding:8px;gap:4px}
+    .c-bar{flex:1;border-radius:3px 3px 0 0;min-height:4px;cursor:pointer;transition:opacity 0.2s}
+    .c-bar:hover{opacity:0.7}
+    .chart-labels{display:flex;justify-content:space-between;padding:6px 8px 0;font-size:0.62rem;color:var(--dim)}
+    .donut-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;padding:8px 0}
+    .donut{width:100px;height:100px;border-radius:50%}
+    .donut-legs{width:100%;display:flex;flex-direction:column;gap:8px}
+    .donut-leg{display:flex;align-items:center;justify-content:space-between;font-size:0.75rem}
+    .donut-leg__left{display:flex;align-items:center;gap:7px;color:var(--dim)}
+    .donut-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+    .donut-leg__pct{font-weight:700;font-size:0.78rem}
+    .tabel-sectie{margin-bottom:18px}
+    .tabel-header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border)}
+    .zoek-veld{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:0.75rem;color:var(--dim)}
+    .zoek-veld input{border:none;outline:none;background:transparent;font-size:0.75rem;width:120px}
+    .tabel{width:100%;border-collapse:collapse}
+    .tabel th{padding:8px 16px;text-align:left;font-size:0.68rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--border);background:var(--bg)}
+    .tabel td{padding:11px 16px;font-size:0.8rem;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums}
+    .tabel tr:last-child td{border-bottom:none}
+    .tabel tr:hover td{background:var(--bg)}
+    .badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:999px;font-size:0.68rem;font-weight:600}
+    .badge-groen{background:var(--groen-bg);color:var(--groen)}
+    .badge-rood{background:var(--rood-bg);color:var(--rood)}
+    .badge-oranje{background:var(--oranje-bg);color:var(--oranje)}
+    .badge-grijs{background:var(--bg);color:var(--dim);border:1px solid var(--border)}
+    .betaal-icon{width:28px;height:20px;background:var(--bg);border:1px solid var(--border);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--dim);margin-right:6px;vertical-align:middle}
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:49}
+    .sidebar-overlay.open{display:block}
+    @media(max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.charts-rij{grid-template-columns:1fr}}
+    @media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.hamburger{display:flex}.topbar{padding:0 14px}.inhoud{padding:12px 14px}.kpis{grid-template-columns:1fr 1fr;gap:10px}}
+    @media(max-width:480px){.kpis{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="sidebar-overlay" id="overlay" onclick="sidebarToggle()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo"><div class="sidebar__logo-icon">{{LOGO_L}}</div><span class="sidebar__logo-naam">{{BEDRIJFSNAAM}}</span></div>
+    <nav class="sidebar__nav">
+      <div class="nav-label">Overzicht</div>
+      <div class="nav-item actief"><span class="nav-item__icon">🏠</span>Home</div>
+      <div class="nav-item"><span class="nav-item__icon">💳</span>Betalingen</div>
+      <div class="nav-item"><span class="nav-item__icon">🔄</span>Abonnementen</div>
+      <div class="nav-item"><span class="nav-item__icon">👥</span>Klanten</div>
+      <div class="nav-label">Financieel</div>
+      <div class="nav-item"><span class="nav-item__icon">📊</span>Rapporten</div>
+      <div class="nav-item"><span class="nav-item__icon">🧾</span>{{NAV_1}}</div>
+      <div class="nav-item"><span class="nav-item__icon">📤</span>{{NAV_2}}<span class="nav-item__badge">{{N_NOTIFS}}</span></div>
+      <div class="nav-label">Beheer</div>
+      <div class="nav-item"><span class="nav-item__icon">⚙️</span>Instellingen</div>
+      <div class="nav-item"><span class="nav-item__icon">🔑</span>API-sleutels</div>
+    </nav>
+    <div class="sidebar__bottom"><div class="sidebar__user"><div class="user-avatar">{{USER_INT}}</div><div><div class="user-naam">{{USER_NAAM}}</div><div class="user-email">{{USER_EMAIL}}</div></div></div></div>
+  </aside>
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar__left"><div class="hamburger" onclick="sidebarToggle()"><span></span><span></span><span></span></div><div class="topbar__titel">{{PAGINA_TITEL}}</div></div>
+      <div class="topbar__right">
+        <div class="topbar__periode"><button class="periode-opt">7d</button><button class="periode-opt actief">30d</button><button class="periode-opt">3m</button><button class="periode-opt">1j</button></div>
+        <button class="btn-sm btn-primair">+ {{ACTIE}}</button>
+      </div>
+    </div>
+    <div class="inhoud">
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi__label">{{KPI1_LABEL}}<span style="font-size:0.9rem">💰</span></div>
+          <div class="kpi__waarde">{{KPI1_WAARDE}}</div>
+          <div class="kpi__trend trend-up">↑ {{KPI1_TREND}} vs vorige periode</div>
+          <div class="kpi__spark"><div class="spark-bar" style="background:var(--accent);height:40%"></div><div class="spark-bar" style="background:var(--accent);height:55%"></div><div class="spark-bar" style="background:var(--accent);height:48%"></div><div class="spark-bar" style="background:var(--accent);height:70%"></div><div class="spark-bar" style="background:var(--accent);height:65%"></div><div class="spark-bar" style="background:var(--accent);height:85%"></div><div class="spark-bar" style="background:var(--accent);height:75%"></div><div class="spark-bar" style="background:var(--accent);height:92%"></div></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__label">{{KPI2_LABEL}}<span style="font-size:0.9rem">🔄</span></div>
+          <div class="kpi__waarde">{{KPI2_WAARDE}}</div>
+          <div class="kpi__trend trend-up">↑ {{KPI2_TREND}} vs vorige periode</div>
+          <div class="kpi__spark"><div class="spark-bar" style="background:var(--groen);height:60%"></div><div class="spark-bar" style="background:var(--groen);height:72%"></div><div class="spark-bar" style="background:var(--groen);height:65%"></div><div class="spark-bar" style="background:var(--groen);height:80%"></div><div class="spark-bar" style="background:var(--groen);height:75%"></div><div class="spark-bar" style="background:var(--groen);height:90%"></div><div class="spark-bar" style="background:var(--groen);height:85%"></div><div class="spark-bar" style="background:var(--groen);height:95%"></div></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__label">{{KPI3_LABEL}}<span style="font-size:0.9rem">👥</span></div>
+          <div class="kpi__waarde">{{KPI3_WAARDE}}</div>
+          <div class="kpi__trend trend-down">↓ {{KPI3_TREND}} vs vorige periode</div>
+          <div class="kpi__spark"><div class="spark-bar" style="background:var(--rood);height:35%"></div><div class="spark-bar" style="background:var(--rood);height:42%"></div><div class="spark-bar" style="background:var(--rood);height:38%"></div><div class="spark-bar" style="background:var(--rood);height:50%"></div><div class="spark-bar" style="background:var(--rood);height:45%"></div><div class="spark-bar" style="background:var(--rood);height:30%"></div><div class="spark-bar" style="background:var(--rood);height:28%"></div><div class="spark-bar" style="background:var(--rood);height:35%"></div></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__label">{{KPI4_LABEL}}<span style="font-size:0.9rem">⚡</span></div>
+          <div class="kpi__waarde">{{KPI4_WAARDE}}</div>
+          <div class="kpi__trend trend-up">↑ {{KPI4_TREND}} vs vorige periode</div>
+          <div class="kpi__spark"><div class="spark-bar" style="background:var(--oranje);height:50%"></div><div class="spark-bar" style="background:var(--oranje);height:62%"></div><div class="spark-bar" style="background:var(--oranje);height:58%"></div><div class="spark-bar" style="background:var(--oranje);height:74%"></div><div class="spark-bar" style="background:var(--oranje);height:70%"></div><div class="spark-bar" style="background:var(--oranje);height:82%"></div><div class="spark-bar" style="background:var(--oranje);height:78%"></div><div class="spark-bar" style="background:var(--oranje);height:88%"></div></div>
+        </div>
+      </div>
+      <div class="charts-rij">
+        <div class="card">
+          <div class="card__header"><div><div class="card__titel">{{CHART1_TITEL}}</div><div class="card__sub">{{CHART1_SUB}}</div></div><div class="card__acties"><button class="card__btn">Dagelijks</button><button class="card__btn">Exporteren</button></div></div>
+          <div class="card__body">
+            <div class="chart-wrap">
+              <div class="chart-bars">
+                <div class="c-bar" style="background:var(--accent);height:42%;opacity:0.5"></div><div class="c-bar" style="background:var(--accent);height:58%;opacity:0.5"></div><div class="c-bar" style="background:var(--accent);height:51%;opacity:0.5"></div><div class="c-bar" style="background:var(--accent);height:73%;opacity:0.5"></div><div class="c-bar" style="background:var(--accent);height:65%;opacity:0.5"></div><div class="c-bar" style="background:var(--accent);height:88%;opacity:0.7"></div><div class="c-bar" style="background:var(--accent);height:76%;opacity:0.7"></div><div class="c-bar" style="background:var(--accent);height:95%"></div><div class="c-bar" style="background:var(--accent);height:82%"></div><div class="c-bar" style="background:var(--accent);height:89%"></div><div class="c-bar" style="background:var(--accent);height:91%"></div><div class="c-bar" style="background:var(--accent);height:100%"></div>
+              </div>
+            </div>
+            <div class="chart-labels"><span>{{ML1}}</span><span>{{ML2}}</span><span>{{ML3}}</span><span>{{ML4}}</span><span>{{ML5}}</span><span>{{ML6}}</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__header"><div><div class="card__titel">{{CHART2_TITEL}}</div></div></div>
+          <div class="card__body">
+            <div class="donut-wrap">
+              <div class="donut" style="background:conic-gradient(var(--accent) 0% {{D1_PCT}}%,var(--groen) {{D1_PCT}}% {{D12_PCT}}%,var(--oranje) {{D12_PCT}}% 100%)"></div>
+              <div class="donut-legs">
+                <div class="donut-leg"><div class="donut-leg__left"><div class="donut-dot" style="background:var(--accent)"></div>{{D1_LABEL}}</div><div class="donut-leg__pct">{{D1_PCT}}%</div></div>
+                <div class="donut-leg"><div class="donut-leg__left"><div class="donut-dot" style="background:var(--groen)"></div>{{D2_LABEL}}</div><div class="donut-leg__pct">{{D2_PCT}}%</div></div>
+                <div class="donut-leg"><div class="donut-leg__left"><div class="donut-dot" style="background:var(--oranje)"></div>{{D3_LABEL}}</div><div class="donut-leg__pct">{{D3_PCT}}%</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card tabel-sectie">
+        <div class="tabel-header">
+          <div class="card__titel">{{TABEL_TITEL}}</div>
+          <div class="zoek-veld">🔍 <input type="text" placeholder="Zoeken..." /></div>
+        </div>
+        <table class="tabel">
+          <thead><tr><th>{{KOP_1}}</th><th>{{KOP_2}}</th><th>{{KOP_3}}</th><th>{{KOP_4}}</th><th>Status</th><th>Bedrag</th></tr></thead>
+          <tbody>
+            <tr><td><span class="betaal-icon">💳</span>{{R1_K1}}</td><td>{{R1_K2}}</td><td>{{R1_K3}}</td><td>{{R1_K4}}</td><td><span class="badge badge-groen">● Geslaagd</span></td><td style="font-weight:700">{{R1_BEDRAG}}</td></tr>
+            <tr><td><span class="betaal-icon">💳</span>{{R2_K1}}</td><td>{{R2_K2}}</td><td>{{R2_K3}}</td><td>{{R2_K4}}</td><td><span class="badge badge-groen">● Geslaagd</span></td><td style="font-weight:700">{{R2_BEDRAG}}</td></tr>
+            <tr><td><span class="betaal-icon">💳</span>{{R3_K1}}</td><td>{{R3_K2}}</td><td>{{R3_K3}}</td><td>{{R3_K4}}</td><td><span class="badge badge-oranje">● In behandeling</span></td><td style="font-weight:700">{{R3_BEDRAG}}</td></tr>
+            <tr><td><span class="betaal-icon">💳</span>{{R4_K1}}</td><td>{{R4_K2}}</td><td>{{R4_K3}}</td><td>{{R4_K4}}</td><td><span class="badge badge-rood">● Mislukt</span></td><td style="font-weight:700;color:var(--rood)">{{R4_BEDRAG}}</td></tr>
+            <tr><td><span class="betaal-icon">💳</span>{{R5_K1}}</td><td>{{R5_K2}}</td><td>{{R5_K3}}</td><td>{{R5_K4}}</td><td><span class="badge badge-groen">● Geslaagd</span></td><td style="font-weight:700">{{R5_BEDRAG}}</td></tr>
+            <tr><td><span class="betaal-icon">💳</span>{{R6_K1}}</td><td>{{R6_K2}}</td><td>{{R6_K3}}</td><td>{{R6_K4}}</td><td><span class="badge badge-grijs">● Terugbetaald</span></td><td style="font-weight:700;color:var(--dim)">{{R6_BEDRAG}}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script>
+    function sidebarToggle(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('open')}
+    document.querySelectorAll('.periode-opt').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.periode-opt').forEach(x=>x.classList.remove('actief'));b.classList.add('actief')}));
+    document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('actief'));b.classList.add('actief')}));
+  </script>
+</body>
+</html>
