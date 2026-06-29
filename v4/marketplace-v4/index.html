@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#fff;--bg-alt:#f5f5f5;--tekst:#1a1a1a;--dim:#6e6e6e;--accent:#d6001c;--accent-light:#fff0f2;--border:#e0e0e0;--blauw:#0064d2;--nav:96px;--max:1280px;--radius:6px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border)}
+    .navbar__top{height:56px;display:flex;align-items:center;gap:16px;padding:0 24px;max-width:var(--max);margin:0 auto}
+    .navbar__logo{font-size:1.3rem;font-weight:900;color:var(--accent);flex-shrink:0;letter-spacing:-0.02em}
+    .navbar__zoek{flex:1;display:flex;background:#fff;border:2px solid var(--tekst);border-radius:var(--radius);overflow:hidden}
+    .navbar__zoek input{flex:1;padding:10px 14px;border:none;outline:none;font-size:0.88rem}
+    .navbar__zoek select{padding:0 10px;border:none;border-left:1px solid var(--border);background:#f5f5f5;font-size:0.82rem;cursor:pointer;outline:none;color:var(--dim)}
+    .navbar__zoek button{background:var(--accent);color:#fff;border:none;padding:0 18px;font-size:0.88rem;font-weight:700;cursor:pointer;flex-shrink:0}
+    .navbar__acties{display:flex;gap:14px;align-items:center;flex-shrink:0}
+    .navbar__acties a{font-size:0.82rem;color:var(--dim);font-weight:500;transition:color 0.15s;display:flex;flex-direction:column;align-items:center;gap:2px}
+    .navbar__acties a:hover{color:var(--tekst)}
+    .navbar__acties a .icon{font-size:1.1rem}
+    .navbar__acties a .label{font-size:0.62rem}
+    .btn-rood{background:var(--accent);color:#fff;padding:8px 16px;border-radius:var(--radius);font-size:0.82rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-rood:hover{opacity:0.88}
+    .navbar__cats{border-top:1px solid var(--border);padding:0 24px;overflow-x:auto;display:flex;gap:0;max-width:var(--max);margin:0 auto}
+    .cat-link{padding:10px 14px;font-size:0.78rem;font-weight:500;color:var(--dim);white-space:nowrap;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s}
+    .cat-link:hover,.cat-link.actief{color:var(--tekst);border-bottom-color:var(--accent)}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;margin-left:auto}
+    .navbar__hamburger span{display:block;width:20px;height:2px;background:var(--tekst)}
+    .hero{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);padding:40px 24px;display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:center;max-width:100%}
+    .hero__content{color:#fff;padding:0 16px}
+    .hero__headline{font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:10px}
+    .hero__sub{font-size:0.88rem;color:rgba(255,255,255,0.7);margin-bottom:20px;line-height:1.65}
+    .hero__stats{display:flex;gap:24px;flex-wrap:wrap}
+    .hero-stat{text-align:center}
+    .hero-stat__getal{font-size:1.3rem;font-weight:900;color:var(--accent);display:block}
+    .hero-stat__label{font-size:0.68rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em}
+    .hero__zoek-groot{background:#fff;border-radius:var(--radius);overflow:hidden;display:flex;box-shadow:0 4px 16px rgba(0,0,0,0.2)}
+    .hero__zoek-groot input{flex:1;padding:13px 16px;border:none;outline:none;font-size:0.92rem}
+    .hero__zoek-groot button{background:var(--accent);color:#fff;border:none;padding:0 22px;font-size:0.88rem;font-weight:700;cursor:pointer;flex-shrink:0}
+    .cat-grid-sectie{max-width:var(--max);margin:32px auto;padding:0 24px}
+    .sectie-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .sectie-titel{font-size:1rem;font-weight:700}
+    .sectie-link{font-size:0.82rem;color:var(--blauw);font-weight:500}
+    .cat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+    .cat-item{background:var(--bg-alt);border-radius:var(--radius);padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.15s}
+    .cat-item:hover{background:var(--accent-light);border-color:var(--accent)}
+    .cat-item__icon{font-size:1.6rem;margin-bottom:6px}
+    .cat-item__naam{font-size:0.72rem;font-weight:600;line-height:1.3}
+    .advertenties{max-width:var(--max);margin:0 auto 32px;padding:0 24px}
+    .advertentie-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .adv-card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:box-shadow 0.2s;background:#fff}
+    .adv-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+    .adv-card__beeld{aspect-ratio:4/3;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#bbb;position:relative}
+    .adv-card__badge{position:absolute;top:6px;left:6px;background:var(--accent);color:#fff;font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:3px}
+    .adv-card__fav{position:absolute;top:6px;right:6px;font-size:1rem;color:#bbb;cursor:pointer;transition:color 0.15s}
+    .adv-card:hover .adv-card__fav{color:var(--accent)}
+    .adv-card__body{padding:10px}
+    .adv-card__titel{font-size:0.85rem;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .adv-card__prijs{font-size:1rem;font-weight:800;color:var(--tekst);margin-bottom:4px}
+    .adv-card__meta{font-size:0.68rem;color:var(--dim);display:flex;justify-content:space-between}
+    .adv-card__omschrijving{font-size:0.72rem;color:var(--dim);line-height:1.4;margin-top:4px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+    .lokaal{background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 24px;margin-bottom:32px}
+    .lokaal__inner{max-width:var(--max);margin:0 auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+    .lokaal__icon{font-size:1.4rem;flex-shrink:0}
+    .lokaal__tekst h3{font-size:0.9rem;font-weight:700;margin-bottom:2px}
+    .lokaal__tekst p{font-size:0.78rem;color:var(--dim)}
+    .lokaal__zoek{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+    .lokaal__input{padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.82rem;outline:none}
+    .tips{max-width:var(--max);margin:0 auto 40px;padding:0 24px}
+    .tips-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+    .tip-card{background:var(--bg-alt);border-radius:var(--radius);padding:20px;display:flex;gap:14px;align-items:flex-start}
+    .tip-card__icon{font-size:1.6rem;flex-shrink:0}
+    .tip-card__titel{font-size:0.85rem;font-weight:700;margin-bottom:5px}
+    .tip-card__tekst{font-size:0.78rem;color:var(--dim);line-height:1.55}
+    .footer{background:#f0f0f0;border-top:1px solid var(--border);padding:40px 24px 24px}
+    .footer__top{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:32px}
+    .footer__logo{font-size:1rem;font-weight:900;color:var(--accent);margin-bottom:8px;letter-spacing:-0.02em}
+    .footer__tekst{font-size:0.78rem;color:var(--dim);line-height:1.6;max-width:180px}
+    .footer__kolom-titel{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+    .footer__links{list-style:none;display:flex;flex-direction:column;gap:7px}
+    .footer__links a{font-size:0.78rem;color:var(--dim);transition:color 0.15s}
+    .footer__links a:hover{color:var(--tekst)}
+    .footer__bottom{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border);font-size:0.72rem;color:var(--dim)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:#fff;z-index:200;flex-direction:column;padding:72px 20px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.2rem;font-weight:600;padding:14px 0;border-bottom:1px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1100px){.cat-grid{grid-template-columns:repeat(4,1fr)}.advertentie-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:900px){.hero{grid-template-columns:1fr}.cat-grid{grid-template-columns:repeat(3,1fr)}.tips-grid{grid-template-columns:1fr 1fr}.footer__top{grid-template-columns:1fr 1fr}}
+    @media(max-width:768px){.navbar__top{padding:0 14px}.navbar__zoek{display:none}.navbar__acties{display:none}.navbar__hamburger{display:flex}.navbar__cats{display:none}.hero{padding:28px 16px}.cat-grid-sectie,.advertenties,.tips{padding:0 14px}.advertentie-grid{grid-template-columns:repeat(2,1fr)}.cat-grid{grid-template-columns:repeat(3,1fr)}.footer{padding:36px 14px 20px}.footer__bottom{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.cat-grid{grid-template-columns:repeat(2,1fr)}.advertentie-grid{grid-template-columns:1fr 1fr}.tips-grid{grid-template-columns:1fr}.footer__top{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar__top">
+      <div class="navbar__logo">{{BEDRIJFSNAAM}}</div>
+      <div class="navbar__zoek">
+        <input type="text" placeholder="Wat zoek je?" />
+        <select><option>{{REGIO_1}}</option><option>{{REGIO_2}}</option><option>{{REGIO_3}}</option></select>
+        <button>Zoeken</button>
+      </div>
+      <div class="navbar__acties">
+        <a href="#"><span class="icon">♡</span><span class="label">Favorieten</span></a>
+        <a href="#"><span class="icon">✉️</span><span class="label">Berichten</span></a>
+        <a href="#"><span class="icon">👤</span><span class="label">Account</span></a>
+        <button class="btn-rood">Advertentie plaatsen</button>
+      </div>
+      <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+    </div>
+    <div class="navbar__cats">
+      <span class="cat-link actief">{{C1_NAAM}}</span><span class="cat-link">{{C2_NAAM}}</span><span class="cat-link">{{C3_NAAM}}</span><span class="cat-link">{{C4_NAAM}}</span><span class="cat-link">{{C5_NAAM}}</span><span class="cat-link">{{C6_NAAM}}</span>
+    </div>
+  </div>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">{{C1_NAAM}}</a><a href="#" onclick="menuToggle()">{{C2_NAAM}}</a><a href="#" onclick="menuToggle()">Advertentie plaatsen</a>
+  </div>
+  <section class="hero">
+    <div class="hero__content">
+      <h1 class="hero__headline">{{HERO_HEADLINE}}</h1>
+      <p class="hero__sub">{{HERO_SUB}}</p>
+      <div class="hero__zoek-groot"><input type="text" placeholder="Wat zoek je?" /><button>Zoeken</button></div>
+      <div class="hero__stats" style="margin-top:20px">
+        <div class="hero-stat"><span class="hero-stat__getal">{{STAT_1}}</span><span class="hero-stat__label">{{STAT_1_L}}</span></div>
+        <div class="hero-stat"><span class="hero-stat__getal">{{STAT_2}}</span><span class="hero-stat__label">{{STAT_2_L}}</span></div>
+        <div class="hero-stat"><span class="hero-stat__getal">{{STAT_3}}</span><span class="hero-stat__label">{{STAT_3_L}}</span></div>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.05);border-radius:10px;border:1px solid rgba(255,255,255,0.1);overflow:hidden">
+      <div style="padding:16px;border-bottom:1px solid rgba(255,255,255,0.08)"><div style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Populaire zoekopdrachten</div><div style="display:flex;flex-wrap:wrap;gap:6px">{{POP_1}} {{POP_2}} {{POP_3}} {{POP_4}}</div></div>
+      <div style="padding:16px"><div style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px">Recent geplaatst</div><div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;gap:10px;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px"><div style="width:44px;height:44px;background:rgba(255,255,255,0.08);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:rgba(255,255,255,0.3)">📦</div><div><div style="font-size:0.82rem;color:#fff;font-weight:600">{{DEMO_A1_NAAM}}</div><div style="font-size:0.75rem;color:var(--accent);font-weight:700">{{DEMO_A1_PRIJS}}</div></div></div><div style="display:flex;gap:10px;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px"><div style="width:44px;height:44px;background:rgba(255,255,255,0.08);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:rgba(255,255,255,0.3)">📦</div><div><div style="font-size:0.82rem;color:#fff;font-weight:600">{{DEMO_A2_NAAM}}</div><div style="font-size:0.75rem;color:var(--accent);font-weight:700">{{DEMO_A2_PRIJS}}</div></div></div></div></div>
+    </div>
+  </section>
+  <section class="cat-grid-sectie">
+    <div class="sectie-header"><span class="sectie-titel">Alle categorieën</span><a href="#" class="sectie-link">Meer →</a></div>
+    <div class="cat-grid">
+      <div class="cat-item" onclick="catKlik(this)"><div class="cat-item__icon">{{C1_ICON}}</div><div class="cat-item__naam">{{C1_NAAM}}</div></div>
+      <div class="cat-item" onclick="catKlik(this)"><div class="cat-item__icon">{{C2_ICON}}</div><div class="cat-item__naam">{{C2_NAAM}}</div></div>
+      <div class="cat-item" onclick="catKlik(this)"><div class="cat-item__icon">{{C3_ICON}}</div><div class="cat-item__naam">{{C3_NAAM}}</div></div>
+      <div class="cat-item" onclick="catKlik(this)"><div class="cat-item__icon">{{C4_ICON}}</div><div class="cat-item__naam">{{C4_NAAM}}</div></div>
+      <div class="cat-item" onclick="catKlik(this)"><div class="cat-item__icon">{{C5_ICON}}</div><div class="cat-item__naam">{{C5_NAAM}}</div></div>
+      <div class="cat-item" onclick="catKlik(this)"><div class="cat-item__icon">{{C6_ICON}}</div><div class="cat-item__naam">{{C6_NAAM}}</div></div>
+    </div>
+  </section>
+  <section class="advertenties">
+    <div class="sectie-header"><span class="sectie-titel">{{ADV_SECTIE_TITEL}}</span><a href="#" class="sectie-link">Alle advertenties →</a></div>
+    <div class="advertentie-grid">
+      <div class="adv-card"><div class="adv-card__beeld"><span class="adv-card__badge">{{A1_BADGE}}</span><span class="adv-card__fav">♡</span>[ afb ]</div><div class="adv-card__body"><div class="adv-card__titel">{{A1_NAAM}}</div><div class="adv-card__prijs">{{A1_PRIJS}}</div><div class="adv-card__meta"><span>{{A1_LOCATIE}}</span><span>{{A1_DATUM}}</span></div><div class="adv-card__omschrijving">{{A1_DESC}}</div></div></div>
+      <div class="adv-card"><div class="adv-card__beeld"><span class="adv-card__fav">♡</span>[ afb ]</div><div class="adv-card__body"><div class="adv-card__titel">{{A2_NAAM}}</div><div class="adv-card__prijs">{{A2_PRIJS}}</div><div class="adv-card__meta"><span>{{A2_LOCATIE}}</span><span>{{A2_DATUM}}</span></div><div class="adv-card__omschrijving">{{A2_DESC}}</div></div></div>
+      <div class="adv-card"><div class="adv-card__beeld"><span class="adv-card__badge">{{A3_BADGE}}</span><span class="adv-card__fav">♡</span>[ afb ]</div><div class="adv-card__body"><div class="adv-card__titel">{{A3_NAAM}}</div><div class="adv-card__prijs">{{A3_PRIJS}}</div><div class="adv-card__meta"><span>{{A3_LOCATIE}}</span><span>{{A3_DATUM}}</span></div><div class="adv-card__omschrijving">{{A3_DESC}}</div></div></div>
+      <div class="adv-card"><div class="adv-card__beeld"><span class="adv-card__fav">♡</span>[ afb ]</div><div class="adv-card__body"><div class="adv-card__titel">{{A4_NAAM}}</div><div class="adv-card__prijs">{{A4_PRIJS}}</div><div class="adv-card__meta"><span>{{A4_LOCATIE}}</span><span>{{A4_DATUM}}</span></div><div class="adv-card__omschrijving">{{A4_DESC}}</div></div></div>
+      <div class="adv-card"><div class="adv-card__beeld"><span class="adv-card__fav">♡</span>[ afb ]</div><div class="adv-card__body"><div class="adv-card__titel">{{A5_NAAM}}</div><div class="adv-card__prijs">{{A5_PRIJS}}</div><div class="adv-card__meta"><span>{{A5_LOCATIE}}</span><span>{{A5_DATUM}}</span></div><div class="adv-card__omschrijving">{{A5_DESC}}</div></div></div>
+      <div class="adv-card"><div class="adv-card__beeld"><span class="adv-card__badge">{{A6_BADGE}}</span><span class="adv-card__fav">♡</span>[ afb ]</div><div class="adv-card__body"><div class="adv-card__titel">{{A6_NAAM}}</div><div class="adv-card__prijs">{{A6_PRIJS}}</div><div class="adv-card__meta"><span>{{A6_LOCATIE}}</span><span>{{A6_DATUM}}</span></div><div class="adv-card__omschrijving">{{A6_DESC}}</div></div></div>
+      <div class="adv-card"><div class="adv-card__beeld"><span class="adv-card__fav">♡</span>[ afb ]</div><div class="adv-card__body"><div class="adv-card__titel">{{A7_NAAM}}</div><div class="adv-card__prijs">{{A7_PRIJS}}</div><div class="adv-card__meta"><span>{{A7_LOCATIE}}</span><span>{{A7_DATUM}}</span></div><div class="adv-card__omschrijving">{{A7_DESC}}</div></div></div>
+      <div class="adv-card"><div class="adv-card__beeld"><span class="adv-card__fav">♡</span>[ afb ]</div><div class="adv-card__body"><div class="adv-card__titel">{{A8_NAAM}}</div><div class="adv-card__prijs">{{A8_PRIJS}}</div><div class="adv-card__meta"><span>{{A8_LOCATIE}}</span><span>{{A8_DATUM}}</span></div><div class="adv-card__omschrijving">{{A8_DESC}}</div></div></div>
+    </div>
+  </section>
+  <div class="lokaal">
+    <div class="lokaal__inner">
+      <div class="lokaal__icon">📍</div>
+      <div class="lokaal__tekst"><h3>{{LOKAAL_TITEL}}</h3><p>{{LOKAAL_SUB}}</p></div>
+      <div class="lokaal__zoek"><input class="lokaal__input" type="text" placeholder="Stad of postcode..." /><button class="btn-rood">Zoeken</button></div>
+    </div>
+  </div>
+  <section class="tips">
+    <div class="sectie-header"><span class="sectie-titel">{{TIPS_TITEL}}</span></div>
+    <div class="tips-grid">
+      <div class="tip-card"><div class="tip-card__icon">{{TIP1_ICON}}</div><div><div class="tip-card__titel">{{TIP1_TITEL}}</div><p class="tip-card__tekst">{{TIP1_TEKST}}</p></div></div>
+      <div class="tip-card"><div class="tip-card__icon">{{TIP2_ICON}}</div><div><div class="tip-card__titel">{{TIP2_TITEL}}</div><p class="tip-card__tekst">{{TIP2_TEKST}}</p></div></div>
+      <div class="tip-card"><div class="tip-card__icon">{{TIP3_ICON}}</div><div><div class="tip-card__titel">{{TIP3_TITEL}}</div><p class="tip-card__tekst">{{TIP3_TEKST}}</p></div></div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_TEKST}}</p></div>
+      <div><div class="footer__kolom-titel">Kopen</div><ul class="footer__links"><li><a href="#">{{C1_NAAM}}</a></li><li><a href="#">{{C2_NAAM}}</a></li><li><a href="#">Alle categorieën</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Verkopen</div><ul class="footer__links"><li><a href="#">Advertentie plaatsen</a></li><li><a href="#">Tips voor verkopers</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Help</div><ul class="footer__links"><li><a href="#">Klantenservice</a></li><li><a href="#">Veilig handelen</a></li><li><a href="#">Privacy</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span><span>{{FOOTER_TAGLINE}}</span></div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    function catKlik(el){document.querySelectorAll('.cat-item').forEach(x=>x.style.background='');el.style.background='var(--accent-light)'}
+    document.querySelectorAll('.cat-link').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.cat-link').forEach(x=>x.classList.remove('actief'));t.classList.add('actief')}));
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.06});
+    document.querySelectorAll('.adv-card,.tip-card,.cat-item').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(8px)';el.style.transition='opacity 0.35s ease,transform 0.35s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
