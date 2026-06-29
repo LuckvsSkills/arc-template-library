@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#fff8f0;--bg-wit:#fff;--tekst:#2d1a08;--dim:#8a6848;--accent:#e85d26;--accent-2:#f5a623;--accent-3:#e8447a;--accent-4:#4ab97c;--border:#f0dcc8;--nav:64px;--max:1200px;--radius:20px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:var(--bg-wit);border-bottom:2px solid var(--accent-2);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+    .navbar__logo{display:flex;align-items:center;gap:10px}
+    .navbar__logo-icon{font-size:1.6rem}
+    .navbar__logo-naam{font-size:1.1rem;font-weight:900;color:var(--accent);letter-spacing:-0.02em}
+    .navbar__links{display:flex;gap:24px;list-style:none}
+    .navbar__links a{font-size:0.85rem;color:var(--dim);font-weight:500;transition:color 0.15s}
+    .navbar__links a:hover{color:var(--accent)}
+    .navbar__cta{display:flex;gap:10px;align-items:center}
+    .btn-accent{background:var(--accent);color:#fff;padding:9px 20px;border-radius:999px;font-size:0.85rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-accent:hover{opacity:0.88}
+    .btn-outline{border:2px solid var(--border);color:var(--dim);padding:8px 16px;border-radius:999px;font-size:0.85rem;font-weight:600;background:transparent;cursor:pointer;transition:all 0.15s}
+    .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+    .navbar__hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+    .navbar__hamburger span{display:block;width:22px;height:2.5px;background:var(--accent);border-radius:999px}
+    .hero{background:linear-gradient(135deg,#fff8f0 0%,#ffecd8 50%,#ffe4d0 100%);padding:72px 32px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;overflow:hidden;position:relative}
+    .hero::before{content:'🍦';position:absolute;font-size:8rem;opacity:0.06;right:-20px;top:-20px;transform:rotate(15deg)}
+    .hero__chip{display:inline-flex;align-items:center;gap:8px;background:rgba(232,93,38,0.1);border:1px solid rgba(232,93,38,0.2);border-radius:999px;padding:5px 14px;font-size:0.72rem;font-weight:700;color:var(--accent);margin-bottom:18px;letter-spacing:0.04em}
+    .hero__headline{font-size:clamp(2.4rem,5vw,4rem);font-weight:900;letter-spacing:-0.04em;line-height:1.05;margin-bottom:16px}
+    .hero__headline em{font-style:normal;color:var(--accent)}
+    .hero__sub{font-size:0.95rem;color:var(--dim);max-width:400px;margin-bottom:28px;line-height:1.75}
+    .hero__knoppen{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+    .hero__knoppen .btn-accent{padding:12px 26px;font-size:0.92rem}
+    .hero__trust{display:flex;gap:20px;flex-wrap:wrap}
+    .trust-item{font-size:0.75rem;color:var(--dim);display:flex;align-items:center;gap:6px}
+    .trust-item::before{font-size:0.9rem}
+    .hero__ijs-showcase{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .ijs-preview{background:var(--bg-wit);border-radius:var(--radius);padding:20px;text-align:center;border:2px solid transparent;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 12px rgba(0,0,0,0.06)}
+    .ijs-preview:hover{border-color:var(--accent-2);transform:translateY(-3px)}
+    .ijs-preview__emoji{font-size:2.4rem;margin-bottom:8px}
+    .ijs-preview__naam{font-size:0.85rem;font-weight:700;margin-bottom:2px}
+    .ijs-preview__prijs{font-size:0.82rem;color:var(--accent);font-weight:800}
+    .seizoen-balk{background:var(--accent-2);padding:10px 32px}
+    .seizoen-balk__inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
+    .seizoen-item{font-size:0.78rem;font-weight:700;color:var(--bg-wit);display:flex;align-items:center;gap:6px}
+    .smaken-sectie{max-width:var(--max);margin:56px auto 0;padding:0 32px}
+    .sectie-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+    .sectie-titel{font-size:1.15rem;font-weight:800;letter-spacing:-0.02em}
+    .cat-tabs{display:flex;gap:8px;flex-wrap:wrap}
+    .cat-tab{padding:7px 16px;border:2px solid var(--border);border-radius:999px;font-size:0.78rem;font-weight:600;cursor:pointer;background:var(--bg-wit);color:var(--dim);transition:all 0.15s}
+    .cat-tab:hover,.cat-tab.actief{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .smaken-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+    .smaak-card{background:var(--bg-wit);border:2px solid transparent;border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+    .smaak-card:hover{border-color:var(--accent-2);transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,0.08)}
+    .smaak-card.geselecteerd{border-color:var(--accent);background:rgba(232,93,38,0.04)}
+    .smaak-card__emoji{font-size:2.2rem;margin-bottom:10px}
+    .smaak-card__naam{font-size:0.88rem;font-weight:700;margin-bottom:4px}
+    .smaak-card__beschrijving{font-size:0.72rem;color:var(--dim);line-height:1.4;margin-bottom:10px}
+    .smaak-card__footer{display:flex;justify-content:space-between;align-items:center}
+    .smaak-card__prijs{font-size:0.92rem;font-weight:800;color:var(--accent)}
+    .smaak-card__badge{font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:999px}
+    .badge-nieuw{background:#fef3c7;color:#92400e}
+    .badge-populair{background:#fce7f3;color:#9d174d}
+    .badge-seizoen{background:#d1fae5;color:#065f46}
+    .bestellen-sectie{max-width:var(--max);margin:48px auto;padding:0 32px;display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:start}
+    .bestel-widget{background:var(--bg-wit);border:2px solid var(--accent-2);border-radius:var(--radius);overflow:hidden}
+    .bestel-widget__header{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-3) 100%);color:#fff;padding:20px 22px}
+    .bestel-widget__titel{font-size:0.95rem;font-weight:800;margin-bottom:3px}
+    .bestel-widget__sub{font-size:0.75rem;opacity:0.85}
+    .bestel-body{padding:20px 22px}
+    .form-rij{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+    .form-veld{margin-bottom:14px}
+    .form-label{font-size:0.65rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;display:block}
+    .form-input{width:100%;padding:10px 12px;background:var(--bg);border:2px solid var(--border);color:var(--tekst);font-size:0.85rem;outline:none;border-radius:10px;transition:border-color 0.15s}
+    .form-input:focus{border-color:var(--accent)}
+    .form-select{width:100%;padding:10px 12px;background:var(--bg);border:2px solid var(--border);color:var(--tekst);font-size:0.85rem;outline:none;border-radius:10px;cursor:pointer}
+    .portie-knoppen{display:flex;gap:8px}
+    .portie-knop{flex:1;padding:9px;text-align:center;border:2px solid var(--border);border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;background:var(--bg);color:var(--dim);transition:all 0.15s}
+    .portie-knop:hover,.portie-knop.actief{background:var(--accent-2);color:#fff;border-color:var(--accent-2)}
+    .extra-items{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+    .extra-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.15s;font-size:0.8rem;font-weight:500}
+    .extra-item:hover,.extra-item.actief{border-color:var(--accent-4);background:rgba(74,185,124,0.05)}
+    .extra-item input{accent-color:var(--accent-4)}
+    .bestel-samenvatting{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:14px}
+    .sam-rij{display:flex;justify-content:space-between;font-size:0.8rem;padding:3px 0}
+    .sam-rij.totaal{font-weight:800;font-size:0.92rem;border-top:1px solid var(--border);padding-top:8px;margin-top:4px;color:var(--accent)}
+    .bestel-btn{width:100%;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-3) 100%);color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.92rem;font-weight:800;cursor:pointer;transition:opacity 0.2s}
+    .bestel-btn:hover{opacity:0.88}
+    .info-kolom{}
+    .info-kaart{background:var(--bg-wit);border:2px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px}
+    .info-kaart__titel{font-size:0.88rem;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .info-kaart__emoji{font-size:1.1rem}
+    .openingstijden{display:flex;flex-direction:column;gap:6px}
+    .ot-rij{display:flex;justify-content:space-between;font-size:0.82rem}
+    .ot-dag{color:var(--dim)}
+    .ot-tijd{font-weight:600}
+    .ot-rij.vandaag .ot-dag{font-weight:700;color:var(--accent)}
+    .ot-rij.vandaag .ot-tijd{color:var(--accent-4)}
+    .allergie-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .allergie-item{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--dim)}
+    .allergie-item__icon{font-size:1rem}
+    .sfeer-sectie{background:var(--accent-3);padding:64px 32px;text-align:center;color:#fff}
+    .sfeer-sectie h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-0.04em;margin-bottom:10px}
+    .sfeer-sectie p{font-size:0.92rem;opacity:0.85;max-width:400px;margin:0 auto 28px;line-height:1.7}
+    .btn-wit{background:#fff;color:var(--accent-3);padding:12px 28px;border-radius:999px;font-size:0.92rem;font-weight:800;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-wit:hover{opacity:0.9}
+    .footer{background:var(--tekst);color:#fff;padding:48px 32px 24px}
+    .footer__top{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+    .footer__logo{font-size:1rem;font-weight:900;color:var(--accent-2);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+    .footer__tekst{font-size:0.78rem;color:rgba(255,255,255,0.5);line-height:1.6;max-width:180px}
+    .footer__kolom-titel{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:10px}
+    .footer__links{list-style:none;display:flex;flex-direction:column;gap:7px}
+    .footer__links a{font-size:0.78rem;color:rgba(255,255,255,0.55);transition:color 0.15s}
+    .footer__links a:hover{color:#fff}
+    .footer__bottom{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:rgba(255,255,255,0.3)}
+    .winkel-balk{position:fixed;bottom:0;left:0;right:0;background:var(--accent);color:#fff;padding:12px 32px;display:flex;justify-content:space-between;align-items:center;z-index:80;transform:translateY(100%);transition:transform 0.3s;box-shadow:0 -4px 12px rgba(0,0,0,0.15)}
+    .winkel-balk.open{transform:translateY(0)}
+    .winkel-balk__info{font-size:0.85rem;font-weight:800}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:var(--bg-wit);z-index:200;flex-direction:column;padding:80px 24px 40px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.3rem;font-weight:700;color:var(--tekst);padding:14px 0;border-bottom:2px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:20px;right:24px;font-size:1.6rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:1100px){.bestellen-sectie{grid-template-columns:1fr}.bestel-widget{max-width:480px}}
+    @media(max-width:900px){.hero{grid-template-columns:1fr;gap:32px}.hero__ijs-showcase{grid-template-columns:repeat(4,1fr)}.smaken-grid{grid-template-columns:repeat(3,1fr)}.footer__top{grid-template-columns:1fr 1fr}}
+    @media(max-width:768px){.navbar{padding:0 20px}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hero{padding:48px 20px}.smaken-sectie,.bestellen-sectie{padding:0 16px}.smaken-grid{grid-template-columns:repeat(2,1fr)}.seizoen-balk{padding:10px 20px}.sfeer-sectie{padding:48px 20px}.footer{padding:40px 20px 24px}.footer__top{grid-template-columns:1fr 1fr}.footer__bottom{flex-direction:column;gap:8px}}
+    @media(max-width:480px){.hero__ijs-showcase{grid-template-columns:repeat(2,1fr)}.smaken-grid{grid-template-columns:1fr 1fr}.allergie-grid{grid-template-columns:1fr 1fr}.footer__top{grid-template-columns:1fr}.form-rij{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo"><span class="navbar__logo-icon">{{LOGO_EMOJI}}</span><span class="navbar__logo-naam">{{BEDRIJFSNAAM}}</span></div>
+    <ul class="navbar__links"><li><a href="#smaken">Smaken</a></li><li><a href="#bestellen">Bestellen</a></li><li><a href="#">Over ons</a></li><li><a href="#">Contact</a></li></ul>
+    <div class="navbar__cta"><button class="btn-outline" onclick="winkelToggle()">🛒 {{WAGEN_COUNT}}</button><button class="btn-accent">Online bestellen</button></div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#smaken" onclick="menuToggle()">Smaken</a><a href="#bestellen" onclick="menuToggle()">Bestellen</a><a href="#" onclick="menuToggle()">Over ons</a>
+  </div>
+  <section class="hero">
+    <div>
+      <div class="hero__chip">🌞 {{HERO_CHIP}}</div>
+      <h1 class="hero__headline">{{HERO_H1}}<br><em>{{HERO_H2}}</em></h1>
+      <p class="hero__sub">{{HERO_SUB}}</p>
+      <div class="hero__knoppen"><button class="btn-accent" onclick="document.getElementById('smaken').scrollIntoView({behavior:'smooth'})">{{CTA_PRIMAIR}}</button><button class="btn-outline" onclick="document.getElementById('bestellen').scrollIntoView({behavior:'smooth'})">{{CTA_SECUNDAIR}}</button></div>
+      <div class="hero__trust"><div class="trust-item">🌿 {{TRUST_1}}</div><div class="trust-item">🍦 {{TRUST_2}}</div><div class="trust-item">⭐ {{TRUST_3}}</div></div>
+    </div>
+    <div class="hero__ijs-showcase">
+      <div class="ijs-preview"><div class="ijs-preview__emoji">{{P1_EMOJI}}</div><div class="ijs-preview__naam">{{P1_NAAM}}</div><div class="ijs-preview__prijs">{{P1_PRIJS}}</div></div>
+      <div class="ijs-preview"><div class="ijs-preview__emoji">{{P2_EMOJI}}</div><div class="ijs-preview__naam">{{P2_NAAM}}</div><div class="ijs-preview__prijs">{{P2_PRIJS}}</div></div>
+      <div class="ijs-preview"><div class="ijs-preview__emoji">{{P3_EMOJI}}</div><div class="ijs-preview__naam">{{P3_NAAM}}</div><div class="ijs-preview__prijs">{{P3_PRIJS}}</div></div>
+      <div class="ijs-preview"><div class="ijs-preview__emoji">{{P4_EMOJI}}</div><div class="ijs-preview__naam">{{P4_NAAM}}</div><div class="ijs-preview__prijs">{{P4_PRIJS}}</div></div>
+    </div>
+  </section>
+  <div class="seizoen-balk"><div class="seizoen-balk__inner"><div class="seizoen-item">🍓 {{SEIZOEN_1}}</div><div class="seizoen-item">🍋 {{SEIZOEN_2}}</div><div class="seizoen-item">🫐 {{SEIZOEN_3}}</div><div class="seizoen-item">🥭 {{SEIZOEN_4}}</div></div></div>
+  <section class="smaken-sectie" id="smaken">
+    <div class="sectie-header">
+      <span class="sectie-titel">{{SMAKEN_TITEL}}</span>
+      <div class="cat-tabs"><span class="cat-tab actief" onclick="catKlik(this)">Alles</span><span class="cat-tab" onclick="catKlik(this)">{{CAT_1}}</span><span class="cat-tab" onclick="catKlik(this)">{{CAT_2}}</span><span class="cat-tab" onclick="catKlik(this)">{{CAT_3}}</span></div>
+    </div>
+    <div class="smaken-grid">
+      <div class="smaak-card" onclick="smaakKlik(this)"><div class="smaak-card__emoji">{{S1_EMOJI}}</div><div class="smaak-card__naam">{{S1_NAAM}}</div><div class="smaak-card__beschrijving">{{S1_DESC}}</div><div class="smaak-card__footer"><span class="smaak-card__prijs">{{S1_PRIJS}}</span><span class="smaak-card__badge badge-populair">Populair</span></div></div>
+      <div class="smaak-card" onclick="smaakKlik(this)"><div class="smaak-card__emoji">{{S2_EMOJI}}</div><div class="smaak-card__naam">{{S2_NAAM}}</div><div class="smaak-card__beschrijving">{{S2_DESC}}</div><div class="smaak-card__footer"><span class="smaak-card__prijs">{{S2_PRIJS}}</span><span class="smaak-card__badge badge-nieuw">Nieuw</span></div></div>
+      <div class="smaak-card" onclick="smaakKlik(this)"><div class="smaak-card__emoji">{{S3_EMOJI}}</div><div class="smaak-card__naam">{{S3_NAAM}}</div><div class="smaak-card__beschrijving">{{S3_DESC}}</div><div class="smaak-card__footer"><span class="smaak-card__prijs">{{S3_PRIJS}}</span><span class="smaak-card__badge badge-seizoen">Seizoen</span></div></div>
+      <div class="smaak-card" onclick="smaakKlik(this)"><div class="smaak-card__emoji">{{S4_EMOJI}}</div><div class="smaak-card__naam">{{S4_NAAM}}</div><div class="smaak-card__beschrijving">{{S4_DESC}}</div><div class="smaak-card__footer"><span class="smaak-card__prijs">{{S4_PRIJS}}</span></div></div>
+      <div class="smaak-card" onclick="smaakKlik(this)"><div class="smaak-card__emoji">{{S5_EMOJI}}</div><div class="smaak-card__naam">{{S5_NAAM}}</div><div class="smaak-card__beschrijving">{{S5_DESC}}</div><div class="smaak-card__footer"><span class="smaak-card__prijs">{{S5_PRIJS}}</span><span class="smaak-card__badge badge-populair">Favoriet</span></div></div>
+      <div class="smaak-card" onclick="smaakKlik(this)"><div class="smaak-card__emoji">{{S6_EMOJI}}</div><div class="smaak-card__naam">{{S6_NAAM}}</div><div class="smaak-card__beschrijving">{{S6_DESC}}</div><div class="smaak-card__footer"><span class="smaak-card__prijs">{{S6_PRIJS}}</span><span class="smaak-card__badge badge-nieuw">Nieuw</span></div></div>
+      <div class="smaak-card" onclick="smaakKlik(this)"><div class="smaak-card__emoji">{{S7_EMOJI}}</div><div class="smaak-card__naam">{{S7_NAAM}}</div><div class="smaak-card__beschrijving">{{S7_DESC}}</div><div class="smaak-card__footer"><span class="smaak-card__prijs">{{S7_PRIJS}}</span><span class="smaak-card__badge badge-seizoen">Zomer</span></div></div>
+      <div class="smaak-card" onclick="smaakKlik(this)"><div class="smaak-card__emoji">{{S8_EMOJI}}</div><div class="smaak-card__naam">{{S8_NAAM}}</div><div class="smaak-card__beschrijving">{{S8_DESC}}</div><div class="smaak-card__footer"><span class="smaak-card__prijs">{{S8_PRIJS}}</span></div></div>
+    </div>
+  </section>
+  <div class="bestellen-sectie" id="bestellen">
+    <div class="bestel-widget">
+      <div class="bestel-widget__header"><div class="bestel-widget__titel">{{WIDGET_TITEL}}</div><div class="bestel-widget__sub">{{WIDGET_SUB}}</div></div>
+      <div class="bestel-body">
+        <div class="form-veld"><label class="form-label">Portiegrootte</label><div class="portie-knoppen"><div class="portie-knop" onclick="portieKlik(this)">Klein (1 bol)</div><div class="portie-knop actief" onclick="portieKlik(this)">Medium (2 bollen)</div><div class="portie-knop" onclick="portieKlik(this)">Groot (3 bollen)</div></div></div>
+        <div class="form-veld"><label class="form-label">Smaken (geselecteerd: <span id="smaakCount">0</span>)</label><div style="font-size:0.75rem;color:var(--dim)">Klik op een smaak hierboven om te selecteren</div></div>
+        <div class="form-veld"><label class="form-label">Extras</label><div class="extra-items"><label class="extra-item"><input type="checkbox" onchange="extraKlik(this)" />🍫 {{EXTRA_1}}</label><label class="extra-item"><input type="checkbox" onchange="extraKlik(this)" />🥜 {{EXTRA_2}}</label><label class="extra-item"><input type="checkbox" onchange="extraKlik(this)" />🍒 {{EXTRA_3}}</label><label class="extra-item"><input type="checkbox" onchange="extraKlik(this)" />🧇 {{EXTRA_4}}</label></div></div>
+        <div class="form-rij"><div class="form-veld"><label class="form-label">Naam</label><input class="form-input" type="text" placeholder="{{NAAM_PH}}" /></div><div class="form-veld"><label class="form-label">Telefoon</label><input class="form-input" type="tel" placeholder="{{TEL_PH}}" /></div></div>
+        <div class="form-veld"><label class="form-label">Ophaalmoment</label><select class="form-select"><option>{{TIJD_1}}</option><option>{{TIJD_2}}</option><option>{{TIJD_3}}</option><option>{{TIJD_4}}</option></select></div>
+        <div class="bestel-samenvatting">
+          <div class="sam-rij"><span>Portie</span><span>{{SAM_PORTIE}}</span></div>
+          <div class="sam-rij"><span>Extras</span><span id="extraPrijs">€ 0,00</span></div>
+          <div class="sam-rij totaal"><span>Totaal</span><span id="totaalPrijs">{{SAM_TOTAAL}}</span></div>
+        </div>
+        <button class="bestel-btn">{{BESTEL_CTA}} 🍦</button>
+      </div>
+    </div>
+    <div class="info-kolom">
+      <div class="info-kaart">
+        <div class="info-kaart__titel"><span class="info-kaart__emoji">🕐</span>Openingstijden</div>
+        <div class="openingstijden">
+          <div class="ot-rij"><span class="ot-dag">Maandag</span><span class="ot-tijd">{{OT_MA}}</span></div>
+          <div class="ot-rij"><span class="ot-dag">Dinsdag</span><span class="ot-tijd">{{OT_DI}}</span></div>
+          <div class="ot-rij vandaag"><span class="ot-dag">Woensdag ← vandaag</span><span class="ot-tijd">{{OT_WO}}</span></div>
+          <div class="ot-rij"><span class="ot-dag">Donderdag</span><span class="ot-tijd">{{OT_DO}}</span></div>
+          <div class="ot-rij"><span class="ot-dag">Vrijdag</span><span class="ot-tijd">{{OT_VR}}</span></div>
+          <div class="ot-rij"><span class="ot-dag">Za & Zo</span><span class="ot-tijd">{{OT_WE}}</span></div>
+        </div>
+      </div>
+      <div class="info-kaart">
+        <div class="info-kaart__titel"><span class="info-kaart__emoji">⚠️</span>Allergenen info</div>
+        <div class="allergie-grid">
+          <div class="allergie-item"><span class="allergie-item__icon">🥛</span>Lactose-vrij opt.</div>
+          <div class="allergie-item"><span class="allergie-item__icon">🌾</span>Gluten-vrij opt.</div>
+          <div class="allergie-item"><span class="allergie-item__icon">🥜</span>Noten aanwezig</div>
+          <div class="allergie-item"><span class="allergie-item__icon">🌱</span>Vegan opties</div>
+          <div class="allergie-item"><span class="allergie-item__icon">🥚</span>Ei vrij opt.</div>
+          <div class="allergie-item"><span class="allergie-item__icon">📋</span>Volledig info</div>
+        </div>
+      </div>
+      <div class="info-kaart">
+        <div class="info-kaart__titel"><span class="info-kaart__emoji">📍</span>Locatie</div>
+        <div style="font-size:0.82rem;color:var(--dim);line-height:1.7">{{ADRES}}<br>{{POSTCODE}} {{STAD}}<br><br><strong style="color:var(--tekst)">{{TELEFOON}}</strong><br>{{EMAIL}}</div>
+      </div>
+    </div>
+  </div>
+  <section class="sfeer-sectie">
+    <h2>{{SFEER_TITEL}}</h2>
+    <p>{{SFEER_SUB}}</p>
+    <button class="btn-wit">{{SFEER_CTA}}</button>
+  </section>
+  <div class="winkel-balk" id="winkelBalk">
+    <div class="winkel-balk__info">🍦 {{WAGEN_COUNT}} smaken — {{WAGEN_TOTAAL}}</div>
+    <div style="display:flex;gap:10px"><button class="btn-accent" style="background:#fff;color:var(--accent)">Bestelling plaatsen</button><button onclick="winkelToggle()" style="background:transparent;border:none;color:#fff;cursor:pointer;font-size:1.1rem">✕</button></div>
+  </div>
+  <footer class="footer">
+    <div class="footer__top">
+      <div><div class="footer__logo">{{LOGO_EMOJI}} {{BEDRIJFSNAAM}}</div><p class="footer__tekst">{{FOOTER_TEKST}}</p></div>
+      <div><div class="footer__kolom-titel">Menu</div><ul class="footer__links"><li><a href="#">Smaken</a></li><li><a href="#">Seizoensijs</a></li><li><a href="#">Cadeaubon</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Info</div><ul class="footer__links"><li><a href="#">Over ons</a></li><li><a href="#">Openingstijden</a></li><li><a href="#">Allergenen</a></li></ul></div>
+      <div><div class="footer__kolom-titel">Contact</div><ul class="footer__links"><li><a href="#">{{TELEFOON}}</a></li><li><a href="#">{{EMAIL}}</a></li><li><a href="#">{{ADRES}}</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><span>© <span id="jaar"></span> {{BEDRIJFSNAAM}}</span><span>{{FOOTER_TAGLINE}}</span></div>
+  </footer>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    function catKlik(el){document.querySelectorAll('.cat-tab').forEach(x=>x.classList.remove('actief'));el.classList.add('actief')}
+    let geselecteerd=0;
+    function smaakKlik(el){el.classList.toggle('geselecteerd');geselecteerd=document.querySelectorAll('.smaak-card.geselecteerd').length;document.getElementById('smaakCount').textContent=geselecteerd;if(geselecteerd>0)document.getElementById('winkelBalk').classList.add('open')}
+    function portieKlik(el){document.querySelectorAll('.portie-knop').forEach(x=>x.classList.remove('actief'));el.classList.add('actief')}
+    function extraKlik(cb){const n=document.querySelectorAll('.extra-items input:checked').length;document.getElementById('extraPrijs').textContent='€ '+(n*0.75).toFixed(2).replace('.',',')}
+    function winkelToggle(){document.getElementById('winkelBalk').classList.toggle('open')}
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.06});
+    document.querySelectorAll('.smaak-card,.ijs-preview').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(10px)';el.style.transition='opacity 0.4s ease,transform 0.4s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
