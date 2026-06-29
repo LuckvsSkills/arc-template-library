@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{BEDRIJFSNAAM}}</title>
+  <style>
+    :root{--bg:#fff;--bg-alt:#f6f7f8;--tekst:#1a1a1a;--dim:#888;--accent:#da552f;--accent-light:#fff3f0;--border:#e5e5e5;--nav:56px;--max:1100px;--radius:8px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg-alt);color:var(--tekst);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .navbar{position:sticky;top:0;z-index:100;height:var(--nav);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:0 24px}
+    .navbar__logo{font-size:1rem;font-weight:900;color:var(--accent);letter-spacing:-0.02em;display:flex;align-items:center;gap:6px;flex-shrink:0}
+    .navbar__logo-icon{font-size:1.2rem}
+    .navbar__zoek{flex:1;max-width:400px;display:flex;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);align-items:center;padding:0 12px;gap:8px}
+    .navbar__zoek input{flex:1;padding:8px 0;border:none;outline:none;font-size:0.85rem;background:transparent}
+    .navbar__links{display:flex;gap:16px;list-style:none;margin-left:auto}
+    .navbar__links a{font-size:0.82rem;color:var(--dim);font-weight:500;transition:color 0.15s}
+    .navbar__links a:hover{color:var(--tekst)}
+    .navbar__cta{display:flex;gap:8px}
+    .btn-accent{background:var(--accent);color:#fff;padding:7px 16px;border-radius:var(--radius);font-size:0.82rem;font-weight:700;border:none;cursor:pointer;transition:opacity 0.2s}
+    .btn-accent:hover{opacity:0.88}
+    .btn-ghost{border:1px solid var(--border);color:var(--tekst);padding:6px 12px;border-radius:var(--radius);font-size:0.82rem;background:#fff;cursor:pointer;transition:all 0.15s}
+    .btn-ghost:hover{border-color:var(--tekst)}
+    .navbar__hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;margin-left:8px}
+    .navbar__hamburger span{display:block;width:18px;height:1.5px;background:var(--tekst)}
+    .hoofd{max-width:var(--max);margin:0 auto;padding:24px 20px;display:grid;grid-template-columns:1fr 280px;gap:24px}
+    .feed-sectie{}
+    .dag-header{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+    .dag-titel{font-size:0.88rem;font-weight:700}
+    .dag-sub{font-size:0.75rem;color:var(--dim)}
+    .dag-tabs{display:flex;gap:0;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;overflow:hidden;padding:2px}
+    .dag-tab{padding:5px 12px;font-size:0.75rem;font-weight:600;color:var(--dim);cursor:pointer;border-radius:4px;transition:all 0.15s}
+    .dag-tab.actief{background:#fff;color:var(--tekst);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+    .product-lijst{display:flex;flex-direction:column;gap:0}
+    .product-item{background:#fff;border:1px solid var(--border);border-top:none;display:grid;grid-template-columns:48px 1fr auto;gap:14px;padding:16px 18px;align-items:center;cursor:pointer;transition:background 0.15s}
+    .product-item:first-child{border-top:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0}
+    .product-item:last-child{border-radius:0 0 var(--radius) var(--radius)}
+    .product-item:hover{background:#fafafa}
+    .product-logo{width:48px;height:48px;border-radius:10px;background:var(--bg-alt);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+    .product-info{}
+    .product-naam-rij{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+    .product-naam{font-size:0.92rem;font-weight:700}
+    .product-badge{font-size:0.62rem;font-weight:700;padding:2px 7px;border-radius:3px;background:var(--accent-light);color:var(--accent)}
+    .product-desc{font-size:0.82rem;color:var(--dim);line-height:1.4;margin-bottom:6px}
+    .product-tags{display:flex;gap:6px;flex-wrap:wrap}
+    .product-tag{font-size:0.68rem;padding:2px 8px;border-radius:999px;background:var(--bg-alt);color:var(--dim);border:1px solid var(--border)}
+    .upvote-knop{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 12px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s;background:#fff;min-width:52px}
+    .upvote-knop:hover,.upvote-knop.actief{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+    .upvote-knop.actief .upvote-pijl{color:var(--accent)}
+    .upvote-pijl{font-size:0.9rem;color:var(--dim);transition:color 0.15s}
+    .upvote-count{font-size:0.75rem;font-weight:700;color:var(--tekst)}
+    .maker-sectie{margin-top:16px}
+    .maker-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;display:flex;gap:12px;align-items:center;cursor:pointer;transition:background 0.15s;margin-bottom:8px}
+    .maker-card:hover{background:#fafafa}
+    .maker-avatar{width:44px;height:44px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:var(--accent);flex-shrink:0}
+    .maker-info{}
+    .maker-naam{font-size:0.88rem;font-weight:700;margin-bottom:2px}
+    .maker-bio{font-size:0.75rem;color:var(--dim)}
+    .maker-products{font-size:0.72rem;color:var(--accent);font-weight:600;margin-top:3px}
+    .sidebar{}
+    .widget{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden}
+    .widget__header{padding:12px 16px;border-bottom:1px solid var(--border);font-size:0.82rem;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+    .widget__header a{font-size:0.72rem;color:var(--accent);font-weight:600}
+    .widget__body{padding:12px 16px}
+    .collectie-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);cursor:pointer}
+    .collectie-item:last-child{border-bottom:none}
+    .collectie-item__icon{font-size:1.1rem;width:28px;text-align:center;flex-shrink:0}
+    .collectie-item__naam{font-size:0.82rem;font-weight:600;flex:1}
+    .collectie-item__count{font-size:0.72rem;color:var(--dim)}
+    .topic-grid{display:flex;flex-wrap:wrap;gap:6px}
+    .topic-chip{padding:5px 12px;border:1px solid var(--border);border-radius:999px;font-size:0.75rem;font-weight:500;cursor:pointer;transition:all 0.15s;background:var(--bg-alt)}
+    .topic-chip:hover{border-color:var(--accent);color:var(--accent)}
+    .stats-rij{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)}
+    .stats-rij:last-child{border-bottom:none}
+    .stats-label{font-size:0.78rem;color:var(--dim)}
+    .stats-waarde{font-size:0.78rem;font-weight:700}
+    .nieuwsbrief{background:linear-gradient(135deg,var(--accent) 0%,#f0826d 100%);color:#fff;padding:20px;margin:0}
+    .nieuwsbrief h3{font-size:0.92rem;font-weight:700;margin-bottom:6px}
+    .nieuwsbrief p{font-size:0.78rem;opacity:0.85;margin-bottom:14px;line-height:1.5}
+    .nw-input{width:100%;padding:9px 12px;border-radius:6px;border:none;font-size:0.82rem;margin-bottom:8px;outline:none}
+    .nw-btn{width:100%;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:8px;border-radius:6px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:background 0.15s}
+    .nw-btn:hover{background:rgba(255,255,255,0.3)}
+    .footer-balk{background:#fff;border-top:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;color:var(--dim);max-width:var(--max);margin:0 auto;flex-wrap:wrap;gap:8px}
+    .footer-balk a{color:var(--dim);margin-right:14px}
+    .footer-balk a:hover{color:var(--tekst)}
+    .mobiel-menu{display:none;position:fixed;inset:0;background:#fff;z-index:200;flex-direction:column;padding:72px 20px 40px}
+    .mobiel-menu.open{display:flex}
+    .mobiel-menu a{font-size:1.2rem;font-weight:600;padding:14px 0;border-bottom:1px solid var(--border)}
+    .mobiel-menu__sluiten{position:absolute;top:16px;right:20px;font-size:1.4rem;cursor:pointer;color:var(--dim)}
+    @media(max-width:900px){.hoofd{grid-template-columns:1fr}.sidebar{display:none}}
+    @media(max-width:768px){.navbar__zoek{display:none}.navbar__links,.navbar__cta{display:none}.navbar__hamburger{display:flex}.hoofd{padding:12px 12px}.product-item{grid-template-columns:40px 1fr auto;gap:10px;padding:12px 14px}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__logo"><span class="navbar__logo-icon">{{LOGO_ICON}}</span>{{BEDRIJFSNAAM}}</div>
+    <div class="navbar__zoek">🔍 <input type="text" placeholder="{{ZOEK_PLACEHOLDER}}" /></div>
+    <ul class="navbar__links"><li><a href="#">Producten</a></li><li><a href="#">Discussies</a></li><li><a href="#">Launches</a></li></ul>
+    <div class="navbar__cta"><button class="btn-ghost">Inloggen</button><button class="btn-accent">Registreren</button></div>
+    <div class="navbar__hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobiel-menu" id="mobielmenu">
+    <span class="mobiel-menu__sluiten" id="menuSluiten">✕</span>
+    <a href="#" onclick="menuToggle()">Producten</a><a href="#" onclick="menuToggle()">Discussies</a><a href="#" onclick="menuToggle()">Inloggen</a>
+  </div>
+  <div class="hoofd">
+    <div class="feed-sectie">
+      <div class="dag-header">
+        <div><div class="dag-titel">{{DAG_TITEL}}</div><div class="dag-sub">{{DAG_SUB}}</div></div>
+        <div class="dag-tabs"><span class="dag-tab actief" onclick="tabKlik(this)">Vandaag</span><span class="dag-tab" onclick="tabKlik(this)">Gisteren</span><span class="dag-tab" onclick="tabKlik(this)">Week</span></div>
+      </div>
+      <div class="product-lijst">
+        <div class="product-item"><div class="product-logo">{{P1_LOGO}}</div><div class="product-info"><div class="product-naam-rij"><span class="product-naam">{{P1_NAAM}}</span><span class="product-badge">{{P1_BADGE}}</span></div><div class="product-desc">{{P1_DESC}}</div><div class="product-tags"><span class="product-tag">{{P1_T1}}</span><span class="product-tag">{{P1_T2}}</span></div></div><div class="upvote-knop actief" onclick="upvoteKlik(this)"><div class="upvote-pijl">▲</div><div class="upvote-count">{{P1_VOTES}}</div></div></div>
+        <div class="product-item"><div class="product-logo">{{P2_LOGO}}</div><div class="product-info"><div class="product-naam-rij"><span class="product-naam">{{P2_NAAM}}</span></div><div class="product-desc">{{P2_DESC}}</div><div class="product-tags"><span class="product-tag">{{P2_T1}}</span><span class="product-tag">{{P2_T2}}</span></div></div><div class="upvote-knop" onclick="upvoteKlik(this)"><div class="upvote-pijl">▲</div><div class="upvote-count">{{P2_VOTES}}</div></div></div>
+        <div class="product-item"><div class="product-logo">{{P3_LOGO}}</div><div class="product-info"><div class="product-naam-rij"><span class="product-naam">{{P3_NAAM}}</span><span class="product-badge">{{P3_BADGE}}</span></div><div class="product-desc">{{P3_DESC}}</div><div class="product-tags"><span class="product-tag">{{P3_T1}}</span></div></div><div class="upvote-knop" onclick="upvoteKlik(this)"><div class="upvote-pijl">▲</div><div class="upvote-count">{{P3_VOTES}}</div></div></div>
+        <div class="product-item"><div class="product-logo">{{P4_LOGO}}</div><div class="product-info"><div class="product-naam-rij"><span class="product-naam">{{P4_NAAM}}</span></div><div class="product-desc">{{P4_DESC}}</div><div class="product-tags"><span class="product-tag">{{P4_T1}}</span><span class="product-tag">{{P4_T2}}</span></div></div><div class="upvote-knop" onclick="upvoteKlik(this)"><div class="upvote-pijl">▲</div><div class="upvote-count">{{P4_VOTES}}</div></div></div>
+        <div class="product-item"><div class="product-logo">{{P5_LOGO}}</div><div class="product-info"><div class="product-naam-rij"><span class="product-naam">{{P5_NAAM}}</span></div><div class="product-desc">{{P5_DESC}}</div><div class="product-tags"><span class="product-tag">{{P5_T1}}</span></div></div><div class="upvote-knop" onclick="upvoteKlik(this)"><div class="upvote-pijl">▲</div><div class="upvote-count">{{P5_VOTES}}</div></div></div>
+        <div class="product-item"><div class="product-logo">{{P6_LOGO}}</div><div class="product-info"><div class="product-naam-rij"><span class="product-naam">{{P6_NAAM}}</span><span class="product-badge">{{P6_BADGE}}</span></div><div class="product-desc">{{P6_DESC}}</div><div class="product-tags"><span class="product-tag">{{P6_T1}}</span><span class="product-tag">{{P6_T2}}</span></div></div><div class="upvote-knop" onclick="upvoteKlik(this)"><div class="upvote-pijl">▲</div><div class="upvote-count">{{P6_VOTES}}</div></div></div>
+        <div class="product-item"><div class="product-logo">{{P7_LOGO}}</div><div class="product-info"><div class="product-naam-rij"><span class="product-naam">{{P7_NAAM}}</span></div><div class="product-desc">{{P7_DESC}}</div><div class="product-tags"><span class="product-tag">{{P7_T1}}</span></div></div><div class="upvote-knop" onclick="upvoteKlik(this)"><div class="upvote-pijl">▲</div><div class="upvote-count">{{P7_VOTES}}</div></div></div>
+      </div>
+      <div style="margin-top:20px">
+        <div class="dag-header" style="margin-bottom:12px"><div class="dag-titel">{{MAKER_TITEL}}</div></div>
+        <div class="maker-sectie">
+          <div class="maker-card"><div class="maker-avatar">{{M1_INT}}</div><div class="maker-info"><div class="maker-naam">{{M1_NAAM}}</div><div class="maker-bio">{{M1_BIO}}</div><div class="maker-products">{{M1_PRODUCTS}} producten gelanceerd</div></div></div>
+          <div class="maker-card"><div class="maker-avatar">{{M2_INT}}</div><div class="maker-info"><div class="maker-naam">{{M2_NAAM}}</div><div class="maker-bio">{{M2_BIO}}</div><div class="maker-products">{{M2_PRODUCTS}} producten gelanceerd</div></div></div>
+          <div class="maker-card"><div class="maker-avatar">{{M3_INT}}</div><div class="maker-info"><div class="maker-naam">{{M3_NAAM}}</div><div class="maker-bio">{{M3_BIO}}</div><div class="maker-products">{{M3_PRODUCTS}} producten gelanceerd</div></div></div>
+        </div>
+      </div>
+    </div>
+    <aside class="sidebar">
+      <div class="widget">
+        <div class="widget__header"><span>Collecties</span><a href="#">Alles →</a></div>
+        <div class="widget__body">
+          <div class="collectie-item"><div class="collectie-item__icon">{{COL1_ICON}}</div><div class="collectie-item__naam">{{COL1_NAAM}}</div><div class="collectie-item__count">{{COL1_COUNT}}</div></div>
+          <div class="collectie-item"><div class="collectie-item__icon">{{COL2_ICON}}</div><div class="collectie-item__naam">{{COL2_NAAM}}</div><div class="collectie-item__count">{{COL2_COUNT}}</div></div>
+          <div class="collectie-item"><div class="collectie-item__icon">{{COL3_ICON}}</div><div class="collectie-item__naam">{{COL3_NAAM}}</div><div class="collectie-item__count">{{COL3_COUNT}}</div></div>
+          <div class="collectie-item"><div class="collectie-item__icon">{{COL4_ICON}}</div><div class="collectie-item__naam">{{COL4_NAAM}}</div><div class="collectie-item__count">{{COL4_COUNT}}</div></div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget__header"><span>Topics</span></div>
+        <div class="widget__body">
+          <div class="topic-grid">
+            <span class="topic-chip">{{T1}}</span><span class="topic-chip">{{T2}}</span><span class="topic-chip">{{T3}}</span><span class="topic-chip">{{T4}}</span><span class="topic-chip">{{T5}}</span><span class="topic-chip">{{T6}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget__header"><span>Community stats</span></div>
+        <div class="widget__body">
+          <div class="stats-rij"><span class="stats-label">Makers</span><strong class="stats-waarde">{{STAT_MAKERS}}</strong></div>
+          <div class="stats-rij"><span class="stats-label">Producten</span><strong class="stats-waarde">{{STAT_PRODUCTS}}</strong></div>
+          <div class="stats-rij"><span class="stats-label">Upvotes vandaag</span><strong class="stats-waarde">{{STAT_UPVOTES}}</strong></div>
+          <div class="stats-rij"><span class="stats-label">Online nu</span><strong class="stats-waarde" style="color:#2eb67d">{{STAT_ONLINE}}</strong></div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="nieuwsbrief">
+          <h3>{{NW_TITEL}}</h3>
+          <p>{{NW_SUB}}</p>
+          <input class="nw-input" type="email" placeholder="jouw@email.nl" />
+          <button class="nw-btn">Abonneren</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <div class="footer-balk">
+    <div><a href="#">© <span id="jaar"></span> {{BEDRIJFSNAAM}}</a><a href="#">Privacy</a><a href="#">Voorwaarden</a><a href="#">Over</a></div>
+    <span>{{FOOTER_TAGLINE}}</span>
+  </div>
+  <script>
+    function menuToggle(){document.getElementById('mobielmenu').classList.toggle('open')}
+    document.getElementById('hamburgerBtn').addEventListener('click',menuToggle);
+    document.getElementById('menuSluiten').addEventListener('click',menuToggle);
+    document.getElementById('jaar').textContent=new Date().getFullYear();
+    function tabKlik(el){document.querySelectorAll('.dag-tab').forEach(x=>x.classList.remove('actief'));el.classList.add('actief')}
+    function upvoteKlik(el){el.classList.toggle('actief');const count=el.querySelector('.upvote-count');const n=parseInt(count.textContent);count.textContent=el.classList.contains('actief')?n+1:n-1}
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.style.opacity='1';x.target.style.transform='translateY(0)'}}),{threshold:0.05});
+    document.querySelectorAll('.product-item,.maker-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(8px)';el.style.transition='opacity 0.3s ease,transform 0.3s ease';obs.observe(el)});
+  </script>
+</body>
+</html>
